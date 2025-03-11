@@ -1,15 +1,15 @@
 // import Home from "./Pages/Home";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import React from "react";
-// import DisplayImages from "./Components/DisplayImages";
-// import MultipleImageUpload from "./Components/MultipleImageUpload";
-// import SingleImageDisplay from "./Components/SingleImageDisplay";
-// import SingleImageUpload from "./Components/SingleImageUpload";
+// import DisplayImages from "./components/DisplayImages";
+// import MultipleImageUpload from "./components/MultipleImageUpload";
+// import SingleImageDisplay from "./components/SingleImageDisplay";
+// import SingleImageUpload from "./components/SingleImageUpload";
 // import Display from "./Pages/Display_D";
-// import PropertySearch from "./Components/PropertySearch";
-// import Project from "./Components/ImageSwapper";
-// // import ImageSlider from "./Components/ImageSlider";
-// // import ImageSlider from "./Components/ImageSlider";
+// import PropertySearch from "./components/PropertySearch";
+// import Project from "./components/ImageSwapper";
+// // import ImageSlider from "./components/ImageSlider";
+// // import ImageSlider from "./components/ImageSlider";
 // // import ProjectPriceChart from "./Pages/ProjectPriceChart";
 // const App = () => {
 
@@ -37,31 +37,35 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
-import DisplayImages from "./Components/DisplayImages";
-import MultipleImageUpload from "./Components/MultipleImageUpload";
-import SingleImageDisplay from "./Components/SingleImageDisplay";
-import SingleImageUpload from "./Components/SingleImageUpload";
-import Display from "./Pages/Display_D";
-import PropertySearch from "./Components/PropertySearch";
-import Project from "./Components/ImageSwapper";
-import ProjectPriceChart from "./Pages/ProjectPriceChart"; // ✅ Import ProjectPriceChart
-import SinChartdisplay from "./Components/SinChart";
-import PriceScatterChart from "./Components/PriceScatterChart";
-import PriceBarChart from "./Components/PriceBarChart";
-import ScatterChartComponent from "./Components/ScatterChartComponent";
-import Organizations from "./Components/Organizations";
-import Home from "./Pages/Home";
-import React from "react";
 // import DisplayImages from "./components/DisplayImages";
-// import MultipleImageUpload from "./components/MultipleImageUpload";
+import MultipleImageUpload from "./components/MultipleImageUpload";
+import SingleImageDisplay from "./components/SingleImageDisplay";
+import SingleImageUpload from "./components/SingleImageUpload";
+import Display from "./Pages/Display_D";
+import PropertySearch from "./components/PropertySearch";
+import Project from "./components/ImageSwapper";
+import ProjectPriceChart from "./Pages/ProjectPriceChart"; // ✅ Import ProjectPriceChart
+import SinChartdisplay from "./components/SinChart";
+import PriceScatterChart from "./components/PriceScatterChart";
+import PriceBarChart from "./components/PriceBarChart";
+import ScatterChartComponent from "./components/ScatterChartComponent";
+import Organizations from "./components/Organizations";
+import ShowOrganization from "./components/MultiStageForm";
+import Displayprop from "./Pages/Display";
+
+// import DisplayImages from "./components/DisplayImages";
+
 // import SingleImageDisplay from "./components/SingleImageDisplay";
 // import SingleImageUpload from "./components/SingleImageUpload";
-import PropertySearch from "./Pages/PropertySearch";
-import VersionDisplay from "./Pages/Version2_Display";
-import WingDetails from "./components/wing_details";
+
+// import VersionDisplay from "./Pages/Version2_Display";
+// import WingDetails from "./components/wing_details";
 import ShowNeedle from "./components/showneedle"
 import FormDataInput from "./Pages/FormData";
+import RealestateHome from "./Pages/Realestate-Home";
+import PostFormData from "./components/PostwithForm";
 import './App.css';
+
 
 const App = () => {
   return (
@@ -70,7 +74,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Display" element={<Display />} />
-        <Route path="/DisplayImages" element={<DisplayImages />} />
+        {/* <Route path="/DisplayImages" element={<DisplayImages />} /> */}
         <Route path="/multiple-upload" element={<MultipleImageUpload />} />
         <Route path="/single-upload" element={<SingleImageUpload />} />
         <Route path="/single-display" element={<SingleImageDisplay />} />
@@ -82,10 +86,17 @@ const App = () => {
         <Route path="/price-bar-chart" element={<PriceBarChart />} />
         <Route path="/scatter-chart" element={<ScatterChartComponent />} />
         <Route path="/organizations" element={<Organizations />} />
+        <Route path="/show-formdata" element={<FormDataInput />}></Route>
+        <Route path="/show-organization" element={<ShowOrganization />}></Route>
+        <Route path="/display-d" element={<Displayprop />}></Route>
+        <Route path="/realestate-home" element={<RealestateHome />}></Route>
+        <Route path="/show-needle" element={<ShowNeedle />}></Route>
+        <Route path="/post-formdata" element={<PostFormData />}></Route>
+        <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
        <Route path="/displayimages" element={<DisplayImages />}></Route>
-       <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
+     
        <Route path="/single-upload" element={<SingleImageUpload />}></Route>
        <Route path="/single-display" element={<SingleImageDisplay />}></Route>
        <Route path="/property-search" element={<PropertySearch />}></Route>

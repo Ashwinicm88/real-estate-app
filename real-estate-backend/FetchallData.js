@@ -56,7 +56,7 @@ app.get("/api/full-details", async (req, res) => {
 
       FROM project_details pd
       JOIN project_reradetails pr ON pd.rera_id = pr.reraid
-      JOIN organization o ON pr.org_id = o.org_id
+      JOIN organization_1 o ON pr.org_id = o.org_id
       LEFT JOIN wing_details wd ON pd.project_id = wd.project_id
     `;
 

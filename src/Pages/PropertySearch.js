@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MenuItem, FormControl, Select, InputLabel, Button } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import DemoNavbar from "../components/Navbar";
+//import DemoNavbar from "../components/Navbar";
 import DemoFooter from "../components/Footer";
 
 const PropertySearch = () => {
@@ -16,7 +16,7 @@ const PropertySearch = () => {
   return (
     <div className="flex flex-col min-h-screen bg-black">
       {/* ✅ Navbar at the top */}
-      <DemoNavbar />
+      {/* <DemoNavbar /> */}
  
       {/* ✅ Search Form */}
       <div className="flex flex-col justify-center items-center flex-grow p-6">
