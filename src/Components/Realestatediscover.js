@@ -1,7 +1,7 @@
 import React from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
-import { Container, Grid, Typography, Button } from '@mui/material';
+import { Container, Grid, Button } from '@mui/material';
 import DropdownField from './DropdownField'; // Adjust the import path as necessary
 
 const validationSchema = yup.object({

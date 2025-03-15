@@ -64,6 +64,7 @@ import ShowNeedle from "./components/showneedle"
 import FormDataInput from "./Pages/FormData";
 import RealestateHome from "./Pages/Realestate-Home";
 import PostFormData from "./components/PostwithForm";
+import AllStageData from "./components/AllStageData"
 import './App.css';
 
 
@@ -93,6 +94,7 @@ const App = () => {
         <Route path="/show-needle" element={<ShowNeedle />}></Route>
         <Route path="/post-formdata" element={<PostFormData />}></Route>
         <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
+        <Route path="/all-stagedata" element={<AllStageData />}></Route>
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
        <Route path="/displayimages" element={<DisplayImages />}></Route>

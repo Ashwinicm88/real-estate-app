@@ -39,25 +39,25 @@ const ToggleButton = ({ label, section, field, value, onChange }) => {
   };
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 mt-6">
       {/* Toggle Label */}
       <span className="text-gray-400">{label}</span>
 
       {/* Toggle Button */}
       <div
-        className={`flex items-center w-24 h-9 rounded-full cursor-pointer p-1 transition-all duration-300 ${
+        className={`flex items-center w-20 h-7 rounded-full cursor-pointer p-1 transition-all duration-300 ${
           value ? "bg-green-500" : "bg-red-500"
         }`}
         onClick={handleToggle}
       >
         <div
-          className={`w-10 h-7 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
+          className={`w-6 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
             value ? "translate-x-12" : "translate-x-0"
           }`}
         />
         <span
           className={`absolute text-white font-semibold ${
-            value ? "ml-4" : "ml-16"
+            value ? "ml-1" : "ml-10"
           }`}
         >
           {value ? "YES" : "NO"}
