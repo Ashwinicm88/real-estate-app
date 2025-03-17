@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
+<<<<<<< HEAD
 import axios from "axios";
 
+=======
+>>>>>>> Gmap
 
 import {
   Button,
@@ -13,6 +16,7 @@ import {
   Grid,
   FormGroup,
 } from "@mui/material";
+<<<<<<< HEAD
 import InputField from "../Components/InputField";
 import DropdownField from "../Components/DropdownField";
 import DatePicker from "../Components/DateController";
@@ -21,6 +25,15 @@ import Header from "./Header";
 import ImageUpload from "../Components/ImageUpload";
 import VideoUpload from "../Components/VideoUpload";
 
+=======
+import InputField from "./InputField";
+import DropdownField from "./DropdownField";
+import DatePicker from "./DateController";
+import CheckBox from "./CheckBoxControl";
+import Header from "./Header";
+import ImageUpload from "./ImageUploader";
+import VideoUpload from "./VideoUploader";
+>>>>>>> Gmap
 
 // Step Titles
 const initialSteps = [
@@ -36,7 +49,10 @@ const initialSteps = [
   "Review Details", // This will be Stage 9
 ];
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
 const validationSchema = yup.object().shape({
   organization: yup.object({
     orgName: yup
@@ -53,7 +69,11 @@ const validationSchema = yup.object().shape({
       .matches(/^[a-zA-Z0-9]+$/, "CIN must contain only letters and numbers"),
     orgOwners: yup
       .string()
+<<<<<<< HEAD
       .matches(/^[a-zA-Z\s]+$/, "Owner Name must contain only letters"),
+=======
+      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+>>>>>>> Gmap
     projectsCompleted: yup
       .number()
       .required("Projects Completed is required")
@@ -111,6 +131,7 @@ const validationSchema = yup.object().shape({
       reralink: yup.string(),
       projectvideolink: yup.string(),
       projectimages: yup.string(),
+<<<<<<< HEAD
       schools: yup.string(),
       hospitals: yup.string(),
       malls: yup.string(),
@@ -132,6 +153,27 @@ const validationSchema = yup.object().shape({
         .array()
 
 
+=======
+      schools: yup
+      .string()
+      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+      hospitals: yup
+      .string()
+      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+      malls: yup.string()
+      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+      movietheater: yup
+        .string()
+        .typeError("Please enter in letters")
+        .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+      ITpark: yup
+        .string()
+        .typeError("Please enter in letters")
+        .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+      Images: yup
+        .array()
+
+>>>>>>> Gmap
         .of(
           yup
             .mixed()
@@ -150,7 +192,10 @@ const validationSchema = yup.object().shape({
         .min(1, "You must upload at least 1 image")
         .max(1, "You can upload up to 5 images"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
       videos: yup
         .array()
         .of(
@@ -175,7 +220,10 @@ const validationSchema = yup.object().shape({
     })
     .default(() => ({ videos: [] })),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
   projectDetails: yup.object({
     units: yup
       .number()
@@ -199,7 +247,10 @@ const validationSchema = yup.object().shape({
       .typeError("Price Min must be a number")
       .min(0, "Price Min cannot be negative"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     pricemax: yup
       .number()
       .typeError("Price Max must be a number")
@@ -259,7 +310,10 @@ const validationSchema = yup.object().shape({
       .min(1, "You must upload at least 1 image")
       .max(1, "You can upload up to 5 images"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     type1images: yup
       .array()
       .of(
@@ -280,7 +334,10 @@ const validationSchema = yup.object().shape({
       .min(1, "You must upload at least 1 image")
       .max(1, "You can upload up to 5 images"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     type1bathrooms: yup
       .number()
       .typeError("Type 1 Bathrooms must be a number")
@@ -374,7 +431,10 @@ const validationSchema = yup.object().shape({
       .typeError("Type 2 Area must be a number")
       .min(0, "Type 2 Area cannot be negative"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     type2floorplan: yup.string(),
     type2images: yup.string(),
     type2bathrooms: yup
@@ -403,7 +463,10 @@ const validationSchema = yup.object().shape({
       .typeError("Type 2 Area must be a number")
       .min(0, "Type 2 Area cannot be negative"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     type2floorplan2: yup.string(),
     type2images2: yup.string(),
     type2bathrooms2: yup
@@ -516,26 +579,36 @@ const validationSchema = yup.object().shape({
       .required("Penthouse Units is required")
       .min(1, "At least 1 penthouse unit is required"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     penthouseArea: yup
       .number()
       .typeError("Penthouse Area must be a number")
       .required("Penthouse Area is required")
       .positive("Penthouse Area must be positive"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     penthouseFloorPlan: yup
       .array()
       .min(1, "At least one floor plan is required")
       .required("Floor plan is required"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     penthouseBathrooms: yup
       .number()
       .typeError("Penthouse Bathrooms must be a number")
       .required("Number of bathrooms is required")
       .min(1, "At least 1 bathroom is required"),
 
+<<<<<<< HEAD
 
     penthouseBalcony: yup.string().required("Balcony details are required"),
 
@@ -543,12 +616,21 @@ const validationSchema = yup.object().shape({
     penthouseParking: yup.string().required("Parking information is required"),
 
 
+=======
+    penthouseBalcony: yup.string().required("Balcony details are required"),
+
+    penthouseParking: yup.string().required("Parking information is required"),
+
+>>>>>>> Gmap
     penthouseImages: yup
       .array()
       .min(1, "At least one penthouse image is required")
       .required("Penthouse images are required"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     typeNumber: yup.string().when("enableconfig", {
       is: true,
       then: (schema) =>
@@ -558,21 +640,30 @@ const validationSchema = yup.object().shape({
       otherwise: (schema) => schema.notRequired(),
     }),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     hallArea: yup
       .number()
       .typeError("Hall Area must be a number")
       .required("Hall Area is required")
       .positive("Hall Area must be positive"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     kitchenArea: yup
       .number()
       .typeError("Kitchen Area must be a number")
       .required("Kitchen Area is required")
       .positive("Kitchen Area must be positive"),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     // Dynamic bedroom areas (bedroom1Area to bedroom6Area)
     ...Array.from({ length: 6 }, (_, i) => i + 1).reduce((acc, num) => {
       acc[`bedroom${num}Area`] = yup
@@ -583,7 +674,10 @@ const validationSchema = yup.object().shape({
       return acc;
     }, {}),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     // Dynamic bathroom areas (bathroom1Area to bathroom6Area)
     ...Array.from({ length: 6 }, (_, i) => i + 1).reduce((acc, num) => {
       acc[`bathroom${num}Area`] = yup
@@ -594,10 +688,15 @@ const validationSchema = yup.object().shape({
       return acc;
     }, {}),
 
+<<<<<<< HEAD
 
     enableconfig: yup.boolean(),
 
 
+=======
+    enableconfig: yup.boolean(),
+
+>>>>>>> Gmap
     // Conditional fields for additional configuration
     penthouseFloorPlan2: yup.array().when("enableconfig", {
       is: true,
@@ -611,7 +710,10 @@ const validationSchema = yup.object().shape({
       otherwise: (schema) => schema.notRequired(),
     }),
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     penthouseImages2: yup.array().when("enableconfig", {
       is: true,
       then: (schema) =>
@@ -626,7 +728,10 @@ const validationSchema = yup.object().shape({
   }),
 });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
 const MultiStageForm = () => {
   useEffect(() => {
     setFormData((prev) => ({
@@ -635,7 +740,10 @@ const MultiStageForm = () => {
     }));
   }, []);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
   const [stage, setStage] = useState(0);
   const [formData, setFormData] = useState({
     organization: {
@@ -645,7 +753,10 @@ const MultiStageForm = () => {
       projectsCompleted: "",
     },
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     project: {
       projectname: "",
       city: "Pune",
@@ -662,9 +773,15 @@ const MultiStageForm = () => {
       hospitals: "",
       malls: "",
       movietheater: "",
+<<<<<<< HEAD
       ITpark: "",
       Images: [],
       Videos: [],
+=======
+      Images: [],
+      Videos: [],
+      ITpark:"",
+>>>>>>> Gmap
     },
     projectDetails: {
       units: "",
@@ -679,7 +796,11 @@ const MultiStageForm = () => {
       bankapproved: false,
       banks: "",
       deleted: false,
+<<<<<<< HEAD
       // ITpark: "",
+=======
+  
+>>>>>>> Gmap
     },
     oneBHKConfig: [
       {
@@ -720,7 +841,10 @@ const MultiStageForm = () => {
       },
     ],
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     threeBHKConfig: [
       {
         typeNumber: 1,
@@ -768,14 +892,22 @@ const MultiStageForm = () => {
       },
     ],
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
     fiveBHKConfig: [
       {
         typeNumber: 1,
         type5Units: "",
         type5area: "",
+<<<<<<< HEAD
         type5images: [],
         type5floorplan: [],
+=======
+        type5floorplan: [],
+        type5images: [],
+>>>>>>> Gmap
         type5Bedrooms: "",
         type5Bedroom1: "",
         type5Bedroom2: "",
@@ -800,6 +932,7 @@ const MultiStageForm = () => {
         typeNumber: 1,
         penthouseUnits: "",
         penthouseArea: "",
+<<<<<<< HEAD
         penthouseBedrooms: "",
         penthouseFloorPlan: [],
         penthouseImages: [],
@@ -808,6 +941,17 @@ const MultiStageForm = () => {
         penthouseParking: "",
         hallArea: "",
         kitchenArea: "",
+=======
+        penthouseFloorPlan: [],
+        penthouseBathrooms: "",
+        penthouseBedrooms: "",
+        penthouseBalcony: "",
+        penthouseParking: "",
+        penthouseImages: [],
+        hallArea: "",
+        kitchenArea: "",
+        bedrooms:"",
+>>>>>>> Gmap
         bedroom1Area: "",
         bedroom2Area: "",
         bedroom3Area: "",
@@ -825,7 +969,10 @@ const MultiStageForm = () => {
     ],
   });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
   const [cachedData, setCachedData] = useState({
     organization: {},
     project: {},
@@ -838,7 +985,10 @@ const MultiStageForm = () => {
     PentHouse: {},
   });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
   const [warnings, setWarnings] = useState({});
   const [proceedToOneBHK, setProceedToOneBHK] = useState(false);
   const [proceedToTwoBHK, setProceedToTwoBHK] = useState(false);
@@ -855,6 +1005,7 @@ const MultiStageForm = () => {
       return;
     }
 
+<<<<<<< HEAD
 
     setFormData((prev) => {
       const updatedData = { ...prev };
@@ -864,11 +1015,22 @@ const MultiStageForm = () => {
       const arrayMatch = section.match(/^(\w+)\[(\d+)\]$/);
 
 
+=======
+    setFormData((prev) => {
+      const updatedData = { ...prev };
+
+      // Handle Arrays (like oneBHKConfig[0])
+      const arrayMatch = section.match(/^(\w+)\[(\d+)\]$/);
+
+>>>>>>> Gmap
       if (arrayMatch) {
         const [, arrayName, index] = arrayMatch;
         const arrayIndex = Number(index);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         updatedData[arrayName] = updatedData[arrayName] || [];
         updatedData[arrayName][arrayIndex] = {
           ...updatedData[arrayName][arrayIndex],
@@ -884,6 +1046,7 @@ const MultiStageForm = () => {
         };
       }
 
+<<<<<<< HEAD
 
       console.log("✅ Updated Form Data: ", updatedData);
 
@@ -892,11 +1055,21 @@ const MultiStageForm = () => {
       validateField(section, field, value, updatedData);
 
 
+=======
+      console.log("✅ Updated Form Data: ", updatedData);
+
+      // Trigger validation (if required)
+      validateField(section, field, value, updatedData);
+
+>>>>>>> Gmap
       return updatedData;
     });
   };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
   const validateField = async (section, field, value, updatedData) => {
     try {
       // Validate the field using Yup schema
@@ -906,10 +1079,15 @@ const MultiStageForm = () => {
       console.log("✅ Field:", field);
       console.log("✅ Value:", value);
 
+<<<<<<< HEAD
 
       await validationSchema.validateAt(`${section}.${field}`, updatedData);
 
 
+=======
+      await validationSchema.validateAt(`${section}.${field}`, updatedData);
+
+>>>>>>> Gmap
       // ✅ Clear the error if validation is successful
       setWarnings((prev) => {
         const updatedWarnings = { ...prev };
@@ -923,7 +1101,10 @@ const MultiStageForm = () => {
         return updatedWarnings;
       });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
       return true; // ✅ Validation passed
     } catch (error) {
       // ❌ Set error message if validation fails
@@ -935,16 +1116,25 @@ const MultiStageForm = () => {
         },
       }));
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
       return false; // ❌ Validation failed
     }
   };
 
+<<<<<<< HEAD
 
   const nextStage = async () => {
     // const isType2Enabled = formData.oneBHKConfig.enableconfig === "yes";
 
 
+=======
+  const nextStage = async () => {
+    // const isType2Enabled = formData.oneBHKConfig.enableconfig === "yes";
+
+>>>>>>> Gmap
     try {
       // Ensure oneBHKConfig is always an array
       if (!Array.isArray(formData.oneBHKConfig)) {
@@ -1007,10 +1197,15 @@ const MultiStageForm = () => {
         ],
       };
 
+<<<<<<< HEAD
 
       const currentFields = requiredFields[stage] || [];
 
 
+=======
+      const currentFields = requiredFields[stage] || [];
+
+>>>>>>> Gmap
       // Utility to safely access nested properties
       const safeAccess = (obj, path) => {
         return path.split(".").reduce((acc, key) => {
@@ -1024,14 +1219,20 @@ const MultiStageForm = () => {
         }, obj);
       };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
       // Validate all fields
       const validations = currentFields.flatMap((field) => {
         if (field.includes("[]")) {
           const [arrayName, property] = field.replace("[]", "").split(".");
           const arrayData = safeAccess(formData, arrayName) || [];
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           return arrayData.map((item) =>
             validateField(arrayName, property, item?.[property], formData)
           );
@@ -1042,6 +1243,7 @@ const MultiStageForm = () => {
         }
       });
 
+<<<<<<< HEAD
 
       // Wait for all validations and allow navigation
       const validationResults = await Promise.all(validations);
@@ -1051,6 +1253,14 @@ const MultiStageForm = () => {
       console.log("✅ Validation Results: ", validationResults);
 
 
+=======
+      // Wait for all validations and allow navigation
+      const validationResults = await Promise.all(validations);
+
+      // Log validation results for debugging
+      console.log("✅ Validation Results: ", validationResults);
+
+>>>>>>> Gmap
       // Move to the next stage even if validation fails (prevent double increments)
       setStage((prevStage) => prevStage + 1);
       // 3. Cache current stage data
@@ -1066,7 +1276,10 @@ const MultiStageForm = () => {
         8: "PentHouse",
       };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
       if (cacheMap[stage]) {
         setCachedData((prev) => ({
           ...prev,
@@ -1074,10 +1287,15 @@ const MultiStageForm = () => {
         }));
       }
 
+<<<<<<< HEAD
 
       console.log("✅ Stage data cached: ", cachedData);
 
 
+=======
+      console.log("✅ Stage data cached: ", cachedData);
+
+>>>>>>> Gmap
       // 4. Navigate to the correct next stage based on conditions
       if (stage < Object.keys(requiredFields).length - 1) {
         setStage((prevStage) => prevStage + 1);
@@ -1160,7 +1378,10 @@ const MultiStageForm = () => {
           }
           break;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         case 3: // Stage 3 (One BHK Config)
           if (proceedToTwoBHK) {
             setStage(4); // Move to Two BHK Config (Stage 4)
@@ -1177,7 +1398,10 @@ const MultiStageForm = () => {
           }
           break;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         case 4: // Stage 4 (Two BHK Config)
           if (proceedToThreeBHK) {
             setStage(5); // Move to Three BHK Config (Stage 5)
@@ -1192,7 +1416,10 @@ const MultiStageForm = () => {
           }
           break;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         case 5: // Stage 5 (Three BHK Config)
           if (proceedToFourBHK) {
             setStage(6); // Move to Four BHK Config (Stage 6)
@@ -1205,7 +1432,10 @@ const MultiStageForm = () => {
           }
           break;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         case 6: // Stage 6 (Four BHK Config)
           if (proceedToFiveBHK) {
             setStage(7); // Move to Five BHK Config (Stage 7)
@@ -1216,7 +1446,10 @@ const MultiStageForm = () => {
           }
           break;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         case 7: // Stage 7 (Five BHK Config)
           if (proceedToPentHouse) {
             setStage(8); // Move to Penthouse Config (Stage 8)
@@ -1225,12 +1458,18 @@ const MultiStageForm = () => {
           }
           break;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         case 8: // Stage 8 (Penthouse Config)
           setStage(9); // Move to Review Data (Stage 9)
           break;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         default: // Handle unknown stages or linear progression
           if (stage < initialSteps.length - 1) {
             setStage(stage + 1); // Move to the next step if available
@@ -1241,6 +1480,7 @@ const MultiStageForm = () => {
       console.error("🚨 Error in nextStage: ", error);
     }
   };
+<<<<<<< HEAD
   const handleSubmit = async () => {
     try {
       // Create FormData object
@@ -1580,13 +1820,18 @@ const MultiStageForm = () => {
   //     return [];
   //   }
   // };
+=======
+>>>>>>> Gmap
 
   const prevStage = () => {
     if (stage > 0) setStage(stage - 1);
   };
   
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
   return (
     <div>
       <header className="bg-black text-white p-4 sm:mx-8 md:mx-10 xl:mx-24">
@@ -1619,7 +1864,10 @@ const MultiStageForm = () => {
           
         </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         <div className="w-full mb-3 mx-auto">
           {stage === 0 && (
             <div className="w-full mx-auto max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between">
@@ -1661,7 +1909,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {stage === 1 && (
             <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
               <InputField
@@ -1790,7 +2041,10 @@ const MultiStageForm = () => {
                   limit={1}
                 />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                 {formData?.project?.Images?.length > 0 && (
                   <div>
                     <h3>Uploaded Images:</h3>
@@ -1824,7 +2078,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {stage === 2 && (
             <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto"    >
               <InputField
@@ -1880,7 +2137,10 @@ const MultiStageForm = () => {
                 error={warnings.projectDetails?.pricemax}
               />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
             
               <DropdownField
                 label="Covered Parking"
@@ -1918,7 +2178,10 @@ const MultiStageForm = () => {
                   error={warnings.projectDetails?.allInclusive}
                 />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                 <CheckBox
                   label="Bank Approved"
                   section="projectDetails"
@@ -1940,7 +2203,10 @@ const MultiStageForm = () => {
                 )}
               </FormGroup>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
               <FormGroup>
                 <div className="grid grid-cols-2 items-center ml-10">
                   <Grid item xs={12}>
@@ -2020,7 +2286,10 @@ const MultiStageForm = () => {
                     />
                   </Grid>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                   <Grid item xs={12}>
                     <FormControlLabel
                       control={
@@ -2069,7 +2338,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {stage === 3 && (
             <div className="mb-1">
               <>
@@ -2089,7 +2361,10 @@ const MultiStageForm = () => {
                         type="number"
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Units"
                         section={`oneBHKConfig[${index}]`}
@@ -2099,7 +2374,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1Units}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Total Area"
                         section={`oneBHKConfig[${index}]`}
@@ -2109,7 +2387,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1area}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Bedroom Area"
                         section={`oneBHKConfig[${index}]`}
@@ -2119,7 +2400,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1BedroomArea}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Hall Area"
                         section={`oneBHKConfig[${index}]`}
@@ -2129,7 +2413,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1HallArea}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Kitchen Area"
                         section={`oneBHKConfig[${index}]`}
@@ -2139,7 +2426,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1KitchenArea}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Bathrooms"
                         section={`oneBHKConfig[${index}]`}
@@ -2149,7 +2439,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1bathrooms}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Bathroom 1 Details"
                         section={`oneBHKConfig[${index}]`}
@@ -2159,7 +2452,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1bathroom1}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Bathroom 2 Details"
                         section={`oneBHKConfig[${index}]`}
@@ -2169,7 +2465,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1bathroom2}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Balcony Availability"
                         section={`oneBHKConfig[${index}]`}
@@ -2179,7 +2478,10 @@ const MultiStageForm = () => {
                         error={warnings.oneBHKConfig?.[index]?.type1balcony}
                       />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                       <InputField
                         label="Parking Availability"
                         section={`oneBHKConfig[${index}]`}
@@ -2197,7 +2499,10 @@ const MultiStageForm = () => {
                           limit={5} // Adjust limit as needed
                         />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                         {config?.type1floorplan?.length > 0 && (
                           <div>
                             <h3>Uploaded Images:</h3>
@@ -2218,7 +2523,10 @@ const MultiStageForm = () => {
                           limit={5} // Adjust limit as needed
                         />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                         {config?.type1images?.length > 0 && (
                           <div>
                             <h3>Uploaded Images:</h3>
@@ -2273,7 +2581,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {stage === 4 && (
             <div className="mx-auto">
               {formData.twoBHKConfig.map((config, index) => (
@@ -2292,7 +2603,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2Units}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Type 2 Area */}
                     <InputField
                       label="Type 2 Area (sq ft)"
@@ -2303,7 +2617,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2area}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedrooms */}
                     <InputField
                       label="Total Bedrooms"
@@ -2314,7 +2631,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2Bedrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 1 */}
                     <InputField
                       label="Bedroom 1 Area"
@@ -2325,7 +2645,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2Bedroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 2 */}
                     <InputField
                       label="Bedroom 2 Area"
@@ -2336,7 +2659,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2Bedroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Hall Area */}
                     <InputField
                       label="Hall Area"
@@ -2347,7 +2673,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2HallArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Kitchen Area */}
                     <InputField
                       label="Kitchen Area"
@@ -2358,7 +2687,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2KitchenArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathrooms */}
                     <InputField
                       label="Total Bathrooms"
@@ -2369,7 +2701,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2bathrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 1 */}
                     <InputField
                       label="Bathroom 1 Details"
@@ -2380,7 +2715,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2bathroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 2 */}
                     <InputField
                       label="Bathroom 2 Details"
@@ -2391,7 +2729,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2bathroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Balcony */}
                     <InputField
                       label="Balcony Availability"
@@ -2402,7 +2743,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2balcony}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Parking */}
                     <InputField
                       label="Parking Availability"
@@ -2413,7 +2757,10 @@ const MultiStageForm = () => {
                       error={warnings.twoBHKConfig?.[index]?.type2parking}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Floorplan Image Upload */}
                     <ImageUpload
                       handleChange={handleChange}
@@ -2433,7 +2780,10 @@ const MultiStageForm = () => {
                       </div>
                     )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Other Images Upload */}
                     <ImageUpload
                       handleChange={handleChange}
@@ -2500,7 +2850,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {stage === 5 && (
             <div className="mx-auto">
               {formData.threeBHKConfig.map((config, index) => (
@@ -2519,7 +2872,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3Units}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Type 3 Area */}
                     <InputField
                       label="Type 3 Area (sq ft)"
@@ -2530,7 +2886,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3area}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Total Bedrooms */}
                     <InputField
                       label="Total Bedrooms"
@@ -2541,7 +2900,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3Bedrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 1 */}
                     <InputField
                       label="Bedroom 1 Area"
@@ -2552,7 +2914,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3Bedroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 2 */}
                     <InputField
                       label="Bedroom 2 Area"
@@ -2563,7 +2928,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3Bedroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 3 */}
                     <InputField
                       label="Bedroom 3 Area"
@@ -2574,7 +2942,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3Bedroom3}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Hall Area */}
                     <InputField
                       label="Hall Area"
@@ -2585,7 +2956,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3HallArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Kitchen Area */}
                     <InputField
                       label="Kitchen Area"
@@ -2596,7 +2970,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3KitchenArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Total Bathrooms */}
                     <InputField
                       label="Total Bathrooms"
@@ -2607,7 +2984,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3bathrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 1 */}
                     <InputField
                       label="Bathroom 1 Area"
@@ -2618,7 +2998,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3bathroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 2 */}
                     <InputField
                       label="Bathroom 2 Area"
@@ -2629,7 +3012,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3bathroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 3 */}
                     <InputField
                       label="Bathroom 3 Area"
@@ -2640,7 +3026,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3bathroom3}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Balcony */}
                     <InputField
                       label="Balcony Availability"
@@ -2651,7 +3040,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3balcony}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Parking */}
                     <InputField
                       label="Parking Availability"
@@ -2662,7 +3054,10 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3parking}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Floorplan Image Upload */}
                     <ImageUpload
                       handleChange={handleChange}
@@ -2682,7 +3077,10 @@ const MultiStageForm = () => {
                       </div>
                     )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Other Images Upload */}
                     <ImageUpload
                       handleChange={handleChange}
@@ -2702,7 +3100,10 @@ const MultiStageForm = () => {
                       </div>
                     )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Checkbox to Add Another Three BHK Configuration */}
                     <div className="mt-4 flex items-center mx-10">
                       <input
@@ -2771,7 +3172,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4Units}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Type 4 Area */}
                     <InputField
                       label="Type 4 Area (sq ft)"
@@ -2782,7 +3186,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4area}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Total Bedrooms */}
                     <InputField
                       label="Total Bedrooms"
@@ -2793,7 +3200,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4Bedrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 1 */}
                     <InputField
                       label="Bedroom 1 Area"
@@ -2804,7 +3214,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4Bedroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 2 */}
                     <InputField
                       label="Bedroom 2 Area"
@@ -2815,7 +3228,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4Bedroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 3 */}
                     <InputField
                       label="Bedroom 3 Area"
@@ -2826,7 +3242,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4Bedroom3}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 4 */}
                     <InputField
                       label="Bedroom 4 Area"
@@ -2837,7 +3256,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4Bedroom4}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Hall Area */}
                     <InputField
                       label="Hall Area"
@@ -2848,7 +3270,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4HallArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Kitchen Area */}
                     <InputField
                       label="Kitchen Area"
@@ -2859,7 +3284,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4KitchenArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Total Bathrooms */}
                     <InputField
                       label="Total Bathrooms"
@@ -2870,7 +3298,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4bathrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 1 */}
                     <InputField
                       label="Bathroom 1 Area"
@@ -2881,7 +3312,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4bathroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 2 */}
                     <InputField
                       label="Bathroom 2 Area"
@@ -2892,7 +3326,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4bathroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 3 */}
                     <InputField
                       label="Bathroom 3 Area"
@@ -2903,7 +3340,10 @@ const MultiStageForm = () => {
                       error={warnings.fourBHKConfig?.[index]?.type4bathroom3}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 4 */}
                     <InputField
                       label="Bathroom 4 Area"
@@ -2915,6 +3355,29 @@ const MultiStageForm = () => {
                     />
 
 
+<<<<<<< HEAD
+=======
+                     {/* Balcony */}
+                     <InputField
+                      label="Balcony Availability"
+                      section={`fourBHKConfig[${index}]`}
+                      field="type4balcony"
+                      value={config.type4balcony}
+                      onChange={handleChange}
+                      error={warnings.fourBHKConfig?.[index]?.type4balcony}
+                    />
+
+                    {/* Parking */}
+                    <InputField
+                      label="Parking Availability"
+                      section={`fourBHKConfig[${index}]`}
+                      field="type4parking"
+                      value={config.type4parking}
+                      onChange={handleChange}
+                      error={warnings.fourBHKConfig?.[index]?.type4parking}
+                    />
+
+>>>>>>> Gmap
                       {/* Other Images Upload */}
                       <ImageUpload
                       handleChange={handleChange}
@@ -2953,6 +3416,7 @@ const MultiStageForm = () => {
                     )}
 
 
+<<<<<<< HEAD
 
 
                     {/* Balcony */}
@@ -2975,6 +3439,9 @@ const MultiStageForm = () => {
                       onChange={handleChange}
                       error={warnings.fourBHKConfig?.[index]?.type4parking}
                     />
+=======
+                   
+>>>>>>> Gmap
                     {/* Checkbox to Add Another Four BHK Configuration */}
                     <div className="mt-4 flex items-center mx-10">
                       <input
@@ -3011,7 +3478,10 @@ const MultiStageForm = () => {
                               ],
                             }));
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                             // Uncheck the checkbox after adding
                             e.target.checked = false;
                           }
@@ -3030,7 +3500,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {stage === 7 && (
             <div className="mx-auto">
               {formData.fiveBHKConfig.map((config, index) => (
@@ -3049,7 +3522,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5Units}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Type 5 Area */}
                     <InputField
                       label="Type 5 Area (sq ft)"
@@ -3060,7 +3536,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5area}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Total Bedrooms */}
                     <InputField
                       label="Total Bedrooms"
@@ -3071,7 +3550,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5Bedrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 1 */}
                     <InputField
                       label="Bedroom 1 Area"
@@ -3082,7 +3564,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5Bedroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 2 */}
                     <InputField
                       label="Bedroom 2 Area"
@@ -3093,7 +3578,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5Bedroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 3 */}
                     <InputField
                       label="Bedroom 3 Area"
@@ -3104,7 +3592,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5Bedroom3}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 4 */}
                     <InputField
                       label="Bedroom 4 Area"
@@ -3115,7 +3606,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5Bedroom4}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedroom 5 */}
                     <InputField
                       label="Bedroom 5 Area"
@@ -3126,7 +3620,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5Bedroom5}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Hall Area */}
                     <InputField
                       label="Hall Area"
@@ -3137,7 +3634,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5HallArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Kitchen Area */}
                     <InputField
                       label="Kitchen Area"
@@ -3148,7 +3648,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5KitchenArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Total Bathrooms */}
                     <InputField
                       label="Total Bathrooms"
@@ -3159,7 +3662,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5bathrooms}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 1 */}
                     <InputField
                       label="Bathroom 1 Area"
@@ -3170,7 +3676,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5bathroom1}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 2 */}
                     <InputField
                       label="Bathroom 2 Area"
@@ -3181,7 +3690,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5bathroom2}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 3 */}
                     <InputField
                       label="Bathroom 3 Area"
@@ -3192,7 +3704,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5bathroom3}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 4 */}
                     <InputField
                       label="Bathroom 4 Area"
@@ -3203,7 +3718,10 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5bathroom4}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathroom 5 */}
                     <InputField
                       label="Bathroom 5 Area"
@@ -3213,6 +3731,28 @@ const MultiStageForm = () => {
                       onChange={handleChange}
                       error={warnings.fiveBHKConfig?.[index]?.type5bathroom5}
                     />
+<<<<<<< HEAD
+=======
+                          {/* Balcony */}
+                          <InputField
+                      label="Balcony Availability"
+                      section={`fiveBHKConfig[${index}]`}
+                      field="type5balcony"
+                      value={config.type5balcony}
+                      onChange={handleChange}
+                      error={warnings.fiveBHKConfig?.[index]?.type5balcony}
+                    />
+
+                    {/* Parking */}
+                    <InputField
+                      label="Parking Availability"
+                      section={`fiveBHKConfig[${index}]`}
+                      field="type5parking"
+                      value={config.type5parking}
+                      onChange={handleChange}
+                      error={warnings.fiveBHKConfig?.[index]?.type5parking}
+                    />
+>>>>>>> Gmap
                          {/* Other Images Upload */}
                          <ImageUpload
                       handleChange={handleChange}
@@ -3251,6 +3791,7 @@ const MultiStageForm = () => {
                     )}
 
 
+<<<<<<< HEAD
 
 
                     {/* Balcony */}
@@ -3274,6 +3815,9 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5parking}
                     />
 
+=======
+              
+>>>>>>> Gmap
 
                     <div className="mt-4 flex items-center mx-10 ">
                       <input
@@ -3330,7 +3874,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {stage === 8 && (
             <div className="mx-auto">
               {formData.penthouseConfig.map((config, index) => (
@@ -3349,7 +3896,10 @@ const MultiStageForm = () => {
                       error={warnings.penthouseConfig?.[index]?.penthouseUnits}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Penthouse Area */}
                     <InputField
                       label="Penthouse Area (sq ft)"
@@ -3359,7 +3909,22 @@ const MultiStageForm = () => {
                       onChange={handleChange}
                       error={warnings.penthouseConfig?.[index]?.penthouseArea}
                     />
+<<<<<<< HEAD
 
+=======
+                    
+                    {/* Total Bedrooms */}
+                    <InputField
+                      label="Total Bedrooms"
+                      section={`penthouseConfig[${index}]`}
+                      field="penthouseBedrooms"
+                      value={config.penthouseBedrooms}
+                      onChange={handleChange}
+                      error={
+                        warnings.penthouseConfig?.[index]?.penthouseBedrooms
+                      }
+                    />
+>>>>>>> Gmap
 
                     {/* Total Bathrooms */}
                     <InputField
@@ -3373,6 +3938,7 @@ const MultiStageForm = () => {
                       }
                     />
 
+<<<<<<< HEAD
 
                     {/* Total Bedrooms */}
                     <InputField
@@ -3386,6 +3952,8 @@ const MultiStageForm = () => {
                       }
                     />
 
+=======
+>>>>>>> Gmap
                     {/* Balcony Availability */}
                     <InputField
                       label="Balcony Availability"
@@ -3398,7 +3966,10 @@ const MultiStageForm = () => {
                       }
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Parking Availability */}
                     <InputField
                       label="Parking Availability"
@@ -3411,7 +3982,10 @@ const MultiStageForm = () => {
                       }
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Hall Area */}
                     <InputField
                       label="Hall Area"
@@ -3422,7 +3996,10 @@ const MultiStageForm = () => {
                       error={warnings.penthouseConfig?.[index]?.hallArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Kitchen Area */}
                     <InputField
                       label="Kitchen Area"
@@ -3433,7 +4010,10 @@ const MultiStageForm = () => {
                       error={warnings.penthouseConfig?.[index]?.kitchenArea}
                     />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bedrooms */}
                     {[...Array(6).keys()].map((num) => (
                       <InputField
@@ -3451,7 +4031,10 @@ const MultiStageForm = () => {
                       />
                     ))}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Bathrooms */}
                     {[...Array(6).keys()].map((num) => (
                       <InputField
@@ -3469,7 +4052,10 @@ const MultiStageForm = () => {
                       />
                     ))}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Floor Plan Image Upload */}
                     <ImageUpload
                       handleChange={handleChange}
@@ -3489,7 +4075,10 @@ const MultiStageForm = () => {
                       </div>
                     )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Other Images Upload */}
                     <ImageUpload
                       handleChange={handleChange}
@@ -3509,7 +4098,10 @@ const MultiStageForm = () => {
                       </div>
                     )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
                     {/* Checkbox to Add Another Penthouse Configuration */}
                     <div className="mt-4 flex items-center mx-10">
                       <input
@@ -3527,7 +4119,10 @@ const MultiStageForm = () => {
                                     (prev.penthouseConfig?.length || 0) + 1,
                                   penthouseUnits: "",
                                   penthouseArea: "",
+<<<<<<< HEAD
                                   penthouseBedrooms: "",
+=======
+>>>>>>> Gmap
                                   penthouseFloorPlan: [],
                                   penthouseBathrooms: "",
                                   penthouseBalcony: "",
@@ -3569,7 +4164,10 @@ const MultiStageForm = () => {
             </div>
           )}
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
           {/* Display Cached Data on the Last Stage */}
           {stage === 9 && (
             <div className="mx-auto">
@@ -3652,13 +4250,20 @@ const MultiStageForm = () => {
           )}
         </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Gmap
         <div className="mt-6 flex justify-center gap-4">
           <Button
             onClick={prevStage}
             disabled={stage === 0}
             sx={{
+<<<<<<< HEAD
               color: "yellow", // Set text color to yellow
+=======
+              color: "#FFEB3B", // Set text color to yellow
+>>>>>>> Gmap
               backgroundColor: "transparent", // Remove background color
               "&:hover": {
                 textDecoration: "underline", // Add underline on hover
@@ -3673,7 +4278,11 @@ const MultiStageForm = () => {
               <Button
                 onClick={nextStage}
                 sx={{
+<<<<<<< HEAD
                   color: "yellow", // Set text color to yellow
+=======
+                  color: "#FFEB3B", // Set text color to yellow
+>>>>>>> Gmap
                   backgroundColor: "transparent", // Remove background color
                   "&:hover": {
                     textDecoration: "underline", // Add underline on hover
@@ -3686,7 +4295,11 @@ const MultiStageForm = () => {
             </div>
           ) : (
             <Button
+<<<<<<< HEAD
               onClick={handleSubmit}
+=======
+              onClick={() => console.log("Form Submitted", formData)}
+>>>>>>> Gmap
               sx={{
                 color: "yellow", // Set text color to yellow
                 backgroundColor: "transparent", // Remove background color
@@ -3706,7 +4319,11 @@ const MultiStageForm = () => {
   );
 };
 
+<<<<<<< HEAD
 
 export default MultiStageForm;
 
 
+=======
+export default MultiStageForm;
+>>>>>>> Gmap
