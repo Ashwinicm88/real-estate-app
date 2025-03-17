@@ -1,5 +1,5 @@
 import Header from "../Components/Header";
-import Section2 from "../Components/Section2";
+import Section2 from "../Components/HomeSection2";
 import Realestatediscover from "../Components/Realestatediscover";
 import Services from "../Components/DiscoverServices";
 import SectionEnd from "../Components/SectionEnd";
