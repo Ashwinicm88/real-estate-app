@@ -11,13 +11,13 @@ import {
   Grid,
   FormGroup,
 } from "@mui/material";
-import InputField from "../components/InputField";
-import DropdownField from "../components/DropdownField";
-import DatePicker from "../components/DateController";
-import CheckBox from "../components/CheckBoxControl";
+import InputField from "./InputField";
+import DropdownField from "./DropdownField";
+import DatePicker from "./DateController";
+import CheckBox from "./CheckBoxControl";
 import Header from "./Header";
-import ImageUpload from "../components/ImageUploader";
-import VideoUpload from "../components/VideoUploader";
+import ImageUpload from "./ImageUploader";
+import VideoUpload from "./VideoUploader";
 
 // Step Titles
 const initialSteps = [

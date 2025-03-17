@@ -11,11 +11,11 @@ import {
   // TextField,
   Grid,
 } from "@mui/material";
-import InputField from "../components/InputField";
-import DropdownField from "../components/DropdownField";
+import InputField from "./InputField";
+import DropdownField from "./DropdownField";
 import Header from "./Header";
-import DatePicker from "../components/DateController";
-import CheckBox from "../components/CheckBoxControl";
+import DatePicker from "./DateController";
+import CheckBox from "./CheckBoxControl";
 
 // Step Titles
 const initialSteps = [

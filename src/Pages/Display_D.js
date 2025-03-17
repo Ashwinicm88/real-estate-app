@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import PropertyList from "../components/PropertyList";
-import PropertyFilters from "../components/PropertyFilters";
-import MapComponent from "../components/GoogleMap";
+import PropertyList from "../Components/PropertyList";
+import PropertyFilters from "../Components/PropertyFilters";
+import MapComponent from "../Components/GoogleMap";
 
 const Display_D = () => {
   const [selectedBHK, setSelectedBHK] = useState("");

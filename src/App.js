@@ -38,19 +38,19 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 // import DisplayImages from "./components/DisplayImages";
-import MultipleImageUpload from "./components/MultipleImageUpload";
-import SingleImageDisplay from "./components/SingleImageDisplay";
-import SingleImageUpload from "./components/SingleImageUpload";
+import MultipleImageUpload from "./Components/MultipleImageUpload";
+import SingleImageDisplay from "./Components/SingleImageDisplay";
+import SingleImageUpload from "./Components/SingleImageUpload";
 import Display from "./Pages/Display_D";
-import PropertySearch from "./components/PropertySearch";
-import Project from "./components/ImageSwapper";
+import PropertySearch from "./Components/PropertySearch";
+import Project from "./Components/ImageSwapper";
 import ProjectPriceChart from "./Pages/ProjectPriceChart"; // ✅ Import ProjectPriceChart
-import SinChartdisplay from "./components/SinChart";
-import PriceScatterChart from "./components/PriceScatterChart";
-import PriceBarChart from "./components/PriceBarChart";
-import ScatterChartComponent from "./components/ScatterChartComponent";
-import Organizations from "./components/Organizations";
-import ShowOrganization from "./components/MultiStageForm";
+import SinChartdisplay from "./Components/SinChart";
+import PriceScatterChart from "./Components/PriceScatterChart";
+import PriceBarChart from "./Components/PriceBarChart";
+import ScatterChartComponent from "./Components/ScatterChartComponent";
+import Organizations from "./Components/Organizations";
+import ShowOrganization from "./Components/MultiStageForm";
 import Displayprop from "./Pages/Display";
 
 // import DisplayImages from "./components/DisplayImages";
@@ -60,11 +60,11 @@ import Displayprop from "./Pages/Display";
 
 // import VersionDisplay from "./Pages/Version2_Display";
 // import WingDetails from "./components/wing_details";
-import ShowNeedle from "./components/showneedle"
+import ShowNeedle from "./Components/showneedle"
 import FormDataInput from "./Pages/FormData";
 import RealestateHome from "./Pages/Realestate-Home";
-import PostFormData from "./components/PostwithForm";
-import AllStageData from "./components/AllStageData"
+import PostFormData from "./Components/PostwithForm";
+import AllStageData from "./Components/AllStageData"
 import './App.css';
 
 
@@ -95,6 +95,7 @@ const App = () => {
         <Route path="/post-formdata" element={<PostFormData />}></Route>
         <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
         <Route path="/all-stagedata" element={<AllStageData />}></Route>
+        
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
        <Route path="/displayimages" element={<DisplayImages />}></Route>

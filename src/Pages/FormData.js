@@ -217,9 +217,9 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import InputField from "../components/InputField";
-import DropdownField from "../components/DropdownField";
-import ToggleButton from "../components/ToggleButton";
+import InputField from "../Components/InputField";
+import DropdownField from "../Components/DropdownField";
+import ToggleButton from "../Components/ToggleButton";
 
 const MultiStageForm = () => {
   const [stage, setStage] = useState(1);

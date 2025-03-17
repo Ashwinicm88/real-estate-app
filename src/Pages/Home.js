@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 // import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import YourPreferences from "../components/YourPreferences";
-import ChatResponse from "../components/ChatResponse";
+import Footer from "../Components/Footer";
+import YourPreferences from "../Components/YourPreferences";
+import ChatResponse from "../Components/ChatResponse";
 import useOpenAI from "../hook/useOpenAI";
 // import ImageSlider from "../Components/ImageSlider";
 // import ProjectPriceChart from "./ProjectPriceChart";

@@ -1,38 +1,5 @@
 
-// import React from 'react';
-// import { MenuItem, Select, Typography, FormControl, InputLabel } from '@mui/material';
-
-// const DropdownField = ({ label, section, field, value, onChange, error, options }) => {
-//   const handleDropdownChange = (e) => {
-//     onChange(section, field, e.target.value);
-//   };
-
-//   return (
-//     <div style={{ marginBottom: '1rem' }}>
-//       <FormControl fullWidth variant="standard" error={Boolean(error)}>
-//         <InputLabel sx={{ color: '#F8F8F8' }}>{label}</InputLabel>
-//         <Select
-//           value={value}
-//           onChange={handleDropdownChange}
-//           sx={{
-//             color: '#F8F8F8',
-//             borderBottom: '2px solid #F8F8F8',
-//             '& .MuiSvgIcon-root': { color: '#F8F8F8' } // Ensures dropdown arrow is off-white
-//           }}
-//         >
-//           {options.map((option) => (
-//             <MenuItem key={option.value} value={option.value}>
-//               {option.label}
-//             </MenuItem>
-//           ))}
-//         </Select>
-//       </FormControl>
-//       {error && <Typography color="error">{error}</Typography>}
-//     </div>
-//   );
-// };
-
-// export default DropdownField;
+//Very Important Code for all formdata in this project
 import React from 'react';
 import { MenuItem, Select, Typography, FormControl, InputLabel } from '@mui/material';
 
@@ -90,3 +57,66 @@ const DropdownField = ({ label, section, field, value, onChange, error, options 
 };
 
 export default DropdownField;
+// import React from 'react';
+// import { MenuItem, Select, Typography, FormControl, InputLabel } from '@mui/material';
+
+// const DropdownField = ({ label, section, field, value, onChange, error, options }) => {
+//   const handleDropdownChange = (e) => {
+//     onChange(section, field, e.target.value);
+//   };
+
+//   return (
+//     <div className="w-full overflow-hidden flex justify-center">
+//       <FormControl
+//         variant="standard"
+//         error={Boolean(error)}
+//         sx={{
+//           width: 'fit-content',
+//           minWidth: '200px',
+//         }}
+//       >
+//         <InputLabel sx={{ color: '#9CA3AF', '&.Mui-focused': { color: '#9CA3AF' } }}>
+//           {label}
+//         </InputLabel>
+//         <Select
+//           value={value}
+//           onChange={handleDropdownChange}
+//           sx={{
+//             width: '200px',
+//             color: '#E5E7EB',
+//             borderBottom: '2px solid #E5E7EB',
+//             '&.Mui-focused': { borderBottom: '2px solid #FFFFFF' },
+//             '& .MuiSvgIcon-root': { color: '#E5E7EB' },
+//           }}
+//           MenuProps={{
+//             PaperProps: {
+//               sx: {
+//                 maxHeight: 200,
+//                 width: 200,
+//               },
+//             },
+//           }}
+//         >
+//           {options.map((option) => (
+//             <MenuItem
+//               key={option.value}
+//               value={option.value}
+//               sx={{
+//                 whiteSpace: 'nowrap',
+//                 overflow: 'hidden',
+//                 textOverflow: 'ellipsis',
+//                 maxWidth: '200px',
+//                 '&:hover': { bgcolor: '#1F2937' },
+//               }}
+//             >
+//               {option.label}
+//             </MenuItem>
+//           ))}
+//         </Select>
+//         {error && <Typography variant="caption" sx={{ color: '#d32f2f' }}>{error}</Typography>}
+//       </FormControl>
+//     </div>
+//   );
+// };
+
+// export default DropdownField;

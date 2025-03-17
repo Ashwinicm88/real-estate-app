@@ -21,8 +21,8 @@ import {
   Typography,
   LinearProgress,
 } from "@mui/material";
-import InputField from "../components/InputField"; // Ensure this path is correct
-import DropdownField from "../components/DropdownField"; // Ensure this path is correct
+import InputField from "./InputField"; // Ensure this path is correct
+import DropdownField from "./DropdownField"; // Ensure this path is correct
 import Navbar from "./Navbar";
 
 // Step Titles
