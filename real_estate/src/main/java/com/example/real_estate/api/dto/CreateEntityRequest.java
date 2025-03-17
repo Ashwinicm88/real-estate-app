@@ -54,7 +54,7 @@ public class CreateEntityRequest {
     @JsonProperty("movieTheaters")
     private List<String> movieTheaters;
 
-    @JsonProperty("itParks")
+    @JsonProperty("it_Parks")
     private List<String> itParks;
 
      // Project Details Fields
@@ -74,6 +74,7 @@ public class CreateEntityRequest {
     // BHK Configurations
     @JsonProperty("oneBHKConfig")
     private List<OneBHKConfig> oneBHKConfig;
+    
 
     @JsonProperty("twoBHKConfig")
     private List<TwoBHKConfig> twoBHKConfig;
@@ -93,5 +94,4 @@ public class CreateEntityRequest {
     // New Field: Project Timeline
     @JsonProperty("projectTimeline")
     private List<ProjectTimeLine> projectTimeline;
-
 }

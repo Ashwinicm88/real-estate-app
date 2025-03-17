@@ -42,6 +42,11 @@ public class PenthouseConfig {
     @Min(value = 1, message = "Type number must be greater than 0")
     @Column(name = "type_number")
     private Integer typeNumber;
+
+    @Min(value = 1, message = "Bedrooms must be greater than 0")
+    @NotNull(message = "Bedrooms cannot be null")
+    @Column(name = "penthouse_bedrooms")
+    private Integer penthouseBedrooms;
     /**
      * Number of penthouse units available in this configuration.
      */
@@ -62,16 +67,16 @@ public class PenthouseConfig {
      * Floor plan details for the penthouse unit.
      */
     @JdbcTypeCode(SqlTypes.JSON)// Changed from columnDefinition = "TEXT"
-    @Column(name = "penthouse_floor_plan",columnDefinition = "JSONB")
-    private List<String> penthouseFloorPlan;
+    @Column(name = "penthouse_floor_plan")
+    private List<String> penthouseFloorPlan=new ArrayList<>();
 
     /**
      * Image URLs for the penthouse unit.
      */
     // Changed from columnDefinition = "TEXT"
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "penthouse_images",columnDefinition = "JSONB")
-    private List<String> penthouseImages;
+    @Column(name = "penthouse_images")
+    private List<String> penthouseImages=new ArrayList<>();
 
     /**
      * Number of bathrooms in the penthouse unit.

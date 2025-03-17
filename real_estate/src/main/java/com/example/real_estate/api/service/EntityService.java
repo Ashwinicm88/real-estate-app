@@ -3,20 +3,31 @@ package com.example.real_estate.api.service;
 
 import com.example.real_estate.api.model.*;
 import com.example.real_estate.api.repository.*;
+import com.example.real_estate.api.config.CorsConfig;
 import com.example.real_estate.api.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+// import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+// import com.example.real_estate.api.service.FileUploadService;
+import com.example.real_estate.api.service.FileStorageService;
 import jakarta.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+// import org.springframework.web.multipart.MultipartFile;
+
 @Service
 @Transactional // ✅ Apply at the class level to ensure consistency
-
 public class EntityService {
+    @Autowired
+    private final WebMvcConfigurer corsConfigurer;
+
+    private final FileStorageService fileStorageService;
+
+    private final CorsConfig corsConfig;
 
     @Autowired
     private OrganisationRepository organisationRepository;
@@ -48,13 +59,28 @@ public class EntityService {
     @Autowired
     private ProjectTimeLineRepository projectTimeLineRepository;
 
+    @Autowired
+    // private FileStorageService fileStorageService
+
     // @Autowired
     // private EntityQueryService entityQueryService; // Inject EntityQueryService
 
-    private final ObjectMapper objectMapper = new ObjectMapper(); // JSON converter
-
-    public void createEntity(CreateEntityRequest request) {
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
+   public EntityService(CorsConfig corsConfig, FileStorageService fileStorageService, WebMvcConfigurer corsConfigurer) {
+        this.corsConfig = corsConfig;
+        this.fileStorageService = fileStorageService;
+        this.corsConfigurer = corsConfigurer;
+    } // JSON converter
+// public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls,Map<Integer, List<String>> twoBHKType2ImageUrls, 
+// Map<Integer, List<String>> twoBHKType2FloorPlanUrls,Map<Integer,List<String>>threeBHKTy ) throws JsonProcessingException{
+    public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls, Map<Integer, List<String>> twoBHKType2ImageUrls, 
+    Map<Integer, List<String>> twoBHKType2FloorPlanUrls,
+    Map<Integer, List<String>> threeBHKType3ImageUrls, 
+    Map<Integer, List<String>> threeBHKType3FloorPlanUrls,
+    Map<Integer, List<String>> fourBHKType4ImageUrls, Map<Integer, List<String>> fourBHKType4FloorPlanUrls,
+    Map<Integer,List<String>>fiveBHKType5ImageUrls,Map<Integer,List<String>>fiveBHKType5FloorPlanUrls,
+    Map<Integer,List<String>>penthouseTypeImageUrls,Map<Integer,List<String>>penthouseTypeFloorPlanUrls) throws JsonProcessingException {
+        CreateEntityRequest request= objectMapper.readValue(jsonData, CreateEntityRequest.class);
        System.out.println("Received Request: " + request);
         // ✅ Save Organisation
         Organisation organisation = new Organisation(
@@ -86,8 +112,11 @@ public class EntityService {
                 request.getPropertyAreaSqmt()!=null ? request.getPropertyAreaSqmt().intValue():0, // Ensure Integer type
                 request.getReraNumber(),
                 request.getReraLink(),
-                request.getProjectVideoLink(),
-                request.getProjectImages(),
+                videoUrl,
+                imageUrls,
+                // request.getProjectVideoLink(),
+                // new ArrayList<>(),
+                // request.getProjectImages(),
                 schools,
                 hospitals,
                 malls,
@@ -97,6 +126,10 @@ public class EntityService {
         );
 
         project = projectRepository.save(project);
+       // ✅ Upload Images and Update the Project
+// List<String> projectImageUrls = fileUploadService.uploadFiles(request.getProjectImages()); // Make sure request.getProjectImages() is a List<MultipartFile>
+// project.setProjectImages(projectImageUrls);
+        
         System.out.println("✅ Project Saved with ID: " + project.getProjectId());
 
         // ✅ Save ProjectDetails
@@ -121,15 +154,39 @@ public class EntityService {
 
 
         if (request.getOneBHKConfig() != null && !request.getOneBHKConfig().isEmpty()) {
+            // int index=0; //track file index
             for (OneBHKConfig config : request.getOneBHKConfig()) {
                 if (config != null) { // Additional null check for safety
                     OneBHKConfig entity = new OneBHKConfig();
                     entity.setProject(project);
                     entity.setTypeNumber(config.getTypeNumber()); // Allows multiple types for 1BHK
+                    // entity.setType1Bedrooms(config.getType1Bedrooms());
                     entity.setType1Units(config.getType1Units());
                     entity.setType1Area(config.getType1Area());
-                    entity.setType1FloorPlan(config.getType1FloorPlan() != null ? config.getType1FloorPlan() : new ArrayList<>());
-                    entity.setType1Images(config.getType1Images() != null ? config.getType1Images() : new ArrayList<>());
+                   /// ✅ Fetch images based on typeNumber (handling null cases)
+            List<String> OneBHKimageUrls = oneBHKType1ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            entity.setType1Images(OneBHKimageUrls);
+
+            // ✅ Fetch floor plans based on typeNumber (handling null cases)
+            List<String> floorPlanUrls = oneBHKType1FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            entity.setType1FloorPlan(floorPlanUrls);
+                //    entity.setType1Images(new ArrayList<>(oneBHKType1ImageUrls.get(index)));
+                //    entity.setType1FloorPlan(new ArrayList<>(oneBHKType1FloorPlanUrls));
+
+                     // Upload and store image URLs
+                // List<String> uploadedType1Images = new ArrayList<>();
+                // if (type1Images != null && index < type1Images.size()) {
+                //     uploadedType1Images.add(fileUploadService.uploadFile(type1Images.get(index)));
+                // }
+                // entity.setType1Images(uploadedType1Images);
+
+                // List<String> uploadedType1FloorPlans = new ArrayList<>();
+                // if (type1FloorPlan != null && index < type1FloorPlan.size()) {
+                //     uploadedType1FloorPlans.add(fileUploadService.uploadFile(type1FloorPlan.get(index)));
+                // }
+                // entity.setType1FloorPlan(uploadedType1FloorPlans);
+                    // entity.setType1FloorPlan(config.getType1FloorPlan() != null ? config.getType1FloorPlan() : new ArrayList<>());
+                    // entity.setType1Images(config.getType1Images() != null ? config.getType1Images() : new ArrayList<>());
                     entity.setType1Bathrooms(config.getType1Bathrooms());
                     entity.setType1Balcony(config.getType1Balcony());
                     entity.setType1Parking(config.getType1Parking());
@@ -142,6 +199,7 @@ public class EntityService {
                     // Save to database only if it's valid
                     entity = oneBHKConfigRepository.save(entity);
                     System.out.println("✅ One BHK Config Saved with ID: " + entity.getOneBhkConfigId()); 
+                    // index++;
                 }
             }
         } else {
@@ -154,16 +212,24 @@ public class EntityService {
                     TwoBHKConfig twobhk = new TwoBHKConfig();
                     twobhk.setProject(project);
                     twobhk.setTypeNumber(config.getTypeNumber()); // Allows multiple types for 2BHK
+                    twobhk.setType2Bedrooms(config.getType2Bedrooms());
                     twobhk.setType2Units(config.getType2Units());
                     twobhk.setType2Area(config.getType2Area());
-                    twobhk.setType2FloorPlan(config.getType2FloorPlan() != null ? config.getType2FloorPlan() : new ArrayList<>());
-                    twobhk.setType2Images(config.getType2Images() != null ? config.getType2Images() : new ArrayList<>());
+                    List<String> TwoBHKimageUrls = twoBHKType2ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+                    twobhk.setType2Images(TwoBHKimageUrls);
+
+            // ✅ Fetch floor plans based on typeNumber (handling null cases)
+                    List<String> floorPlanUrls = twoBHKType2FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+                    twobhk.setType2FloorPlan(floorPlanUrls);
+                    // twobhk.setType2FloorPlan(config.getType2FloorPlan() != null ? config.getType2FloorPlan() : new ArrayList<>());
+                    // twobhk.setType2Images(config.getType2Images() != null ? config.getType2Images() : new ArrayList<>());
                     twobhk.setType2Bathrooms(config.getType2Bathrooms());
                     twobhk.setType2Balcony(config.getType2Balcony());
                     twobhk.setType2Parking(config.getType2Parking());
                     twobhk.setHallArea(config.getHallArea());
                     twobhk.setKitchenArea(config.getKitchenArea());
                     twobhk.setBedroom1Area(config.getBedroom1Area());
+                    twobhk.setBedroom2Area(config.getBedroom2Area());
                     twobhk.setBathroom1Area(config.getBathroom1Area());
                     twobhk.setBathroom2Area(config.getBathroom2Area()); // This line was duplicated, now fixed
         
@@ -184,19 +250,27 @@ if (request.getThreeBHKConfig() != null && !request.getThreeBHKConfig().isEmpty(
             ThreeBHKConfig threebhk = new ThreeBHKConfig();
             threebhk.setProject(project);
             threebhk.setTypeNumber(config.getTypeNumber());
+            threebhk.setType3Bedrooms(config.getType3Bedrooms());
             threebhk.setType3Units(config.getType3Units());
             threebhk.setType3Area(config.getType3Area());
-            threebhk.setType3FloorPlan(config.getType3FloorPlan() != null ? config.getType3FloorPlan() : new ArrayList<>());
-            threebhk.setType3Images(config.getType3Images() != null ? config.getType3Images() : new ArrayList<>());
+            // threebhk.setType3FloorPlan(config.getType3FloorPlan() != null ? config.getType3FloorPlan() : new ArrayList<>());
+            // threebhk.setType3Images(config.getType3Images() != null ? config.getType3Images() : new ArrayList<>());
+            List<String> threeBHKImageUrls = threeBHKType3ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            threebhk.setType3Images(threeBHKImageUrls);
+
+            List<String> floorPlanUrls = threeBHKType3FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            threebhk.setType3FloorPlan(floorPlanUrls);
             threebhk.setType3Bathrooms(config.getType3Bathrooms());
             threebhk.setType3Balcony(config.getType3Balcony());
             threebhk.setType3Parking(config.getType3Parking());
             threebhk.setHallArea(config.getHallArea());
             threebhk.setKitchenArea(config.getKitchenArea());
             threebhk.setBedroom1Area(config.getBedroom1Area());
+            threebhk.setBedroom2Area(config.getBedroom2Area());
+            threebhk.setBedroom3Area(config.getBedroom3Area());
             threebhk.setBathroom1Area(config.getBathroom1Area());
             threebhk.setBathroom2Area(config.getBathroom2Area());
-
+            threebhk.setBathroom3Area(config.getBathroom3Area());
             threebhk = threeBHKConfigRepository.save(threebhk);
             System.out.println("✅ Three BHK Config Saved with ID: " + threebhk.getThreeBhkConfigId());
         }
@@ -212,10 +286,16 @@ if (request.getFourBHKConfig() != null && !request.getFourBHKConfig().isEmpty())
             FourBHKConfig fourbhk = new FourBHKConfig();
             fourbhk.setProject(project);
             fourbhk.setTypeNumber(config.getTypeNumber());
+            fourbhk.setType4Bedrooms(config.getType4Bedrooms());
             fourbhk.setType4Units(config.getType4Units());
             fourbhk.setType4Area(config.getType4Area());
-            fourbhk.setType4FloorPlan(config.getType4FloorPlan() != null ? config.getType4FloorPlan() : new ArrayList<>());
-            fourbhk.setType4Images(config.getType4Images() != null ? config.getType4Images() : new ArrayList<>());
+            List<String> fourBHKImageUrls = fourBHKType4ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            fourbhk.setType4Images(fourBHKImageUrls);
+
+            List<String> floorPlanUrls = fourBHKType4FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            fourbhk.setType4FloorPlan(floorPlanUrls);
+            // fourbhk.setType4FloorPlan(config.getType4FloorPlan() != null ? config.getType4FloorPlan() : new ArrayList<>());
+            // fourbhk.setType4Images(config.getType4Images() != null ? config.getType4Images() : new ArrayList<>());
             fourbhk.setType4Bathrooms(config.getType4Bathrooms());
             fourbhk.setType4Balcony(config.getType4Balcony());
             fourbhk.setType4Parking(config.getType4Parking());
@@ -247,10 +327,16 @@ if (request.getFiveBHKConfig() != null && !request.getFiveBHKConfig().isEmpty())
             FiveBHKConfig fivebhk = new FiveBHKConfig();
             fivebhk.setProject(project);
             fivebhk.setTypeNumber(config.getTypeNumber());
+            fivebhk.setType5Bedrooms(config.getType5Bedrooms());
             fivebhk.setType5Units(config.getType5Units());
             fivebhk.setType5Area(config.getType5Area());
-            fivebhk.setType5FloorPlan(config.getType5FloorPlan() != null ? config.getType5FloorPlan() : new ArrayList<>());
-            fivebhk.setType5Images(config.getType5Images() != null ? config.getType5Images() : new ArrayList<>());
+            List<String> fiveBHKImageUrls = fiveBHKType5ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            fivebhk.setType5Images(fiveBHKImageUrls);
+
+            List<String> floorPlanUrls = fiveBHKType5FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            fivebhk.setType5FloorPlan(floorPlanUrls);
+            // fivebhk.setType5FloorPlan(config.getType5FloorPlan() != null ? config.getType5FloorPlan() : new ArrayList<>());
+            // fivebhk.setType5Images(config.getType5Images() != null ? config.getType5Images() : new ArrayList<>());
             fivebhk.setType5Bathrooms(config.getType5Bathrooms());
             fivebhk.setType5Balcony(config.getType5Balcony());
             fivebhk.setType5Parking(config.getType5Parking());
@@ -282,10 +368,17 @@ if (request.getPenthouseConfig() != null && !request.getPenthouseConfig().isEmpt
             PenthouseConfig ph = new PenthouseConfig();
             ph.setProject(project);
             ph.setTypeNumber(config.getTypeNumber());
+            ph.setPenthouseBedrooms(config.getPenthouseBedrooms());
             ph.setPenthouseUnits(config.getPenthouseUnits());
             ph.setPenthouseArea(config.getPenthouseArea());
-            ph.setPenthouseFloorPlan(config.getPenthouseFloorPlan() != null ? config.getPenthouseFloorPlan() : new ArrayList<>());
-            ph.setPenthouseImages(config.getPenthouseImages() != null ? config.getPenthouseImages() : new ArrayList<>());
+
+            List<String> penthouseImageUrls = penthouseTypeImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            ph.setPenthouseImages(penthouseImageUrls);
+
+            List<String> floorPlanUrls = penthouseTypeFloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
+            ph.setPenthouseFloorPlan(floorPlanUrls);
+            // ph.setPenthouseFloorPlan(config.getPenthouseFloorPlan() != null ? config.getPenthouseFloorPlan() : new ArrayList<>());
+            // ph.setPenthouseImages(config.getPenthouseImages() != null ? config.getPenthouseImages() : new ArrayList<>());
             ph.setPenthouseBathrooms(config.getPenthouseBathrooms());
             ph.setPenthouseBalcony(config.getPenthouseBalcony());
             ph.setPenthouseParking(config.getPenthouseParking());
@@ -335,7 +428,9 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
 } else {
     System.out.println("❌ No Project Timeline found. Skipping save.");
 }
-
+// catch(JsonProcessingException e){
+//     throw new RuntimeException("Failed to to parse JSON",e);
+// }
 }
     public List<GetEntityResponse> getAllEntities() {
         List<Organisation> organisations = organisationRepository.findAll();

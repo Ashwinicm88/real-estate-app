@@ -8,6 +8,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.util.*;
 
+// import org.hibernate.annotations.JdbcType;
+
 @Entity
 @Table(name = "projects")
 @Getter
@@ -75,9 +77,11 @@ public class Project {
     @Column(name = "projectvideolink", length = 255)
     private String projectVideoLink;
 
+    // @JdbcTypeCode(SqlTypes.JSON)
+    
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "projectimages", columnDefinition = "JSONB")
-    private List<String> projectImages;
+    @Column(name = "projectimages")
+    private List<String> projectImages=new ArrayList<>();
 
     @Column(name = "schools", columnDefinition = "TEXT")
     // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")

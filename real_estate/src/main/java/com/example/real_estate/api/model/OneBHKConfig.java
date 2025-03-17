@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.util.*;
+
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+// import org.hibernate.annotations.JdbcTypeCode;
+// import org.hibernate.type.SqlTypes;
 /**
  * Represents the configuration details for 1BHK units in a real estate project.
  * This entity is linked to the {@link Project} entity.
@@ -62,9 +65,10 @@ public class OneBHKConfig {
      * Floor plan details for the 1BHK unit.
      */
      // Alternative for TEXT fields
+    // @JdbcTypeCode(SqlTypes.JSON)
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "type_1_floor_plan",columnDefinition = "JSONB")
-    private List<String> type1FloorPlan;
+    @Column(name = "type_1_floor_plan")
+    private List<String> type1FloorPlan=new ArrayList<>();
 
     /**
      * Image URLs for the 1BHK unit.
@@ -73,8 +77,8 @@ public class OneBHKConfig {
     // ✅ Use JSONB for images
     // @Convert(converter = StringListConverter.class)
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "type_1_images", columnDefinition = "JSONB")
-    private List<String> type1Images;
+    @Column(name = "type_1_images")
+    private List<String> type1Images=new ArrayList<>();
 
 
     /**

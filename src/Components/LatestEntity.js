@@ -16,9 +16,6 @@ import {
   Apartment,
   PhotoLibrary,
   LocalHotel,
-  LocalHospital,
-  LocalMall,
-  Movie,
   KingBed,
 } from "@mui/icons-material";
 import { Swiper, SwiperSlide } from "swiper/react";

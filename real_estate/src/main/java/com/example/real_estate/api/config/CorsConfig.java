@@ -13,7 +13,7 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {  // ✅ Add @NonNull
-                registry.addMapping("/api/**")
+                registry.addMapping("/**")
                         .allowedOrigins("http://localhost:3000") // ✅ Allow frontend
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")

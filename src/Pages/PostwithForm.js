@@ -132,8 +132,6 @@ const validationSchema = yup.object().shape({
         ),
       Images: yup
         .array()
-
-
         .of(
           yup
             .mixed()
@@ -200,8 +198,7 @@ const validationSchema = yup.object().shape({
       .required("Price Min is required")
       .typeError("Price Min must be a number")
       .min(0, "Price Min cannot be negative"),
-
-
+      
     pricemax: yup
       .number()
       .typeError("Price Max must be a number")
@@ -1374,25 +1371,60 @@ const handleSubmit = async () => {
         //     bathroom1Area: config.bathroom1Area || "",
         //     bathroom2Area: config.bathroom2Area || ""
         // })) || [],
-        oneBHKConfig: Array.isArray(formData.oneBHKConfig)
-  ? formData.oneBHKConfig.map(config => ({
-      typeNumber: config.typeNumber || 0,
-      type1Units: Number(config.type1Units) || 0,
-      type1Area: Number(config.type1Area) || 0,
-      type1FloorPlan: typeof config.type1FloorPlan === "string" ? config.type1FloorPlan.split(",") : [],
-      type1Images: typeof config.type1Images === "string" ? config.type1Images.split(",") : [],
-      type1Bathrooms: Number(config.type1Bathrooms) || 0,
-      type1Balcony: Number(config.type1Balcony) || 0,
-      type1Parking: Number(config.type1Parking) || 0,
-      hallArea: config.hallArea || "",
-      kitchenArea: config.kitchenArea || "",
-      bedroom1Area: config.bedroom1Area || "",
-      bathroom1Area: config.bathroom1Area || "",
-      bathroom2Area: config.bathroom2Area || ""
-    }))
+  //       oneBHKConfig: Array.isArray(formData?.oneBHKConfig) 
+  // ? formData.oneBHKConfig.map(config => ({
+  //     typeNumber: Number(config?.typeNumber) > 0 ? Number(config.typeNumber) : null,  // Ensures valid typeNumber
+  //     type1Units: Number(config?.type1Units) > 0 ? Number(config.type1Units) : null,  // Must be > 0
+  //     type1Area: Number(config?.type1Area) > 0 ? Number(config.type1Area) : null,  // Must be > 0
+  //     type1FloorPlan: typeof config?.type1FloorPlan === "string" ? config.type1FloorPlan.split(",") : [],
+  //     type1Images: typeof config?.type1Images === "string" ? config.type1Images.split(",") : [],
+  //     type1Bathrooms: Number(config?.type1Bathrooms) >= 0 ? Number(config.type1Bathrooms) : 0,
+  //     type1Balcony: Number(config?.type1Balcony) >= 0 ? Number(config.type1Balcony) : 0,
+  //     type1Parking: Number(config?.type1Parking) >= 0 ? Number(config.type1Parking) : 0,
+  //     hallArea: config?.hallArea || "",
+  //     kitchenArea: config?.kitchenArea || "",
+  //     bedroom1Area: config?.bedroom1Area || "",
+  //     bathroom1Area: config?.bathroom1Area || "",
+  //     bathroom2Area: config?.bathroom2Area || ""
+  //   }))
+  // : []
+
+
+  oneBHKConfig: formData?.enableconfig
+  ? [
+      {
+        typeNumber: 1, 
+        type1Units: Number(formData?.type1Units) > 0 ? Number(formData?.type1Units) : null,  
+        type1Area: Number(formData?.type1BedroomArea) + Number(formData?.type1HallArea) + Number(formData?.type1KitchenArea) || null,  
+        type1FloorPlan: Array.isArray(formData?.type1floorplan) ? formData.type1floorplan : [],  
+        type1Images: Array.isArray(formData?.type1images) ? formData.type1images : [],  
+        type1Bathrooms: Number(formData?.type1bathrooms) || 0,  
+        type1Balcony: Number(formData?.type1balcony) || 0,  
+        type1Parking: Number(formData?.type1parking) || 0,  
+        hallArea: formData?.type1HallArea || "",  
+        kitchenArea: formData?.type1KitchenArea || "",  
+        bedroom1Area: formData?.type1BedroomArea || "",  
+        bathroom1Area: formData?.type1bathroom1 || "",  
+        bathroom2Area: formData?.type1bathroom2 || ""  
+      },
+      {
+        typeNumber: 2, 
+        type1Units: Number(formData?.type2Units) > 0 ? Number(formData?.type2Units) : null,  
+        type1Area: Number(formData?.type2BedroomArea) + Number(formData?.type2HallArea) + Number(formData?.type2KitchenArea) || null,  
+        type1FloorPlan: Array.isArray(formData?.type2floorplan) ? formData.type2floorplan : [],  
+        type1Images: Array.isArray(formData?.type2images) ? formData.type2images : [],  
+        type1Bathrooms: Number(formData?.type2bathrooms) || 0,  
+        type1Balcony: Number(formData?.type2balcony) || 0,  
+        type1Parking: Number(formData?.type2parking) || 0,  
+        hallArea: formData?.type2HallArea || "",  
+        kitchenArea: formData?.type2KitchenArea || "",  
+        bedroom1Area: formData?.type2BedroomArea || "",  
+        bathroom1Area: formData?.type2bathroom1 || "",  
+        bathroom2Area: formData?.type2bathroom2 || ""  
+      }
+    ]
   : [],
 
-    
         // penthouseConfig: formData.penthouseConfig?.map(config => ({
         //     typeNumber: config.typeNumber || 0,
         //     penthouseUnits: Number(config.penthouseUnits) || 0,

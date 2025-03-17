@@ -12,6 +12,5 @@ import com.example.real_estate.api.model.ProjectTimeLine;
 @Repository
 public interface  ProjectTimeLineRepository extends JpaRepository<ProjectTimeLine,Integer > {
 List<ProjectTimeLine> findByProject(Project project);
-
 }
 

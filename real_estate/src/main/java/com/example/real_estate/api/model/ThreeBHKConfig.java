@@ -44,6 +44,9 @@ public class ThreeBHKConfig {
     @Column(name = "type_number")
     private Integer typeNumber;
 
+    @Min(value = 1, message = "Bedrooms must be greater than 0")
+    @Column(name = "type_3_bedrooms")
+    private Integer type3Bedrooms;
     /**
      * Number of units available for this 3BHK configuration.
      */

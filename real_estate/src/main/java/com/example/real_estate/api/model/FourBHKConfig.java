@@ -40,6 +40,11 @@ public class FourBHKConfig {
     @Min(value = 1, message = "Type number must be greater than 0")
     @Column(name = "type_number")
     private Integer typeNumber;
+
+    @NotNull(message = "Bedrooms cannot be null")
+    @Min(value = 1, message = "Bedrooms must be greater than 0")
+    @Column(name = "type_4_bedrooms")
+    private Integer type4Bedrooms;
     /**
      * Number of units available for this 4BHK configuration.
      */

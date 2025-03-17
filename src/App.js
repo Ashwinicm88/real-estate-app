@@ -31,6 +31,7 @@ import LatestEntity from "./Components/LatestEntity";
 import "./App.css";
 import DisplayProperty from "./Pages/DisplayProperty";
 import PostwithForm from "./Pages/PostwithForm";
+import AllStageData from "./Components/AllStageData";
 
 
 const App = () => {
@@ -63,6 +64,7 @@ const App = () => {
       <Route path="/latest-entity" element={<LatestEntity />}></Route>
       <Route path="/display-property" element={<DisplayProperty />}></Route>
       <Route path="/post-with-form" element={<PostwithForm/>}></Route>
+      <Route path="all-stage-data" element={<AllStageData />}></Route>
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
        <Route path="/displayimages" element={<DisplayImages />}></Route>

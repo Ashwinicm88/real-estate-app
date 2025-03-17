@@ -41,6 +41,11 @@ public class FiveBHKConfig {
     @Column(name = "type_number")
     private Integer typeNumber;
 
+    @NotNull(message = "Bedrooms cannot be null")
+    @Min(value = 1, message = "Bedrooms must be greater than 0")
+    @Column(name = "type_5_bedrooms")
+    private Integer type5Bedrooms;
+
     /**
      * Number of units available for this 5BHK configuration.
      */
