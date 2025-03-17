@@ -549,7 +549,7 @@ const validationSchema = yup.object().shape({
       .typeError("Kitchen Area must be a number")
       .required("Kitchen Area is required")
       .positive("Kitchen Area must be positive"),
-
+ 
     // Dynamic bedroom areas (bedroom1Area to bedroom6Area)
     ...Array.from({ length: 6 }, (_, i) => i + 1).reduce((acc, num) => {
       acc[`bedroom${num}Area`] = yup
@@ -825,12 +825,15 @@ const MultiStageForm = () => {
     setFormData((prev) => {
       const updatedData = { ...prev };
 
+
       // Handle Arrays (like oneBHKConfig[0])
       const arrayMatch = section.match(/^(\w+)\[(\d+)\]$/);
+
 
       if (arrayMatch) {
         const [, arrayName, index] = arrayMatch;
         const arrayIndex = Number(index);
+
 
         updatedData[arrayName] = updatedData[arrayName] || [];
         updatedData[arrayName][arrayIndex] = {
@@ -847,10 +850,13 @@ const MultiStageForm = () => {
         };
       }
 
+
       console.log("✅ Updated Form Data: ", updatedData);
+
 
       // Trigger validation (if required)
       validateField(section, field, value, updatedData);
+
 
       return updatedData;
     });
@@ -975,21 +981,22 @@ const MultiStageForm = () => {
         }, obj);
       };
 
-      // Validate all fields
-      const validations = currentFields.flatMap((field) => {
-        if (field.includes("[]")) {
-          const [arrayName, property] = field.replace("[]", "").split(".");
-          const arrayData = safeAccess(formData, arrayName) || [];
+     // Validate all fields
+     const validations = currentFields.flatMap((field) => {
+      if (field.includes("[]")) {
+        const [arrayName, property] = field.replace("[]", "").split(".");
+        const arrayData = safeAccess(formData, arrayName) || [];
 
-          return arrayData.map((item) =>
-            validateField(arrayName, property, item?.[property], formData)
-          );
-        } else {
-          const [section, key] = field.split(".");
-          const value = safeAccess(formData, field);
-          return [validateField(section, key, value, formData)];
-        }
-      });
+
+        return arrayData.map((item) =>
+          validateField(arrayName, property, item?.[property], formData)
+        );
+      } else {
+        const [section, key] = field.split(".");
+        const value = safeAccess(formData, field);
+        return [validateField(section, key, value, formData)];
+      }
+    });
 
       // Wait for all validations and allow navigation
       const validationResults = await Promise.all(validations);
@@ -1103,7 +1110,7 @@ const MultiStageForm = () => {
           }
           break;
 
-        case 3: // Stage 3 (One BHK Config)
+          case 3: // Stage 3 (One BHK Config)
           if (proceedToTwoBHK) {
             setStage(4); // Move to Two BHK Config (Stage 4)
           } else if (proceedToThreeBHK) {
@@ -1155,6 +1162,7 @@ const MultiStageForm = () => {
           }
           break;
 
+
         case 7: // Stage 7 (Five BHK Config)
           if (proceedToPentHouse) {
             setStage(8); // Move to Penthouse Config (Stage 8)
@@ -1163,9 +1171,11 @@ const MultiStageForm = () => {
           }
           break;
 
+
         case 8: // Stage 8 (Penthouse Config)
           setStage(9); // Move to Review Data (Stage 9)
           break;
+
 
         default: // Handle unknown stages or linear progression
           if (stage < initialSteps.length - 1) {
@@ -1177,6 +1187,7 @@ const MultiStageForm = () => {
       console.error("🚨 Error in nextStage: ", error);
     }
   };
+
 
   const prevStage = () => {
     if (stage > 0) setStage(stage - 1);
@@ -2100,7 +2111,7 @@ const MultiStageForm = () => {
                     />
 
                     {/* Bedroom 1 */}
-                    <InputField
+ <InputField
                       label="Bedroom 1 Area"
                       section={`threeBHKConfig[${index}]`}
                       field="type3Bedroom1"
@@ -2140,7 +2151,7 @@ const MultiStageForm = () => {
                     />
 
                     {/* Kitchen Area */}
-                    <InputField
+ <InputField
                       label="Kitchen Area"
                       section={`threeBHKConfig[${index}]`}
                       field="type3KitchenArea"
@@ -2190,7 +2201,7 @@ const MultiStageForm = () => {
                     />
 
                     {/* Balcony */}
-                    <InputField
+ <InputField
                       label="Balcony Availability"
                       section={`threeBHKConfig[${index}]`}
                       field="type3balcony"
@@ -3181,7 +3192,7 @@ const MultiStageForm = () => {
             </div>
           ) : (
             <Button
-              onClick={() => console.log("Form Submitted", formData)}
+            onClick={() => console.log("Form Submitted", formData)}
               sx={{
                 color: "yellow", // Set text color to yellow
                 backgroundColor: "transparent", // Remove background color
@@ -3201,4 +3212,7 @@ const MultiStageForm = () => {
   );
 };
 
+
 export default MultiStageForm;
+
+
