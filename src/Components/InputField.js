@@ -46,45 +46,6 @@
 // export default InputField;
 import React from 'react';
 import { TextField } from '@mui/material';
-<<<<<<< HEAD
- 
- 
-const InputField = ({ label, section, field, value, onChange, error, type = 'text', maxLength }) => {
-  const handleInputChange = (e) => {
-    let newValue = e.target.value;
- 
- 
-    // Allow only integers
-    if (type === 'integer' && newValue !== '' && !/^\d+$/.test(newValue)) return;
- 
- 
-    // Allow only floats
-    if (type === 'float' && newValue !== '' && !/^\d*\.?\d*$/.test(newValue)) return;
- 
- 
-    // Handle maxLength
-    if (maxLength && newValue.length > maxLength) return;
- 
- 
-    // Ensure numbers are sent as undefined when empty
-    if ((type === 'integer' || type === 'float') && newValue === '') {
-      newValue = undefined;
-    }
- 
- 
-    // Trigger validation only for this field
-    onChange(section, field, newValue);
-  };
- 
- 
-  return (
-    <div className="mb-1">
-      <TextField
-        className='w-3/4'
-        label={label}
-        variant="standard"
-        value={value ?? ""}
-=======
 
 
 const InputField = ({ label, section, field, value, onChange, error, type = 'text', maxLength }) => {
@@ -104,7 +65,6 @@ const InputField = ({ label, section, field, value, onChange, error, type = 'tex
         label={label}
         variant="standard"
         value={value || ""}
->>>>>>> Gmap
         onChange={handleInputChange}
         error={Boolean(error)}
         helperText={error || ''}
@@ -126,11 +86,6 @@ const InputField = ({ label, section, field, value, onChange, error, type = 'tex
     </div>
   );
 };
-<<<<<<< HEAD
- 
- 
-export default InputField;
-=======
 
 
 export default InputField;
@@ -188,4 +143,3 @@ export default InputField;
 // });
 
 // export default InputField;
->>>>>>> Gmap

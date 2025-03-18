@@ -1,15 +1,9 @@
 
-<<<<<<< HEAD
 
  
 import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import DemoNavbar from "../Components/Navbar";
-=======
-import React, { useEffect, useState } from "react";
-import Lottie from "lottie-react";
-// import Navbar from "../components/Navbar";
->>>>>>> Gmap
 import Footer from "../Components/Footer";
 import YourPreferences from "../Components/YourPreferences";
 import ChatResponse from "../Components/ChatResponse";
@@ -20,22 +14,13 @@ import useOpenAI from "../hook/useOpenAI";
  import SidebarMenu from "../Components/SidebarMenu";
 // Import Material-UI Icons
 // import MenuIcon from "@mui/icons-material/Menu";
-<<<<<<< HEAD
  
-=======
-
->>>>>>> Gmap
 const Home = () => {
   const [showFirstPage, setShowFirstPage] = useState(true);
   const [animationData, setAnimationData] = useState(null);
   const { fetchAIResponse, preferences } = useOpenAI();
-<<<<<<< HEAD
   const [menuOpen, setMenuOpen] = useState(false); // State for sidebar visibility
  
-=======
-  //const [menuOpen, setMenuOpen] = useState(false); // State for sidebar visibility
-
->>>>>>> Gmap
   useEffect(() => {
     fetch("/assets/CatAnimation.json")
       .then((response) => response.json())
@@ -54,13 +39,8 @@ const Home = () => {
   return (
     <div className="bg-black min-h-screen text-white flex flex-col">
       {/* Navbar at the top */}
-<<<<<<< HEAD
       <DemoNavbar />
  
-=======
-      {/* <Navbar /> */}
-
->>>>>>> Gmap
       {showFirstPage ? (
         <main className="flex flex-col items-center justify-center flex-grow text-center">
           <h1 className="text-2xl sm:text-4xl text-yellow-400 font-bold">
@@ -71,13 +51,8 @@ const Home = () => {
       ) : (
         <main className="flex flex-grow relative">
           {/* Sidebar (Positioned under Navbar, above Footer) */}
-<<<<<<< HEAD
           <SidebarMenu isOpen={menuOpen} toggleSidebar={() => setMenuOpen(!menuOpen)} />
  
-=======
-          {/* <SidebarMenu isOpen={menuOpen} toggleSidebar={() => setMenuOpen(!menuOpen)} /> */}
-
->>>>>>> Gmap
           {/* Main Content Area */}
           <div className="flex flex-col flex-grow p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">

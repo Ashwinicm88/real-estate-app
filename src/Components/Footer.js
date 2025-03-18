@@ -1,10 +1,6 @@
 
 import React from "react";
-<<<<<<< HEAD
 import { WhatsApp, Facebook, Instagram } from "@mui/icons-material";
-=======
-import {  Facebook, Instagram,WhatsApp } from "@mui/icons-material";
->>>>>>> Gmap
  
 const DemoFooter = () => {
   return (

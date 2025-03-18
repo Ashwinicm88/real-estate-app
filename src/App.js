@@ -1,40 +1,3 @@
-// import Home from "./Pages/Home";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import React from "react";
-// import DisplayImages from "./components/DisplayImages";
-// import MultipleImageUpload from "./components/MultipleImageUpload";
-// import SingleImageDisplay from "./components/SingleImageDisplay";
-// import SingleImageUpload from "./components/SingleImageUpload";
-// import Display from "./Pages/Display_D";
-// import PropertySearch from "./components/PropertySearch";
-// import Project from "./components/ImageSwapper";
-// // import ImageSlider from "./components/ImageSlider";
-// // import ImageSlider from "./components/ImageSlider";
-// // import ProjectPriceChart from "./Pages/ProjectPriceChart";
-// const App = () => {
-
-//   return (
-//     <Router>
-//       <Routes>
-//        <Route path="/" element={<Home />}></Route>
-//        <Route path="/Display" element={<Display />}></Route>
-//        <Route path="/DisplayImages" element={<DisplayImages />}></Route>
-//        <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
-//        <Route path="/single-upload" element={<SingleImageUpload />}></Route>
-//        <Route path="/single-display" element={<SingleImageDisplay />}></Route>
-//        <Route path="/property-search" element={<PropertySearch />}></Route>
-//        {/* <Route path="/image-swapper" element={<ImageSwiper />}></Route> */}
-//        {/* <Route path="/project/:projectId" element={<ImageSwapper />} /> ✅ Correct route */}
-//        <Route path="/project/:projectId" element={<Project />} />
-//        {/* <Route pathe="/image-slider" element={<ImageSlider />}></Route> */}
-//        {/* <Route path="/project-price-chart" element={<ProjectPriceChart />}></Route> */}
-//        </Routes>
-//     </Router>
-//   );
-// };
-
-// export default App;
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
@@ -62,11 +25,11 @@ import Displayprop from "./Pages/Display";
 
 // import VersionDisplay from "./Pages/Version2_Display";
 // import WingDetails from "./components/wing_details";
-import ShowNeedle from "./Components/showneedle"
+import ShowNeedle from "./Components/showneedle";
 import PropertySearch1 from "./Pages/PropertySearch";
 import VersionDisplay from "./Pages/Version2_Display";
 import WingDetails from "./Components/wing_details";
-import ShowNeedle from "./Components/showneedle"
+// import ShowNeedle from "./Components/showneedle"
 import FormDataInput from "./Pages/FormData";
 import RealestateHome from "./Pages/Realestate-Home";
 import PostFormData from "./Components/PostwithForm";
@@ -76,10 +39,9 @@ import './App.css';
 //import MultiStageForm from "./Components/MultiStageForm";
 import ProjectList from "./Pages/PropertyAllData";
 import LatestEntity from "./Components/LatestEntity";
-import "./App.css";
 import DisplayProperty from "./Pages/DisplayProperty";
 import PostwithForm from "./Pages/PostwithForm";
-import AllStageData from "./Components/AllStageData";
+// import AllStageData from "./Components/AllStageData";
 
 
 const App = () => {
@@ -102,7 +64,7 @@ const App = () => {
         <Route path="/scatter-chart" element={<ScatterChartComponent />} />
         <Route path="/organizations" element={<Organizations />} />
         <Route path="/show-formdata" element={<FormDataInput />}></Route>
-        <Route path="/show-organization" element={<ShowOrganization />}></Route>
+        {/* <Route path="/show-organization" element={<ShowOrganization />}></Route> */}
         <Route path="/display-d" element={<Displayprop />}></Route>
         <Route path="/realestate-home" element={<RealestateHome />}></Route>
         <Route path="/show-needle" element={<ShowNeedle />}></Route>
@@ -116,7 +78,7 @@ const App = () => {
        <Route path="/wing-details" element={<WingDetails />}></Route>
        <Route path="/show-formdata" element={<FormDataInput />}></Route>
        {/* <Route path="/multi-stage-form" element={<MultiStageForm1 />}></Route> */}
-      <Route path="/ShowForm" element={<MultiStageForm />}></Route>
+      {/* <Route path="/ShowForm" element={<MultiStageForm />}></Route> */}
       <Route path="/project-list" element={<ProjectList />}></Route>
       <Route path="/latest-entity" element={<LatestEntity />}></Route>
       <Route path="/display-property" element={<DisplayProperty />}></Route>

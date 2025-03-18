@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 // import React from "react";
 // import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -162,13 +161,6 @@ export default DemoNavbar;
 // const Navbar = () => {
 //   return (
 //     <nav className="bg-black text-white py-4 px-6 sm:px-8 md:px-16 lg:px-24 flex items-center justify-between border-b border-gray-700 relative">
-=======
-import React from "react";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-const Navbar = () => {
-  return (
-    <nav className="bg-black text-white py-4 px-6 sm:px-8 md:px-16 lg:px-24 flex items-center justify-between border-b border-gray-700 relative">
->>>>>>> Gmap
     
 // {/* Left Side: Brand Name (Visible on Desktop) */}
 // {/* <div className="text-xl font-bold text-yellow-400 hidden sm:block">Real Estate Buddy</div> */}
@@ -193,7 +185,3 @@ const Navbar = () => {
 
 // export default Navbar;
 
-<<<<<<< HEAD
-=======
-export default Navbar;
->>>>>>> Gmap
