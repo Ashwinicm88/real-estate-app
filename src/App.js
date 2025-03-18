@@ -82,7 +82,7 @@ const App = () => {
       <Route path="/project-list" element={<ProjectList />}></Route>
       <Route path="/latest-entity" element={<LatestEntity />}></Route>
       <Route path="/display-property" element={<DisplayProperty />}></Route>
-      <Route path="/post-with-form" element={<PostwithForm/>}></Route>
+      {/* <Route path="/post-with-form" element={<PostwithForm/>}></Route> */}
       <Route path="all-stage-data" element={<AllStageData />}></Route>
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
