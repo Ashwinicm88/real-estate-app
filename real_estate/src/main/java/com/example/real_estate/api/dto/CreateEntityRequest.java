@@ -54,8 +54,9 @@ public class CreateEntityRequest {
     @JsonProperty("movieTheaters")
     private List<String> movieTheaters;
 
-    @JsonProperty("it_Parks")
+    @JsonProperty("itParks")
     private List<String> itParks;
+
 
      // Project Details Fields
      private Integer units;

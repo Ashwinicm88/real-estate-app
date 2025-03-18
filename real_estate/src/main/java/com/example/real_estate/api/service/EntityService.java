@@ -98,7 +98,7 @@ public class EntityService {
         String hospitals = convertListToJson(request.getHospitals());
         String malls = convertListToJson(request.getMalls());
         String movieTheaters = convertListToJson(request.getMovieTheaters());
-        String itParks= convertListToJson(request.getItParks());
+        String itParks = convertListToJson(request.getItParks());
 
         // ✅ Save Project
         Project project = new Project(

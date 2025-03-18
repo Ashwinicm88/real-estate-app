@@ -1,5 +1,6 @@
 
 package com.example.real_estate.api.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -67,7 +68,7 @@ public class Project {
     @Max(value = 999, message = "Property area is too high")
     private Integer propertyAreaSqmt;
 
-    @Pattern(message="RERA number should contain only numbers and letters", regexp = "^[A-Za-z0-9]+$")
+    @Pattern(message = "RERA number should contain only numbers and letters", regexp = "^[A-Za-z0-9]+$")
     @Column(name = "reranumber")
     private String reraNumber;
 
@@ -78,10 +79,10 @@ public class Project {
     private String projectVideoLink;
 
     // @JdbcTypeCode(SqlTypes.JSON)
-    
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "projectimages")
-    private List<String> projectImages=new ArrayList<>();
+    private List<String> projectImages = new ArrayList<>();
 
     @Column(name = "schools", columnDefinition = "TEXT")
     // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
@@ -99,20 +100,18 @@ public class Project {
     // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
     private String movieTheaters;
 
-    @Column(name="it_parks", columnDefinition = "TEXT")
+    @Column(name = "itparks", columnDefinition = "TEXT")
     // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
     private String itParks;
 
     @Column(name = "deleted", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean deleted = false;
-    
-
     // ✅ Corrected Constructor
     public Project(Organisation organisation, String projectName, String city, String locality, String address,
-                   Double latitude, Double longitude, Integer propertyAreaSqmt,
-                   String reraNumber, String reraLink, String projectVideoLink,
-                   List<String> projectImages, String schools, String hospitals, 
-                   String malls, String movieTheaters,String itParks, Boolean deleted) {
+            Double latitude, Double longitude, Integer propertyAreaSqmt,
+            String reraNumber, String reraLink, String projectVideoLink,
+            List<String> projectImages, String schools, String hospitals,
+            String malls, String movieTheaters, String itParks, Boolean deleted) {
 
         this.organisation = organisation;
         this.projectName = projectName;
