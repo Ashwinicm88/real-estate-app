@@ -16,6 +16,9 @@ import com.example.real_estate.api.service.FileStorageService;
 import jakarta.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import jakarta.persistence.criteria.Predicate;
 
 // import org.springframework.web.multipart.MultipartFile;
 
@@ -59,8 +62,8 @@ public class EntityService {
     @Autowired
     private ProjectTimeLineRepository projectTimeLineRepository;
 
-    @Autowired
-    // private FileStorageService fileStorageService
+    // @Autowired
+    // private EntityRepository entityRepository;
 
     // @Autowired
     // private EntityQueryService entityQueryService; // Inject EntityQueryService
@@ -122,7 +125,9 @@ public class EntityService {
                 malls,
                 movieTheaters,
                 itParks,
+                request.getPreferred() != null ? request.getPreferred() : "N", // Default preferred to 'N' if not provided
                 false // Default 'deleted' to false
+
         );
 
         project = projectRepository.save(project);
@@ -577,4 +582,97 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             throw new RuntimeException("Error converting list to JSON", e);
         }
     }
+    
+    
+//     public List<GetEntityResponse> searchEntities(String name, String location, Integer minPrice, Integer maxPrice,Integer bhkType) {
+//     List<GetEntityResponse> results = entityRepository.searchProjects(name, location, minPrice, maxPrice,bhkType);
+
+//     for (GetEntityResponse response : results) {
+//         if (response.getProjectImages() == null) {
+//             response.setProjectImages(Collections.emptyList()); // Prevents null errors
+//         }
+//     }
+
+//     return results;
+// // }
+// public List<ProjectSearchProjection> searchProjects(String location, Integer minBudget, Integer maxBudget) {
+//     return projectRepository.searchProjects(location, minBudget, maxBudget);
+// }
+// public List<Project> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
+//         return projectRepository.findAll((root, query, criteriaBuilder) -> {
+//             List<Predicate> predicates = new ArrayList<>();
+
+//             if (budgetMin != null) {
+//                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("priceMin"), budgetMin));
+//             }
+//             if (budgetMax != null) {
+//                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("priceMax"), budgetMax));
+//             }
+//             if (city != null && !city.isEmpty()) {
+//                 predicates.add(criteriaBuilder.equal(root.get("city"), city));
+//             }
+//             if (bhkType != null && !bhkType.isEmpty()) {
+//                 predicates.add(criteriaBuilder.equal(root.get("bhkType"), bhkType));
+//             }
+
+//             // Apply OR condition instead of AND
+//             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+//         });
+//     }
+
+// public List<ProjectSearchProjection> getFilteredProjects(String city) {
+//         List<Project> projects = projectRepository.findByCity(city);
+
+//         return projects.stream().map(project -> new ProjectSearchProjection(
+//                 project.getProjectName(),
+//                 project.getPropertyAreaSqmt(),
+//                 project.getProjectImages(),
+//                 project.getCity(),
+//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getUnits).sum(),
+//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0),
+//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0)
+//         )).collect(Collectors.toList());
+//     }
+public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
+    List<Project> projects = projectRepository.searchProjects(city, budgetMin, budgetMax, bhkType);
+    return projects.stream().map(this::convertToDTO).collect(Collectors.toList());
+}
+
+// private ProjectSearchProjection convertToDTO(Project project) {
+//     ProjectSearchProjection dto = new ProjectSearchProjection();
+//     dto.setProjectName(project.getProjectName());
+//     dto.setProjectAreaSqmt(project.getPropertyAreaSqmt());
+//     dto.setProjectImages(project.getProjectImages());
+//     dto.setCity(project.getCity());
+//     // dto.setUnits(project.getUnits());
+//     // dto.setPriceMin(project.getPriceMin());
+//     // dto.setPriceMax(project.getPriceMax());
+//     if (project.getProjectDetails() != null) {
+//     int priceMin = project.getProjectDetails().getPriceMin();
+//     int priceMax = project.getProjectDetails().getPriceMax();
+//     int units = project.getProjectDetails().getUnits();
+// }
+//     return dto;
+// }
+// }
+
+private ProjectSearchProjection convertToDTO(Project project) {
+    ProjectSearchProjection dto = new ProjectSearchProjection();
+    dto.setProjectName(project.getProjectName());
+    dto.setProjectAreaSqmt(project.getPropertyAreaSqmt());
+    dto.setProjectImages(project.getProjectImages());
+    dto.setCity(project.getCity());
+
+    // Handling List<ProjectDetails>
+    if (project.getProjectDetails() != null && !project.getProjectDetails().isEmpty()) {
+        // Assuming you want the first ProjectDetails (modify as needed)
+        ProjectDetails details = project.getProjectDetails().get(0);
+        dto.setPriceMin(details.getPriceMin());
+        dto.setPriceMax(details.getPriceMax());
+        dto.setUnits(details.getUnits());
+    }
+
+    return dto;
+}
+
 }

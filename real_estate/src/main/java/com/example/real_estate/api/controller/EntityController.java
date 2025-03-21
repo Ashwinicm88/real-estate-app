@@ -1,18 +1,24 @@
 package com.example.real_estate.api.controller;
 
 import com.example.real_estate.api.dto.*;
+import com.example.real_estate.api.model.Project;
+import com.example.real_estate.api.model.ProjectDetails;
+// import com.example.real_estate.api.model.Project;
 // import com.example.real_estate.api.model.Organisation;
 import com.example.real_estate.api.service.EntityService;
 import com.example.real_estate.api.service.FileStorageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-
+import com.example.real_estate.api.repository.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 /**
  * REST Controller for managing multiple entity types dynamically.
@@ -27,6 +33,11 @@ public class EntityController {
     private final EntityService entityService;
     private final FileStorageService fileStorageService;
 
+    @Autowired
+    private ProjectDetailsRepository projectDetailsRepository;
+
+    @Autowired
+    private ProjectRepository projectRepository;
     
 
     // private final EntityQueryService entityQueryService;
@@ -51,21 +62,9 @@ public ResponseEntity<Map<String, String>> createEntity(
         @RequestPart(value="images",required = false) List<MultipartFile>images,
         @RequestPart(value = "video",required = false) MultipartFile video,
         @RequestParam Map<String, MultipartFile> allFiles // Capture all dynamic files
-        // @RequestPart(value="oneBHKType1Images", required=false) List<MultipartFile> oneBHKType1Images,
-        // @RequestPart(value="oneBHKType1FloorPlanImages", required=false) List<MultipartFile> oneBHKType1FloorPlanImages
+
         ) throws JsonProcessingException {
     
-    // if (result.hasErrors()) {
-    //     Map<String, String> errors = new HashMap<>();
-    //     for (FieldError error : result.getFieldErrors()) {
-    //         errors.put(error.getField(), error.getDefaultMessage());
-    //     }
-    //     return ResponseEntity.badRequest().body(errors);
-    // }
-
-    // logger.info("Received request to create entity: {}", request);
-
-    // entityService.createEntity(request);
      // Send files to FileUploadController and get URLs
      List<String> imageUrls = (images !=null && !images.isEmpty())? fileStorageService.uploadSingleImages(images):new ArrayList<>();
      String videoUrl = (video != null && !video.isEmpty()) ? fileStorageService.uploadVideo(video) : null;
@@ -91,90 +90,6 @@ public ResponseEntity<Map<String, String>> createEntity(
      
     Map<Integer, List<String>> penthouseTypeImageUrls = new HashMap<>();  // ✅ Declare TwoBHK map
     Map<Integer, List<String>> penthouseTypeFloorPlanUrls = new HashMap<>();  // ✅ Declare TwoBHK floor plan map
-
-
-     // Upload OneBHK Type1 Images
-    // List<String> oneBHKType1ImageUrls = (oneBHKType1Images != null && !oneBHKType1Images.isEmpty()) 
-    // ? fileStorageService.uploadImages(oneBHKType1Images) 
-    // : new ArrayList<>();
-
-// Upload OneBHK Type1 Floor Plan Images
-// List<String> oneBHKType1FloorPlanUrls = (oneBHKType1FloorPlanImages != null && !oneBHKType1FloorPlanImages.isEmpty()) 
-//     ? fileStorageService.uploadImages(oneBHKType1FloorPlanImages) 
-//     : new ArrayList<>();
-     // Pass URLs to the EntityService
-      // ✅ Extract OneBHKConfig images dynamically from request params
-
-
-
-
-// ✅ Extract OneBHKConfig images dynamically
-// for (Map.Entry<String, MultipartFile> entry : allFiles.entrySet()) {
-//     String key = entry.getKey();
-//     MultipartFile file = entry.getValue();
-
-//     if (file != null && !file.isEmpty()) {
-//         try {
-//             // ✅ Extract typeNumber safely
-//             String[] parts = key.split("_");
-//             if (parts.length < 2) continue; // Skip invalid keys
-//             int typeNumber = Integer.parseInt(parts[1]);
-
-//             if (key.startsWith("oneBHKType1Images_")) {
-//                 oneBHKType1ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "onebhk_images"));
-
-//             } else if (key.startsWith("oneBHKType1FloorPlanImages_")) {
-//                 oneBHKType1FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "onebhk_floorplans"));
-//             }
-
-//             // ✅ TwoBHK
-//             else if (key.startsWith("twoBHKType2Images_")) {
-//                 twoBHKType2ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "twobhk_images"));
-//             } else if (key.startsWith("twoBHKType2FloorPlanImages_")) {
-//                 twoBHKType2FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "twobhk_floorplans"));
-//             }
-//             // ✅ ThreeBHK
-//             else if (key.startsWith("threeBHKType3Images_")) {
-//                 threeBHKType3ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "threebhk_images"));
-//             } else if (key.startsWith("threeBHKType3FloorPlanImages_")) {
-//                 threeBHKType3FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "threebhk_floorplans"));
-//             }
-//              // ✅ FourBHK
-//              else if (key.startsWith("fourBHKType4Images_")) {
-//                 fourBHKType4ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "fourbhk_images"));
-//             } else if (key.startsWith("fourBHKType4FloorPlanImages_")) {
-//                 fourBHKType4FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "fourbhk_floorplans"));
-//             }
-//              // ✅ FiveBHK
-//              else if (key.startsWith("fiveBHKType5Images_")) {
-//                 fiveBHKType5ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "fivebhk_images"));
-//             } else if (key.startsWith("fiveBHKType5FloorPlanImages_")) {
-//                 fiveBHKType5FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "fivebhk_floorplans"));
-//             }
-
-//             // ✅ Penthousef
-//             else if (key.startsWith("penthouseTypeImages_")) {
-//                 penthouseTypeImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "penthouse_images"));
-//             } else if (key.startsWith("penthouseTypeFloorPlanImages_")) {
-//                 penthouseBHKTypeFloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
-//                         .add(fileStorageService.saveFile(file, "penthouse_floorplans"));
-//             }
-//         } catch (NumberFormatException e) {
-//             System.err.println("❌ Error parsing typeNumber from key: " + key);
-//         }
-//     }
-// }
 
     for (Map.Entry<String, MultipartFile> entry : allFiles.entrySet()) {
         String key = entry.getKey();
@@ -273,5 +188,146 @@ public ResponseEntity<Map<String, String>> createEntity(
             ? ResponseEntity.ok(latestEntity)
             : ResponseEntity.notFound().build();
 }
+// @GetMapping("/search_properties")
+// public ResponseEntity<List<GetEntityResponse>> searchEntities(
+//         @RequestParam(required = false) String name,
+//         @RequestParam(required = false) String location,
+//         @RequestParam(required = false) Integer minPrice,
+//         @RequestParam(required = false) Integer maxPrice,
+//         @RequestParam(required = false) Integer bhkType
+// ) {
+//     List<GetEntityResponse> results = entityService.searchEntities(name, location, minPrice, maxPrice, bhkType);
+//     return ResponseEntity.ok(results);
+// }
+
+// @GetMapping("/search")
+// public List<ProjectSearchProjection> searchProjects(
+//         @RequestParam String location,
+//         @RequestParam Integer minBudget,
+//         @RequestParam Integer maxBudget) {
+//     return entityService.searchProjects(location, minBudget, maxBudget);
+// }
+//  @GetMapping("/search")
+//     public List<Project> searchProjects(
+//             @RequestParam(required = false) Integer budgetMin,
+//             @RequestParam(required = false) Integer budgetMax,
+//             @RequestParam(required = false) String city,
+//             @RequestParam(required = false) String bhkType) {
+        
+//         return entityService.searchProjects(budgetMin, budgetMax, city, bhkType);
+//     }
+// @GetMapping("/search")
+// public List<ProjectSearchProjection> searchProjects(@RequestParam(required = false) String city) {
+//     return entityService.getFilteredProjects(city);
+// }
+// @GetMapping("/search")
+// public ResponseEntity<?> searchProjects(
+//         @RequestParam(required = false) Integer budgetMin,
+//         @RequestParam(required = false) Integer budgetMax,
+//         @RequestParam(required = false) String city,
+//         @RequestParam(required = false) String bhkType) {
+
+//             // Validate filters
+//     if (budgetMin != null && budgetMax != null && budgetMin > budgetMax) {
+//         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                 .body(Collections.singletonMap("error", "budgetMin cannot be greater than budgetMax"));
+//     }
+
+//     List<ProjectSearchProjection> result = entityService.searchProjects(budgetMin, budgetMax, city, bhkType);
+//     if (result.isEmpty()) {
+//         Map<String, String> response = new HashMap<>();
+//         response.put("message", (bhkType != null ? bhkType : "Property") + " for this search criteria is not available");
+//         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//     }
     
+//     // if (result.isEmpty()) {
+//     //     Map<String, String> response = new HashMap<>();
+//     //     response.put("message", (bhkType != null ? bhkType : "Property") + " for this search criteria is not available");
+//     //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//     // }
+//     return ResponseEntity.ok(result);
+// }
+// }
+
+@GetMapping("/search")
+public ResponseEntity<?> searchProjects(
+        @RequestParam(required = false) Integer budgetMin,
+        @RequestParam(required = false) Integer budgetMax,
+        @RequestParam(required = false) String city,
+        @RequestParam(required = false) String bhkType) {
+
+    // 1️⃣ Validate budgetMin and budgetMax
+    if (budgetMin != null && budgetMax != null && budgetMin > budgetMax) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap("error", "budgetMin cannot be greater than budgetMax"));
+    }
+
+    // 2️⃣ Fetch search results from service
+    List<ProjectSearchProjection> result = entityService.searchProjects(budgetMin, budgetMax, city, bhkType);
+
+    // 3️⃣ Handle case where no results match
+    if (result.isEmpty()) {
+        StringBuilder errorMessage = new StringBuilder("No properties found for the given search criteria: ");
+        List<String> appliedFilters = new ArrayList<>();
+
+        if (bhkType != null) appliedFilters.add("BHK Type: " + bhkType);
+        if (city != null) appliedFilters.add("City: " + city);
+        if (budgetMin != null) appliedFilters.add("Min Budget: " + budgetMin);
+        if (budgetMax != null) appliedFilters.add("Max Budget: " + budgetMax);
+
+        if (appliedFilters.isEmpty()) {
+            errorMessage.append("No filters applied.");
+        } else {
+            errorMessage.append(String.join(", ", appliedFilters));
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap("message", errorMessage.toString()));
+    }
+
+    // 4️⃣ Return successful response with matching properties
+    return ResponseEntity.ok(result);
+}
+// ✅ Get Recommended Properties
+//     @GetMapping("/recommended-properties")
+//     public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
+//         List<Project> projects = projectRepository.findByPreferred("Y"); // Fetch only preferred projects
+//         List<RecommendedProperty> recommendedProperties = new ArrayList<>();
+
+//         List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(projects.getProjectId());
+// if (!projectDetailsList.isEmpty()) {  // ✅ Correct way to check if List has elements
+//     for (ProjectDetails details : projectDetailsList) {  
+//         RecommendedProperty dto = new RecommendedProperty(projects, details); 
+//         recommendedProperties.add(dto);
+//     }
+// }
+
+        // for (Project project : projects) {
+        //     List<ProjectDetails> projectDetailsOpt = projectDetailsRepository.findByProjectId(project.getProjectId());
+        //     if (projectDetailsOpt.isPresent()) {
+        //         RecommendedProperty dto = new RecommendedProperty(project, projectDetailsOpt.get());
+        //         recommendedProperties.add(dto);
+        //     }
+        // }
+
+        // return ResponseEntity.ok(recommendedProperties);
+    // }
+    @GetMapping("/recommended-properties")
+public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
+    List<Project> projects = projectRepository.findByPreferred("Y"); // Fetch only preferred projects
+    List<RecommendedProperty> recommendedProperties = new ArrayList<>();
+
+    for (Project project : projects) {
+        List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(project.getProjectId());
+        if (!projectDetailsList.isEmpty()) {
+            for (ProjectDetails details : projectDetailsList) {
+                RecommendedProperty dto = new RecommendedProperty(project, details);
+                recommendedProperties.add(dto);
+            }
+        }
+    }
+
+    return ResponseEntity.ok(recommendedProperties);
+}
+
 }

@@ -7,7 +7,8 @@ const DropdownField = ({ label, section, field, value, onChange, error, options 
   };
  
   return (
-    <div className="mb-4">
+    <div className="w-full mb-1 mobile-s:mx-3 mobile-m:mx-4
+    text-base mobile-s:text-sm mobile-m:text-md mobile-l:text-lg md:ml-10 md:w-3/4">
     <FormControl variant="standard" error={Boolean(error)} className='w-3/4'>
       <InputLabel
        sx={{
@@ -48,9 +49,8 @@ const DropdownField = ({ label, section, field, value, onChange, error, options 
       </Select>
       {error && <Typography variant="caption" sx={{ color: '#d32f2f' }}>{error}</Typography>}
     </FormControl>
-    {error && <Typography sx={{ color: '#EF4444)' }}>{error}</Typography>}
+   
   </div>
   );
 };
- 
 export default DropdownField;

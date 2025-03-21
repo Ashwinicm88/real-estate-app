@@ -38,6 +38,7 @@ public class CreateEntityRequest {
     private String reraNumber;
     private String reraLink;
     private String projectVideoLink;
+    private String preferred;
 
     @JsonProperty("projectimages")
     private List<String> projectImages;

@@ -2,6 +2,8 @@
 package com.example.real_estate.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -29,6 +31,19 @@ public class Project {
     @JoinColumn(name = "org_id", nullable = false)
     @JsonIgnore
     private Organisation organisation;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ProjectDetails> projectDetails;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OneBHKConfig> oneBhkConfig;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+private List<TwoBHKConfig> twoBhkConfig;
+
+@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+private List<ThreeBHKConfig> threeBhkConfig;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTimeLine> timelines;
@@ -104,6 +119,9 @@ public class Project {
     // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
     private String itParks;
 
+    @Column(columnDefinition = "CHAR(1) DEFAULT 'N'")
+    private String preferred;    
+
     @Column(name = "deleted", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean deleted = false;
     // ✅ Corrected Constructor
@@ -111,7 +129,7 @@ public class Project {
             Double latitude, Double longitude, Integer propertyAreaSqmt,
             String reraNumber, String reraLink, String projectVideoLink,
             List<String> projectImages, String schools, String hospitals,
-            String malls, String movieTheaters, String itParks, Boolean deleted) {
+            String malls, String movieTheaters, String itParks, String preferred, Boolean deleted) {
 
         this.organisation = organisation;
         this.projectName = projectName;
@@ -130,6 +148,7 @@ public class Project {
         this.malls = malls;
         this.movieTheaters = movieTheaters;
         this.itParks = itParks;
+        this.preferred = preferred;
         this.deleted = deleted; // Now correctly assigned
     }
 }
