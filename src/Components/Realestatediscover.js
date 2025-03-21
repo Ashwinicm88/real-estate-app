@@ -1,29 +1,24 @@
-// import React from 'react';
-// import * as yup from 'yup';
-// import { useFormik } from 'formik';
-// import { Container, Grid, Button } from '@mui/material';
-// import DropdownField from './DropdownField'; // Adjust the import path as necessary
-
-// const validationSchema = yup.object({
-//   location: yup.string().required('Location is required'),
-//   bhk: yup.string().required('BHK type is required'),
-//   budget: yup.string().required('Budget is required'),
-// });
+// import React, { useState } from 'react';
+// import DropdownField from './DropdownField'; // Ensure correct import path
+// import SearchBox from './SearchBox';
 
 // const CustomDropdownPage = () => {
-//   const formik = useFormik({
-//     initialValues: {
-//       location: '',
-//       bhk: '',
-//       budget: '',
-//     },
-//     validationSchema: validationSchema,
-//     onSubmit: (values) => {
-//       console.log('Form Submitted:', values);
-//     },
+//   // State for dropdown values
+//   const [selectedValues, setSelectedValues] = useState({
+//     location: '',
+//     bhk: '',
+//     budget: '',
 //   });
 
-//   // Sample options for the dropdowns
+//   // Function to handle dropdown change
+//   const handleDropdownChange = (section, field, value) => {
+//     setSelectedValues((prev) => ({
+//       ...prev,
+//       [field]: value,
+//     }));
+//   };
+
+//   // Sample options for dropdowns
 //   const locationOptions = [
 //     { label: 'Hadapsar', value: 'hadapsar' },
 //     { label: 'Kothrud', value: 'kothrud' },
@@ -42,64 +37,71 @@
 //     { label: 'Above 50 Lakhs', value: 'above50' },
 //   ];
 
+//   // Handle form submission
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     console.log('Form Submitted:', selectedValues);
+//   };
+
 //   return (
-//     <Container maxWidth="md" sx={{ mt: 4 }}>
-//       <form onSubmit={formik.handleSubmit} className="flex flex-col space-y-4">
-//         <Grid container spacing={2} justifyContent="center">
-//           <Grid item xs={12} sm={4}>
-//             <DropdownField
-//               label="Location"
-//               section="search"
-//               field="location"
-//               value={formik.values.location}
-//               onChange={formik.setFieldValue}
-//               error={formik.touched.location && formik.errors.location}
-//               options={locationOptions}
-//             />
-//           </Grid>
-//           <Grid item xs={12} sm={4}>
-//             <DropdownField
-//               label="BHK Type"
-//               section="search"
-//               field="bhk"
-//               value={formik.values.bhk}
-//               onChange={formik.setFieldValue}
-//               error={formik.touched.bhk && formik.errors.bhk}
-//               options={bhkOptions}
-//             />
-//           </Grid>
-//           <Grid item xs={12} sm={4}>
-//             <DropdownField
-//               label="Budget"
-//               section="search"
-//               field="budget"
-//               value={formik.values.budget}
-//               onChange={formik.setFieldValue}
-//               error={formik.touched.budget && formik.errors.budget}
-//               options={budgetOptions}
-//             />
-//           </Grid>
-//           <Button
+//     <div maxWidth="lg" className="mt-8 p-6">
+//       <form onSubmit={handleSubmit} className="flex items-center justify-center w-full space-x-4">
+//         {/* All fields in a single row */}
+//         <div className="flex space-x-4 w-full max-w-4xl">
+//           <DropdownField
+//             label="Location"
+//             section="search"
+//             field="location"
+//             value={selectedValues.location}
+//             onChange={handleDropdownChange}
+//             options={locationOptions}
+//           />
+
+//           <DropdownField
+//             label="BHK Type"
+//             section="search"
+//             field="bhk"
+//             value={selectedValues.bhk}
+//             onChange={handleDropdownChange}
+//             options={bhkOptions}
+//           />
+
+//           <DropdownField
+//             label="Budget"
+//             section="search"
+//             field="budget"
+//             value={selectedValues.budget}
+//             onChange={handleDropdownChange}
+//             options={budgetOptions}
+//           />
+//         </div>
+
+//         {/* Submit button aligned in the same row */}
+//         <button
 //           type="submit"
 //           variant="contained"
 //           color="primary"
-//           sx={{ mt: 4 }}
+//           className="bg-white hover:bg-yellow-500 text-black font-semibold px-5 py-1 rounded"
 //         >
-//           Submit
-//         </Button>
-//         </Grid>
-       
-//       </form>
-//     </Container>
+//           Discover Now
+//         </button> 
+      
+//       </form> 
+//       <SearchBox/>
+    
+//     </div>
 //   );
 // };
 
 // export default CustomDropdownPage;
 import React, { useState } from 'react';
 import DropdownField from './DropdownField'; // Ensure correct import path
-
+import SearchBox from './SearchBox';
 
 const CustomDropdownPage = () => {
+  // State to toggle search box visibility
+  const [showSearchBox, setShowSearchBox] = useState(false);
+
   // State for dropdown values
   const [selectedValues, setSelectedValues] = useState({
     location: '',
@@ -113,6 +115,11 @@ const CustomDropdownPage = () => {
       ...prev,
       [field]: value,
     }));
+  };
+
+  // Show search box below the dropdowns and hide "Click Here"
+  const toggleSearchBox = () => {
+    setShowSearchBox(true);
   };
 
   // Sample options for dropdowns
@@ -141,50 +148,69 @@ const CustomDropdownPage = () => {
   };
 
   return (
-    <div maxWidth="lg" className="mt-8 p-6">
-      <form onSubmit={handleSubmit} className="flex items-center justify-center w-full space-x-4">
-        {/* All fields in a single row */}
-        <div className="flex space-x-4 w-full max-w-4xl">
-          <DropdownField
-            label="Location"
-            section="search"
-            field="location"
-            value={selectedValues.location}
-            onChange={handleDropdownChange}
-            options={locationOptions}
-          />
+    <div className="p-4 flex justify-center">
+      {/* Card Container (Increased Width for Better Appearance) */}
+      <div className="bg-black text-white p-6 rounded-lg shadow-lg max-w-5xl w-full border border-[#333]">
+        {/* Dropdown Section + Discover Button in the Same Line */}
+        <form onSubmit={handleSubmit} className="flex items-center justify-center w-full">
+          {/* Explore Text */}
+          {/* <span className="text-white font-semibold text-lg">Explore</span> */}
 
-          <DropdownField
-            label="BHK Type"
-            section="search"
-            field="bhk"
-            value={selectedValues.bhk}
-            onChange={handleDropdownChange}
-            options={bhkOptions}
-          />
+          <div className="flex space-x-3 w-full">
+            <DropdownField
+              label="Select Location"
+              section="search"
+              field="location"
+              value={selectedValues.location}
+              onChange={handleDropdownChange}
+              options={locationOptions}
+            />
 
-          <DropdownField
-            label="Budget"
-            section="search"
-            field="budget"
-            value={selectedValues.budget}
-            onChange={handleDropdownChange}
-            options={budgetOptions}
-          />
-        </div>
+            <DropdownField
+              label="Select BHK Type"
+              section="search"
+              field="bhk"
+              value={selectedValues.bhk}
+              onChange={handleDropdownChange}
+              options={bhkOptions}
+            />
 
-        {/* Submit button aligned in the same row */}
-        <button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className="bg-white hover:bg-yellow-500 text-black font-semibold px-5 py-1 rounded"
-        >
-          Discover Now
-        </button> 
-      </form> 
+            <DropdownField
+              label="Select Budget"
+              section="search"
+              field="budget"
+              value={selectedValues.budget}
+              onChange={handleDropdownChange}
+              options={budgetOptions}
+            />
+          </div>
 
-    
+          {/* Discover Now Button (Same Line) */}
+          <button
+            type="submit"
+            className="bg-white hover:bg-yellow-500 text-black font-semibold px-5 py-1 rounded mt-4"
+          >
+            Go
+          </button>
+        </form>
+
+        {/* Click Here Text (Hidden When SearchBox Appears) */}
+        {!showSearchBox && (
+          <p 
+            className="mt-4 text-[#36454F] cursor-pointer hover:underline text-center"
+            onClick={toggleSearchBox}
+          >
+            Click Here , to talk with our AI Agent.
+          </p>
+        )}
+
+        {/* Show Search Box Below the Dropdowns */}
+        {showSearchBox && (
+          <div className="mt-6">
+            <SearchBox />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

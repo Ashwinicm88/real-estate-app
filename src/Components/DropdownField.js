@@ -2,12 +2,12 @@
 //Very Important Code for all formdata in this project
 import React from 'react';
 import { MenuItem, Select, Typography, FormControl, InputLabel } from '@mui/material';
-
+ 
 const DropdownField = ({ label, section, field, value, onChange, error, options }) => {
   const handleDropdownChange = (e) => {
     onChange(section, field, e.target.value);
   };
-
+ 
   return (
     <div className="w-full mb-1 mobile-s:mx-3 mobile-m:mx-4 
     text-base mobile-s:text-sm mobile-m:text-md mobile-l:text-lg md:ml-10 md:w-3/4">

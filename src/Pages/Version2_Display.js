@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import PropertyDetails from "../components/PropertyDetails";
-import PropertyDropdowns from "../components/Propertydropdowns";
-import MapComponent from "../components/GoogleMap";
-import DemoNavbar from "../components/Navbar";
+import PropertyDetails from "../Components/PropertyDetails";
+import PropertyDropdowns from "../Components/Propertydropdowns";
+import MapComponent from "../Components/GoogleMap";
+import DemoNavbar from "../Components/Navbar";
 //import DemoFooter from "../components/Footer";
 
 const Display_D = () => {
@@ -104,7 +104,7 @@ const Display_D = () => {
     {/* Map and Properties Section */}
 
       {/* Map Section */}
-      <div className="w-full h-96 mb-4">
+      <div className="w-full h-90 mb-4">
         <MapComponent center={mapCenter} properties={filteredProperties} />
       </div>
 

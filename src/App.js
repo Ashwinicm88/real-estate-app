@@ -57,14 +57,15 @@ import Displayprop from "./Pages/Display";
 
 // import SingleImageDisplay from "./components/SingleImageDisplay";
 // import SingleImageUpload from "./components/SingleImageUpload";
-
-// import VersionDisplay from "./Pages/Version2_Display";
+import VersionDisplay from "./Pages/Version2_Display";
 // import WingDetails from "./components/wing_details";
 import ShowNeedle from "./Components/showneedle"
 import FormDataInput from "./Pages/FormData";
 import RealestateHome from "./Pages/Realestate-Home";
 import PostFormData from "./Components/PostwithForm";
 import AllStageData from "./Components/AllStageData"
+import SearchResult from "./Pages/SearchResult"
+import PropertyDetails from "./Pages/Display_Details";
 import './App.css';
 
 
@@ -95,6 +96,10 @@ const App = () => {
         <Route path="/post-formdata" element={<PostFormData />}></Route>
         <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
         <Route path="/all-stagedata" element={<AllStageData />}></Route>
+        <Route path="/search-result" element={<SearchResult />}></Route>
+        <Route path="/version-display" element={<VersionDisplay />}></Route>
+        <Route path="/property-details" element={<PropertyDetails />}></Route>
+
         
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
@@ -103,7 +108,7 @@ const App = () => {
        <Route path="/single-upload" element={<SingleImageUpload />}></Route>
        <Route path="/single-display" element={<SingleImageDisplay />}></Route>
        <Route path="/property-search" element={<PropertySearch />}></Route>
-       <Route path="/version-display" element={<VersionDisplay />}></Route>
+      
        <Route path="/wing-details" element={<WingDetails />}></Route>
        <Route path="/show-needle" element={<ShowNeedle />}></Route>
        <Route path="/show-formdata" element={<FormDataInput />}></Route>
