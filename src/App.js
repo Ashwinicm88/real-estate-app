@@ -16,15 +16,6 @@ import ScatterChartComponent from "./Components/ScatterChartComponent";
 import Organizations from "./Components/Organizations";
 //import ShowOrganization from "./Components/MultiStageForm";
 import Displayprop from "./Pages/Display";
-
-// import MultiStageForm1 from "./Components/MultiStageForm1";
-// import DisplayImages from "./components/DisplayImages";
-
-// import SingleImageDisplay from "./components/SingleImageDisplay";
-// import SingleImageUpload from "./components/SingleImageUpload";
-
-// import VersionDisplay from "./Pages/Version2_Display";
-// import WingDetails from "./components/wing_details";
 import ShowNeedle from "./Components/showneedle";
 import PropertySearch1 from "./Pages/PropertySearch";
 import VersionDisplay from "./Pages/Version2_Display";
@@ -42,6 +33,7 @@ import LatestEntity from "./Components/LatestEntity";
 import DisplayProperty from "./Pages/DisplayProperty";
 import PostwithForm from "./Pages/PostwithForm";
 // import AllStageData from "./Components/AllStageData";
+import SearchResult from "./Pages/SearchResult";
 
 
 const App = () => {
@@ -84,6 +76,7 @@ const App = () => {
       <Route path="/display-property" element={<DisplayProperty />}></Route>
       <Route path="/post-with-form" element={<PostwithForm/>}></Route>
       <Route path="all-stage-data" element={<AllStageData />}></Route>
+      <Route path="/search-result" element={<SearchResult />}></Route>
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
        <Route path="/displayimages" element={<DisplayImages />}></Route>

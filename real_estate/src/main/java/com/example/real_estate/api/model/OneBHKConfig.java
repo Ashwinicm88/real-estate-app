@@ -20,7 +20,7 @@ import org.hibernate.type.SqlTypes;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class OneBHKConfig {
+public class OneBHKConfig implements BHKConfig {
 
     /**
      * Unique identifier for the 1BHK configuration.
@@ -134,6 +134,14 @@ public class OneBHKConfig {
    @Column(name = "bathroom_2_area")
    private String bathroom2Area;
 
+    @Override
+    public Integer getId(){
+        return oneBhkConfigId;
+    }
 
+    @Override
+    public Project getProject(){
+        return project;
+    }
 
 }

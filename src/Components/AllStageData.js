@@ -643,6 +643,8 @@ const MultiStageForm = () => {
       Images: [],
       Videos: [],
       ITpark:"",
+      // hangouts:"",
+      // metro:"",
     },
     projectDetails: {
       units: "",
@@ -1223,7 +1225,7 @@ const MultiStageForm = () => {
         hospitals: stateData.project?.hospitals ? stateData.project.hospitals.split(",") : [],
         malls: stateData.project?.malls ? stateData.project.malls.split(",") : [],
         movieTheaters: stateData.project?.movietheater ? stateData.project.movietheater.split(",") : [],
-        itparks: stateData.project?.ITpark ? stateData.project.ITpark.split(",") : [],
+        itParks: stateData.project?.ITpark ? stateData.project.ITpark.split(",") : [],
   
         units: Number(stateData.projectDetails?.units) || 0,
         projectStatus: stateData.projectDetails?.projectstatus || "",

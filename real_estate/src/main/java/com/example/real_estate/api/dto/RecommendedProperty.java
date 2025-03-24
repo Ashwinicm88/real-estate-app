@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RecommendedProperty{  // 🛠️ Fixed class name
 
     private String projectName;
@@ -17,8 +20,6 @@ public class RecommendedProperty{  // 🛠️ Fixed class name
     private List<String> projectPictures;
     private Integer units;
     private String projectStatus;
-    private String projectLaunch;
-    private String projectPlannedEnd;
     private Integer priceMin;
     private Integer priceMax;
     private Boolean allInclusive;
@@ -50,13 +51,13 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.banks = convertJsonToList(projectDetails.getBanks());
         // this.priceStartingFrom = this.priceMin; 
     
-        this.projectLaunch = projectDetails.getProjectLaunch() != null 
-            ? sdf.format(projectDetails.getProjectLaunch()) 
-            : null; // Convert Date to String
+        // this.projectLaunch = projectDetails.getProjectLaunch() != null 
+        //     ? sdf.format(projectDetails.getProjectLaunch()) 
+        //     : null; // Convert Date to String
 
-        this.projectPlannedEnd = projectDetails.getProjectPlannedEnd() != null 
-            ? sdf.format(projectDetails.getProjectPlannedEnd()) 
-            : null; // Convert Date to String
+        // this.projectPlannedEnd = projectDetails.getProjectPlannedEnd() != null 
+        //     ? sdf.format(projectDetails.getProjectPlannedEnd()) 
+        //     : null; // Convert Date to String
     }
 
     // Helper method to convert JSON string to List<String>
@@ -92,11 +93,11 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public String getProjectStatus() { return projectStatus; }
     public void setProjectStatus(String projectStatus) { this.projectStatus = projectStatus; }
 
-    public String getProjectLaunch() { return projectLaunch; }
-    public void setProjectLaunch(String projectLaunch) { this.projectLaunch = projectLaunch; }
+    // public String getProjectLaunch() { return projectLaunch; }
+    // public void setProjectLaunch(String projectLaunch) { this.projectLaunch = projectLaunch; }
 
-    public String getProjectPlannedEnd() { return projectPlannedEnd; }
-    public void setProjectPlannedEnd(String projectPlannedEnd) { this.projectPlannedEnd = projectPlannedEnd; }
+    // public String getProjectPlannedEnd() { return projectPlannedEnd; }
+    // public void setProjectPlannedEnd(String projectPlannedEnd) { this.projectPlannedEnd = projectPlannedEnd; }
 
     public Integer getPriceMin() { return priceMin; }
     public void setPriceMin(Integer priceMin) { this.priceMin = priceMin; }

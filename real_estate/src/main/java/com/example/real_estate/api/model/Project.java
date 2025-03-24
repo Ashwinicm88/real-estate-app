@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+
+// import org.apache.olingo.commons.api.edm.geo.SRID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.util.*;
@@ -55,7 +57,7 @@ private List<ThreeBHKConfig> threeBhkConfig;
 
     @NotNull(message = "City is required")
     @Pattern(regexp = "^[A-Za-z\s]+$", message = "Invalid format")
-    @Column(name = "city", length = 50, nullable = false)
+    @Column(name = "city", length = 50, nullable = false, columnDefinition = "VARCHAR(50)")
     private String city;
 
     @NotNull(message = "Locality is required")
@@ -119,8 +121,14 @@ private List<ThreeBHKConfig> threeBhkConfig;
     // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
     private String itParks;
 
-    @Column(columnDefinition = "CHAR(1) DEFAULT 'N'")
-    private String preferred;    
+    @Column(columnDefinition = "TEXT DEFAULT 'N'")
+    private String preferred;  
+    
+    @Column(name="hangouts")
+    private String hangouts;
+
+    @Column(name="metro")
+    private String metro;
 
     @Column(name = "deleted", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean deleted = false;
@@ -129,7 +137,7 @@ private List<ThreeBHKConfig> threeBhkConfig;
             Double latitude, Double longitude, Integer propertyAreaSqmt,
             String reraNumber, String reraLink, String projectVideoLink,
             List<String> projectImages, String schools, String hospitals,
-            String malls, String movieTheaters, String itParks, String preferred, Boolean deleted) {
+            String malls, String movieTheaters, String itParks, String preferred,String hangouts, String metro, Boolean deleted) {
 
         this.organisation = organisation;
         this.projectName = projectName;
@@ -149,6 +157,8 @@ private List<ThreeBHKConfig> threeBhkConfig;
         this.movieTheaters = movieTheaters;
         this.itParks = itParks;
         this.preferred = preferred;
+        this.hangouts = hangouts;
+        this.metro= metro;
         this.deleted = deleted; // Now correctly assigned
     }
 }

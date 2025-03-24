@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 /**
  * REST Controller for managing multiple entity types dynamically.
  */
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/entities")
 @RequiredArgsConstructor
@@ -188,66 +189,6 @@ public ResponseEntity<Map<String, String>> createEntity(
             ? ResponseEntity.ok(latestEntity)
             : ResponseEntity.notFound().build();
 }
-// @GetMapping("/search_properties")
-// public ResponseEntity<List<GetEntityResponse>> searchEntities(
-//         @RequestParam(required = false) String name,
-//         @RequestParam(required = false) String location,
-//         @RequestParam(required = false) Integer minPrice,
-//         @RequestParam(required = false) Integer maxPrice,
-//         @RequestParam(required = false) Integer bhkType
-// ) {
-//     List<GetEntityResponse> results = entityService.searchEntities(name, location, minPrice, maxPrice, bhkType);
-//     return ResponseEntity.ok(results);
-// }
-
-// @GetMapping("/search")
-// public List<ProjectSearchProjection> searchProjects(
-//         @RequestParam String location,
-//         @RequestParam Integer minBudget,
-//         @RequestParam Integer maxBudget) {
-//     return entityService.searchProjects(location, minBudget, maxBudget);
-// }
-//  @GetMapping("/search")
-//     public List<Project> searchProjects(
-//             @RequestParam(required = false) Integer budgetMin,
-//             @RequestParam(required = false) Integer budgetMax,
-//             @RequestParam(required = false) String city,
-//             @RequestParam(required = false) String bhkType) {
-        
-//         return entityService.searchProjects(budgetMin, budgetMax, city, bhkType);
-//     }
-// @GetMapping("/search")
-// public List<ProjectSearchProjection> searchProjects(@RequestParam(required = false) String city) {
-//     return entityService.getFilteredProjects(city);
-// }
-// @GetMapping("/search")
-// public ResponseEntity<?> searchProjects(
-//         @RequestParam(required = false) Integer budgetMin,
-//         @RequestParam(required = false) Integer budgetMax,
-//         @RequestParam(required = false) String city,
-//         @RequestParam(required = false) String bhkType) {
-
-//             // Validate filters
-//     if (budgetMin != null && budgetMax != null && budgetMin > budgetMax) {
-//         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                 .body(Collections.singletonMap("error", "budgetMin cannot be greater than budgetMax"));
-//     }
-
-//     List<ProjectSearchProjection> result = entityService.searchProjects(budgetMin, budgetMax, city, bhkType);
-//     if (result.isEmpty()) {
-//         Map<String, String> response = new HashMap<>();
-//         response.put("message", (bhkType != null ? bhkType : "Property") + " for this search criteria is not available");
-//         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//     }
-    
-//     // if (result.isEmpty()) {
-//     //     Map<String, String> response = new HashMap<>();
-//     //     response.put("message", (bhkType != null ? bhkType : "Property") + " for this search criteria is not available");
-//     //     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//     // }
-//     return ResponseEntity.ok(result);
-// }
-// }
 
 @GetMapping("/search")
 public ResponseEntity<?> searchProjects(
@@ -288,30 +229,7 @@ public ResponseEntity<?> searchProjects(
     // 4️⃣ Return successful response with matching properties
     return ResponseEntity.ok(result);
 }
-// ✅ Get Recommended Properties
-//     @GetMapping("/recommended-properties")
-//     public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
-//         List<Project> projects = projectRepository.findByPreferred("Y"); // Fetch only preferred projects
-//         List<RecommendedProperty> recommendedProperties = new ArrayList<>();
 
-//         List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(projects.getProjectId());
-// if (!projectDetailsList.isEmpty()) {  // ✅ Correct way to check if List has elements
-//     for (ProjectDetails details : projectDetailsList) {  
-//         RecommendedProperty dto = new RecommendedProperty(projects, details); 
-//         recommendedProperties.add(dto);
-//     }
-// }
-
-        // for (Project project : projects) {
-        //     List<ProjectDetails> projectDetailsOpt = projectDetailsRepository.findByProjectId(project.getProjectId());
-        //     if (projectDetailsOpt.isPresent()) {
-        //         RecommendedProperty dto = new RecommendedProperty(project, projectDetailsOpt.get());
-        //         recommendedProperties.add(dto);
-        //     }
-        // }
-
-        // return ResponseEntity.ok(recommendedProperties);
-    // }
     @GetMapping("/recommended-properties")
 public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
     List<Project> projects = projectRepository.findByPreferred("Y"); // Fetch only preferred projects

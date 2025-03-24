@@ -16,6 +16,7 @@ import java.util.*;
  @Repository
  public interface OneBhkConfigRepository extends JpaRepository<OneBHKConfig, Integer> {
       List<OneBHKConfig> findByProject(Project project);
+      List<OneBHKConfig> findByProject_ProjectId(Integer projectId);
  }
  
 

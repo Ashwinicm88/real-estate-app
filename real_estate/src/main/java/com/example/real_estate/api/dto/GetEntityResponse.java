@@ -32,6 +32,10 @@ public class GetEntityResponse {
     private List<String> hospitals;
     private List<String> malls;
     private List<String> movieTheaters;
+    private List<String> itParks;
+    private List<String> hangouts;
+    private List<String> metro;
+    private Boolean preferred;
 
     private int units;
     private String projectStatus;

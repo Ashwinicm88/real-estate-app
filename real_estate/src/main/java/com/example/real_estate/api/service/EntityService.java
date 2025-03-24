@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.criteria.Predicate;
+// import jakarta.persistence.criteria.Predicate;
 
 // import org.springframework.web.multipart.MultipartFile;
 
@@ -101,7 +101,10 @@ public class EntityService {
         String hospitals = convertListToJson(request.getHospitals());
         String malls = convertListToJson(request.getMalls());
         String movieTheaters = convertListToJson(request.getMovieTheaters());
-        String itParks = convertListToJson(request.getItParks());
+        String itParks = convertListToJson(request.getItParks()); 
+        String hangouts = convertListToJson(request.getHangouts());
+        String metro = convertListToJson(request.getMetro());
+
 
         // ✅ Save Project
         Project project = new Project(
@@ -125,6 +128,8 @@ public class EntityService {
                 malls,
                 movieTheaters,
                 itParks,
+                hangouts,
+                metro,
                 request.getPreferred() != null ? request.getPreferred() : "N", // Default preferred to 'N' if not provided
                 false // Default 'deleted' to false
 
@@ -175,23 +180,6 @@ public class EntityService {
             // ✅ Fetch floor plans based on typeNumber (handling null cases)
             List<String> floorPlanUrls = oneBHKType1FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             entity.setType1FloorPlan(floorPlanUrls);
-                //    entity.setType1Images(new ArrayList<>(oneBHKType1ImageUrls.get(index)));
-                //    entity.setType1FloorPlan(new ArrayList<>(oneBHKType1FloorPlanUrls));
-
-                     // Upload and store image URLs
-                // List<String> uploadedType1Images = new ArrayList<>();
-                // if (type1Images != null && index < type1Images.size()) {
-                //     uploadedType1Images.add(fileUploadService.uploadFile(type1Images.get(index)));
-                // }
-                // entity.setType1Images(uploadedType1Images);
-
-                // List<String> uploadedType1FloorPlans = new ArrayList<>();
-                // if (type1FloorPlan != null && index < type1FloorPlan.size()) {
-                //     uploadedType1FloorPlans.add(fileUploadService.uploadFile(type1FloorPlan.get(index)));
-                // }
-                // entity.setType1FloorPlan(uploadedType1FloorPlans);
-                    // entity.setType1FloorPlan(config.getType1FloorPlan() != null ? config.getType1FloorPlan() : new ArrayList<>());
-                    // entity.setType1Images(config.getType1Images() != null ? config.getType1Images() : new ArrayList<>());
                     entity.setType1Bathrooms(config.getType1Bathrooms());
                     entity.setType1Balcony(config.getType1Balcony());
                     entity.setType1Parking(config.getType1Parking());
@@ -638,30 +626,16 @@ public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer b
     return projects.stream().map(this::convertToDTO).collect(Collectors.toList());
 }
 
-// private ProjectSearchProjection convertToDTO(Project project) {
-//     ProjectSearchProjection dto = new ProjectSearchProjection();
-//     dto.setProjectName(project.getProjectName());
-//     dto.setProjectAreaSqmt(project.getPropertyAreaSqmt());
-//     dto.setProjectImages(project.getProjectImages());
-//     dto.setCity(project.getCity());
-//     // dto.setUnits(project.getUnits());
-//     // dto.setPriceMin(project.getPriceMin());
-//     // dto.setPriceMax(project.getPriceMax());
-//     if (project.getProjectDetails() != null) {
-//     int priceMin = project.getProjectDetails().getPriceMin();
-//     int priceMax = project.getProjectDetails().getPriceMax();
-//     int units = project.getProjectDetails().getUnits();
-// }
-//     return dto;
-// }
-// }
-
 private ProjectSearchProjection convertToDTO(Project project) {
     ProjectSearchProjection dto = new ProjectSearchProjection();
     dto.setProjectName(project.getProjectName());
     dto.setProjectAreaSqmt(project.getPropertyAreaSqmt());
     dto.setProjectImages(project.getProjectImages());
+    dto.setLatitude(project.getLatitude());
+    dto.setLongitude(project.getLongitude());
     dto.setCity(project.getCity());
+    dto.setAddress(project.getAddress());
+
 
     // Handling List<ProjectDetails>
     if (project.getProjectDetails() != null && !project.getProjectDetails().isEmpty()) {
@@ -671,8 +645,49 @@ private ProjectSearchProjection convertToDTO(Project project) {
         dto.setPriceMax(details.getPriceMax());
         dto.setUnits(details.getUnits());
     }
+     // ✅ Dynamically check available BHK types
+     List<String> availableBHKs = new ArrayList<>();
 
+     List<OneBHKConfig> oneBHKConfigs = oneBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
+     List<TwoBHKConfig> twoBHKConfigs = twoBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
+     List<ThreeBHKConfig> threeBHKConfigs = threeBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
+
+     // Check if valid data exists
+if (!oneBHKConfigs.isEmpty() && hasValidData(oneBHKConfigs.get(0))) availableBHKs.add("1BHK");
+if (!twoBHKConfigs.isEmpty() && hasValidData(twoBHKConfigs.get(0))) availableBHKs.add("2BHK");
+if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availableBHKs.add("3BHK");
+
+    //  if (project.getOneBhkConfig() != null && hasValidData(project.getOneBhkConfig())) availableBHKs.add("1BHK");
+    //  if (project.getTwoBhkConfig() != null && hasValidData(project.getTwoBhkConfig())) availableBHKs.add("2BHK");
+    //  if (project.getThreeBhkConfig() != null && hasValidData(project.getThreeBhkConfig())) availableBHKs.add("3BHK");
+     dto.setAvailableBHKs(availableBHKs);
+
+     
     return dto;
 }
+// private boolean hasValidData(Object config) {
+//     if (config == null) return false;
 
+//     if(config instanceof OneBHKConfig) {
+//         OneBHKConfig oneBhkConfig = (OneBHKConfig) config;
+//        return oneBhkConfig.getProject()!=null && oneBhkConfig.getProject().getProjectId() != null;
+//     }
+
+//     if(config instanceof TwoBHKConfig) {
+//         TwoBHKConfig twoBhkConfig = (TwoBHKConfig) config;
+//         return twoBhkConfig.getProject() != null && twoBhkConfig.getProject().getProjectId()!= null;
+//     }
+
+//     if(config instanceof ThreeBHKConfig) {
+//         ThreeBHKConfig threeBhkConfig = (ThreeBHKConfig) config;
+//         return threeBhkConfig.getProject() != null && threeBhkConfig.getProject().getProjectId() != null;
+//     }
+
+//     return false;
+
+
+// }
+private boolean hasValidData(BHKConfig config) {
+    return config !=null && config.getProject()!=null && config.getProject().getProjectId() != null;
+}
 }
