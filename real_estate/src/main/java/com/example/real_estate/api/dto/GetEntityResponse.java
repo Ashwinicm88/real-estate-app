@@ -28,10 +28,14 @@ public class GetEntityResponse {
     private String reraLink;
     private String projectVideoLink;
     private List<String> projectImages;
-    private List<String> schools;
-    private List<String> hospitals;
-    private List<String> malls;
-    private List<String> movieTheaters;
+    // private List<String> schools;
+    // private List<String> hospitals;
+    // private List<String> malls;
+    // private List<String> movieTheaters;
+    // private List<String> itParks;
+    // private List<String> hangouts;
+    // private List<String> metro;
+    private Boolean preferred;
 
     private int units;
     private String projectStatus;
@@ -40,7 +44,7 @@ public class GetEntityResponse {
     private double priceMin;
     private double priceMax;
     private boolean allInclusive;
-    private String amenities;
+    // private String amenities;
     private String coveredParking;
     private boolean bankApproved;
     private String banks;

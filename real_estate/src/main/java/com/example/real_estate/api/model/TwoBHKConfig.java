@@ -18,7 +18,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class TwoBHKConfig {
+public class TwoBHKConfig implements BHKConfig{
 
     /**
      * Unique identifier for the 2BHK configuration.
@@ -132,4 +132,14 @@ public class TwoBHKConfig {
      */
     @Column(name = "bathroom_2_area")
     private String bathroom2Area;
+
+    @Override
+    public Integer getId(){
+        return twoBhkConfigId;
+    }
+
+    @Override
+    public Project getProject(){
+        return project;
+    }
 }

@@ -16,6 +16,9 @@ import com.example.real_estate.api.service.FileStorageService;
 import jakarta.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+
+// import jakarta.persistence.criteria.Predicate;
 
 // import org.springframework.web.multipart.MultipartFile;
 
@@ -60,7 +63,13 @@ public class EntityService {
     private ProjectTimeLineRepository projectTimeLineRepository;
 
     @Autowired
-    // private FileStorageService fileStorageService
+    private NearbyRepository nearbyRepository;
+
+    @Autowired
+    private AmenitiesRepository amenitiesRepository;
+
+    // @Autowired
+    // private EntityRepository entityRepository;
 
     // @Autowired
     // private EntityQueryService entityQueryService; // Inject EntityQueryService
@@ -94,11 +103,14 @@ public class EntityService {
 
         // ✅ Convert List<String> to JSON String or CSV format
         // String projectImages = convertListToJson(request.getProjectImages());
-        String schools = convertListToJson(request.getSchools());
-        String hospitals = convertListToJson(request.getHospitals());
-        String malls = convertListToJson(request.getMalls());
-        String movieTheaters = convertListToJson(request.getMovieTheaters());
-        String itParks = convertListToJson(request.getItParks());
+        // String schools = convertListToJson(request.getSchools());
+        // String hospitals = convertListToJson(request.getHospitals());
+        // String malls = convertListToJson(request.getMalls());
+        // String movieTheaters = convertListToJson(request.getMovieTheaters());
+        // String itParks = convertListToJson(request.getItParks()); 
+        // String hangouts = convertListToJson(request.getHangouts());
+        // String metro = convertListToJson(request.getMetro());
+
 
         // ✅ Save Project
         Project project = new Project(
@@ -117,12 +129,16 @@ public class EntityService {
                 // request.getProjectVideoLink(),
                 // new ArrayList<>(),
                 // request.getProjectImages(),
-                schools,
-                hospitals,
-                malls,
-                movieTheaters,
-                itParks,
+                // schools,
+                // hospitals,
+                // malls,
+                // movieTheaters,
+                // itParks,
+                // hangouts,
+                // metro,
+                request.getPreferred() != null ? request.getPreferred() : "N", // Default preferred to 'N' if not provided
                 false // Default 'deleted' to false
+
         );
 
         project = projectRepository.save(project);
@@ -142,7 +158,7 @@ public class EntityService {
                 request.getPriceMin(),
                 request.getPriceMax(),
                 request.getAllInclusive(),
-                request.getAmenities(),
+                // request.getAmenities(),
                 request.getCoveredParking(),
                 request.getBankApproved(),
                 request.getBanks()
@@ -151,6 +167,33 @@ public class EntityService {
         // Save to database
         projectDetails = projectDetailsRepository.save(projectDetails);
         System.out.println("✅ Project Details Saved with ID: " + projectDetails.getDetailId());
+
+        Amenities amenities = new Amenities(
+            project,
+            request.getSwimming_pool(),
+            request.getTemple(),
+            request.getGym(),
+            request.getCreche(),
+            request.getChildren_parks(),
+            request.getPark(),
+            request.getClub_house(),
+            request.getC_hall(),
+            request.getOther()
+            );
+        amenities = amenitiesRepository.save(amenities);
+        System.out.println("✅ Amenities Saved with ID: " + amenities.getAmenityId());
+
+        Nearby nearby = new Nearby(
+            project,
+            request.getSchools(),
+            request.getHospitals(),
+            request.getIt_parks(),
+            request.getHangouts(),
+            request.getCinemas(),
+            request.getMetro()
+            );
+        nearby = nearbyRepository.save(nearby);
+        System.out.println("✅ Nearby Saved with ID: " + nearby.getNearId());
 
 
         if (request.getOneBHKConfig() != null && !request.getOneBHKConfig().isEmpty()) {
@@ -170,23 +213,6 @@ public class EntityService {
             // ✅ Fetch floor plans based on typeNumber (handling null cases)
             List<String> floorPlanUrls = oneBHKType1FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             entity.setType1FloorPlan(floorPlanUrls);
-                //    entity.setType1Images(new ArrayList<>(oneBHKType1ImageUrls.get(index)));
-                //    entity.setType1FloorPlan(new ArrayList<>(oneBHKType1FloorPlanUrls));
-
-                     // Upload and store image URLs
-                // List<String> uploadedType1Images = new ArrayList<>();
-                // if (type1Images != null && index < type1Images.size()) {
-                //     uploadedType1Images.add(fileUploadService.uploadFile(type1Images.get(index)));
-                // }
-                // entity.setType1Images(uploadedType1Images);
-
-                // List<String> uploadedType1FloorPlans = new ArrayList<>();
-                // if (type1FloorPlan != null && index < type1FloorPlan.size()) {
-                //     uploadedType1FloorPlans.add(fileUploadService.uploadFile(type1FloorPlan.get(index)));
-                // }
-                // entity.setType1FloorPlan(uploadedType1FloorPlans);
-                    // entity.setType1FloorPlan(config.getType1FloorPlan() != null ? config.getType1FloorPlan() : new ArrayList<>());
-                    // entity.setType1Images(config.getType1Images() != null ? config.getType1Images() : new ArrayList<>());
                     entity.setType1Bathrooms(config.getType1Bathrooms());
                     entity.setType1Balcony(config.getType1Balcony());
                     entity.setType1Parking(config.getType1Parking());
@@ -428,6 +454,8 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
 } else {
     System.out.println("❌ No Project Timeline found. Skipping save.");
 }
+
+
 // catch(JsonProcessingException e){
 //     throw new RuntimeException("Failed to to parse JSON",e);
 // }
@@ -464,10 +492,10 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
                 response.setProjectVideoLink(project.getProjectVideoLink());
                 response.setProjectImages(project.getProjectImages());
                 // response.setProjectImages(Arrays.asList(project.getProjectImages()));
-                response.setSchools(Arrays.asList(project.getSchools().split(",")));
-                response.setHospitals(Arrays.asList(project.getHospitals().split(",")));
-                response.setMalls(Arrays.asList(project.getMalls().split(",")));
-                response.setMovieTheaters(Arrays.asList(project.getMovieTheaters().split(",")));
+                // response.setSchools(Arrays.asList(project.getSchools().split(",")));
+                // response.setHospitals(Arrays.asList(project.getHospitals().split(",")));
+                // response.setMalls(Arrays.asList(project.getMalls().split(",")));
+                // response.setMovieTheaters(Arrays.asList(project.getMovieTheaters().split(",")));
 
                 if (projectDetails != null) {
                     response.setUnits(projectDetails.getUnits());
@@ -482,7 +510,7 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
                     response.setPriceMin(projectDetails.getPriceMin());
                     response.setPriceMax(projectDetails.getPriceMax());
                     response.setAllInclusive(projectDetails.getAllInclusive());
-                    response.setAmenities(projectDetails.getAmenities());
+                    // response.setAmenities(projectDetails.getAmenities());
                     response.setCoveredParking(projectDetails.getCoveredParking());
                     response.setBankApproved(projectDetails.getBankApproved());
                     response.setBanks(projectDetails.getBanks());
@@ -543,10 +571,10 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
         response.setProjectVideoLink(latestProject.getProjectVideoLink());
         response.setProjectImages(latestProject.getProjectImages());
         // response.setProjectImages(Arrays.asList(latestProject.getProjectImages().split(",")));
-        response.setSchools(Arrays.asList(latestProject.getSchools().split(",")));
-        response.setHospitals(Arrays.asList(latestProject.getHospitals().split(",")));
-        response.setMalls(Arrays.asList(latestProject.getMalls().split(",")));
-        response.setMovieTheaters(Arrays.asList(latestProject.getMovieTheaters().split(",")));
+        // response.setSchools(Arrays.asList(latestProject.getSchools().split(",")));
+        // response.setHospitals(Arrays.asList(latestProject.getHospitals().split(",")));
+        // response.setMalls(Arrays.asList(latestProject.getMalls().split(",")));
+        // response.setMovieTheaters(Arrays.asList(latestProject.getMovieTheaters().split(",")));
     
         if (projectDetails != null) {
             response.setUnits(projectDetails.getUnits());
@@ -560,7 +588,7 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             response.setPriceMin(projectDetails.getPriceMin());
             response.setPriceMax(projectDetails.getPriceMax());
             response.setAllInclusive(projectDetails.getAllInclusive());
-            response.setAmenities(projectDetails.getAmenities());
+            // response.setAmenities(projectDetails.getAmenities());
             response.setCoveredParking(projectDetails.getCoveredParking());
             response.setBankApproved(projectDetails.getBankApproved());
             response.setBanks(projectDetails.getBanks());
@@ -577,4 +605,124 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             throw new RuntimeException("Error converting list to JSON", e);
         }
     }
+    
+    
+//     public List<GetEntityResponse> searchEntities(String name, String location, Integer minPrice, Integer maxPrice,Integer bhkType) {
+//     List<GetEntityResponse> results = entityRepository.searchProjects(name, location, minPrice, maxPrice,bhkType);
+
+//     for (GetEntityResponse response : results) {
+//         if (response.getProjectImages() == null) {
+//             response.setProjectImages(Collections.emptyList()); // Prevents null errors
+//         }
+//     }
+
+//     return results;
+// // }
+// public List<ProjectSearchProjection> searchProjects(String location, Integer minBudget, Integer maxBudget) {
+//     return projectRepository.searchProjects(location, minBudget, maxBudget);
+// }
+// public List<Project> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
+//         return projectRepository.findAll((root, query, criteriaBuilder) -> {
+//             List<Predicate> predicates = new ArrayList<>();
+
+//             if (budgetMin != null) {
+//                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("priceMin"), budgetMin));
+//             }
+//             if (budgetMax != null) {
+//                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("priceMax"), budgetMax));
+//             }
+//             if (city != null && !city.isEmpty()) {
+//                 predicates.add(criteriaBuilder.equal(root.get("city"), city));
+//             }
+//             if (bhkType != null && !bhkType.isEmpty()) {
+//                 predicates.add(criteriaBuilder.equal(root.get("bhkType"), bhkType));
+//             }
+
+//             // Apply OR condition instead of AND
+//             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+//         });
+//     }
+
+// public List<ProjectSearchProjection> getFilteredProjects(String city) {
+//         List<Project> projects = projectRepository.findByCity(city);
+
+//         return projects.stream().map(project -> new ProjectSearchProjection(
+//                 project.getProjectName(),
+//                 project.getPropertyAreaSqmt(),
+//                 project.getProjectImages(),
+//                 project.getCity(),
+//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getUnits).sum(),
+//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0),
+//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0)
+//         )).collect(Collectors.toList());
+//     }
+public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
+    List<Project> projects = projectRepository.searchProjects(city, budgetMin, budgetMax, bhkType);
+    return projects.stream().map(this::convertToDTO).collect(Collectors.toList());
+}
+
+private ProjectSearchProjection convertToDTO(Project project) {
+    ProjectSearchProjection dto = new ProjectSearchProjection();
+    dto.setProjectName(project.getProjectName());
+    dto.setProjectAreaSqmt(project.getPropertyAreaSqmt());
+    dto.setProjectImages(project.getProjectImages());
+    dto.setLatitude(project.getLatitude());
+    dto.setLongitude(project.getLongitude());
+    dto.setCity(project.getCity());
+    dto.setAddress(project.getAddress());
+
+
+    // Handling List<ProjectDetails>
+    if (project.getProjectDetails() != null && !project.getProjectDetails().isEmpty()) {
+        // Assuming you want the first ProjectDetails (modify as needed)
+        ProjectDetails details = project.getProjectDetails().get(0);
+        dto.setPriceMin(details.getPriceMin());
+        dto.setPriceMax(details.getPriceMax());
+        dto.setUnits(details.getUnits());
+    }
+     // ✅ Dynamically check available BHK types
+     List<String> availableBHKs = new ArrayList<>();
+
+     List<OneBHKConfig> oneBHKConfigs = oneBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
+     List<TwoBHKConfig> twoBHKConfigs = twoBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
+     List<ThreeBHKConfig> threeBHKConfigs = threeBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
+
+     // Check if valid data exists
+if (!oneBHKConfigs.isEmpty() && hasValidData(oneBHKConfigs.get(0))) availableBHKs.add("1BHK");
+if (!twoBHKConfigs.isEmpty() && hasValidData(twoBHKConfigs.get(0))) availableBHKs.add("2BHK");
+if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availableBHKs.add("3BHK");
+
+    //  if (project.getOneBhkConfig() != null && hasValidData(project.getOneBhkConfig())) availableBHKs.add("1BHK");
+    //  if (project.getTwoBhkConfig() != null && hasValidData(project.getTwoBhkConfig())) availableBHKs.add("2BHK");
+    //  if (project.getThreeBhkConfig() != null && hasValidData(project.getThreeBhkConfig())) availableBHKs.add("3BHK");
+     dto.setAvailableBHKs(availableBHKs);
+
+     
+    return dto;
+}
+// private boolean hasValidData(Object config) {
+//     if (config == null) return false;
+
+//     if(config instanceof OneBHKConfig) {
+//         OneBHKConfig oneBhkConfig = (OneBHKConfig) config;
+//        return oneBhkConfig.getProject()!=null && oneBhkConfig.getProject().getProjectId() != null;
+//     }
+
+//     if(config instanceof TwoBHKConfig) {
+//         TwoBHKConfig twoBhkConfig = (TwoBHKConfig) config;
+//         return twoBhkConfig.getProject() != null && twoBhkConfig.getProject().getProjectId()!= null;
+//     }
+
+//     if(config instanceof ThreeBHKConfig) {
+//         ThreeBHKConfig threeBhkConfig = (ThreeBHKConfig) config;
+//         return threeBhkConfig.getProject() != null && threeBhkConfig.getProject().getProjectId() != null;
+//     }
+
+//     return false;
+
+
+// }
+private boolean hasValidData(BHKConfig config) {
+    return config !=null && config.getProject()!=null && config.getProject().getProjectId() != null;
+}
 }

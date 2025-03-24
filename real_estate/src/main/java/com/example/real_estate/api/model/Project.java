@@ -2,9 +2,13 @@
 package com.example.real_estate.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+
+// import org.apache.olingo.commons.api.edm.geo.SRID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.util.*;
@@ -30,6 +34,19 @@ public class Project {
     @JsonIgnore
     private Organisation organisation;
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ProjectDetails> projectDetails;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OneBHKConfig> oneBhkConfig;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+private List<TwoBHKConfig> twoBhkConfig;
+
+@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+private List<ThreeBHKConfig> threeBhkConfig;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTimeLine> timelines;
 
@@ -40,7 +57,7 @@ public class Project {
 
     @NotNull(message = "City is required")
     @Pattern(regexp = "^[A-Za-z\s]+$", message = "Invalid format")
-    @Column(name = "city", length = 50, nullable = false)
+    @Column(name = "city", length = 50, nullable = false, columnDefinition = "VARCHAR(50)")
     private String city;
 
     @NotNull(message = "Locality is required")
@@ -84,25 +101,34 @@ public class Project {
     @Column(name = "projectimages")
     private List<String> projectImages = new ArrayList<>();
 
-    @Column(name = "schools", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String schools;
+    // @Column(name = "schools", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String schools;
 
-    @Column(name = "hospitals", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String hospitals;
+    // @Column(name = "hospitals", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String hospitals;
 
-    @Column(name = "malls", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String malls;
+    // @Column(name = "malls", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String malls;
 
-    @Column(name = "movietheaters", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String movieTheaters;
+    // @Column(name = "movietheaters", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String movieTheaters;
 
-    @Column(name = "itparks", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String itParks;
+    // @Column(name = "itparks", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String itParks;
+
+    @Column(columnDefinition = "TEXT DEFAULT 'N'")
+    private String preferred="N";  
+    
+    // @Column(name="hangouts")
+    // private String hangouts;
+
+    // @Column(name="metro")
+    // private String metro;
 
     @Column(name = "deleted", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean deleted = false;
@@ -110,8 +136,7 @@ public class Project {
     public Project(Organisation organisation, String projectName, String city, String locality, String address,
             Double latitude, Double longitude, Integer propertyAreaSqmt,
             String reraNumber, String reraLink, String projectVideoLink,
-            List<String> projectImages, String schools, String hospitals,
-            String malls, String movieTheaters, String itParks, Boolean deleted) {
+            List<String> projectImages, String preferred, Boolean deleted) {
 
         this.organisation = organisation;
         this.projectName = projectName;
@@ -125,11 +150,7 @@ public class Project {
         this.reraLink = reraLink;
         this.projectVideoLink = projectVideoLink;
         this.projectImages = projectImages;
-        this.schools = schools;
-        this.hospitals = hospitals;
-        this.malls = malls;
-        this.movieTheaters = movieTheaters;
-        this.itParks = itParks;
+        this.preferred = preferred;
         this.deleted = deleted; // Now correctly assigned
     }
 }
