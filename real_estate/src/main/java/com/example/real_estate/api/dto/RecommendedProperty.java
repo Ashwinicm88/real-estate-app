@@ -23,7 +23,7 @@ public class RecommendedProperty{  // 🛠️ Fixed class name
     private Integer priceMin;
     private Integer priceMax;
     private Boolean allInclusive;
-    private String Amenities;
+    // private String Amenities;
     private String coveredParking;
     private Boolean bankApproved;
     private List<String> banks;
@@ -44,7 +44,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // this.priceMin = projectDetails.getPriceMin() != null ? projectDetails.getPriceMin() : 0.0;
         // this.priceMax = projectDetails.getPriceMax() != null ? projectDetails.getPriceMax() : 0.0;
         this.allInclusive = projectDetails.getAllInclusive();
-        this.Amenities = projectDetails.getAmenities();
+        // this.Amenities = projectDetails.getAmenities();
         // this.coveredParking = projectDetails.getCoveredParking() != null ? projectDetails.getCoveredParking() : 0;
         this.coveredParking = projectDetails.getCoveredParking();
         this.bankApproved = projectDetails.getBankApproved();
@@ -111,8 +111,8 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public Boolean getAllInclusive() { return allInclusive; }
     public void setAllInclusive(Boolean allInclusive) { this.allInclusive = allInclusive; }
 
-    public String getAmenities() { return Amenities; }
-    public void setAmenities(String Amenities) { this.Amenities = Amenities; }
+    // public String getAmenities() { return Amenities; }
+    // public void setAmenities(String Amenities) { this.Amenities = Amenities; }
 
     // public List<String> getAllInclusiveAmenities() { return allInclusive; }
     // public void setAllInclusiveAmenities(List<String> allInclusiveAmenities) { this.allInclusiveAmenities = allInclusiveAmenities; }

@@ -76,6 +76,8 @@ const PropertyList = ({ properties }) => {
  
             {/* ✅ Budget */}
             <p className="text-white">
+            
+            
               {property.address || "N/A"}
             </p>
           </div>

@@ -62,9 +62,9 @@ public class ProjectDetails {
     @Column(name = "bankapproved", nullable = false)
     private Boolean bankApproved;
 
-    @Column(name = "amenities", columnDefinition = "TEXT")
-    // @Pattern(message="Amenities should contain only letters, numbers, commas, and spaces", regexp = "^[A-Za-z\\\\s]+(,[A-Za-z\\\\s]+)*$")
-    private String amenities;
+    // @Column(name = "amenities", columnDefinition = "TEXT")
+    // // @Pattern(message="Amenities should contain only letters, numbers, commas, and spaces", regexp = "^[A-Za-z\\\\s]+(,[A-Za-z\\\\s]+)*$")
+    // private String amenities;
 
     @Column(name = "coveredparking", nullable = false, columnDefinition = "TEXT")
     @Pattern(message="Covered parking details should contain only letters and spaces", regexp = "^[A-Za-z\\s]+$")
@@ -83,8 +83,8 @@ public class ProjectDetails {
     }
 
     public ProjectDetails(Project project, Integer units, String projectStatus, Date projectLaunch, 
-                      Date projectPlannedEnd, Integer priceMin, Integer priceMax, Boolean allInclusive, 
-                      String amenities, String coveredParking, Boolean bankApproved, String banks) {
+                      Date projectPlannedEnd, Integer priceMin, Integer priceMax, Boolean allInclusive
+                      , String coveredParking, Boolean bankApproved, String banks) {
         this.project = project;
         this.units = units;
         this.projectStatus = projectStatus;
@@ -93,7 +93,6 @@ public class ProjectDetails {
         this.priceMin = priceMin;
         this.priceMax = priceMax;
         this.allInclusive = allInclusive;
-        this.amenities = amenities;
         this.coveredParking = coveredParking;
         this.bankApproved = bankApproved;
         this.banks = banks;

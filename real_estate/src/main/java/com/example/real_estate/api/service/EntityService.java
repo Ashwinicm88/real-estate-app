@@ -62,6 +62,12 @@ public class EntityService {
     @Autowired
     private ProjectTimeLineRepository projectTimeLineRepository;
 
+    @Autowired
+    private NearbyRepository nearbyRepository;
+
+    @Autowired
+    private AmenitiesRepository amenitiesRepository;
+
     // @Autowired
     // private EntityRepository entityRepository;
 
@@ -97,13 +103,13 @@ public class EntityService {
 
         // ✅ Convert List<String> to JSON String or CSV format
         // String projectImages = convertListToJson(request.getProjectImages());
-        String schools = convertListToJson(request.getSchools());
-        String hospitals = convertListToJson(request.getHospitals());
-        String malls = convertListToJson(request.getMalls());
-        String movieTheaters = convertListToJson(request.getMovieTheaters());
-        String itParks = convertListToJson(request.getItParks()); 
-        String hangouts = convertListToJson(request.getHangouts());
-        String metro = convertListToJson(request.getMetro());
+        // String schools = convertListToJson(request.getSchools());
+        // String hospitals = convertListToJson(request.getHospitals());
+        // String malls = convertListToJson(request.getMalls());
+        // String movieTheaters = convertListToJson(request.getMovieTheaters());
+        // String itParks = convertListToJson(request.getItParks()); 
+        // String hangouts = convertListToJson(request.getHangouts());
+        // String metro = convertListToJson(request.getMetro());
 
 
         // ✅ Save Project
@@ -123,13 +129,13 @@ public class EntityService {
                 // request.getProjectVideoLink(),
                 // new ArrayList<>(),
                 // request.getProjectImages(),
-                schools,
-                hospitals,
-                malls,
-                movieTheaters,
-                itParks,
-                hangouts,
-                metro,
+                // schools,
+                // hospitals,
+                // malls,
+                // movieTheaters,
+                // itParks,
+                // hangouts,
+                // metro,
                 request.getPreferred() != null ? request.getPreferred() : "N", // Default preferred to 'N' if not provided
                 false // Default 'deleted' to false
 
@@ -152,7 +158,7 @@ public class EntityService {
                 request.getPriceMin(),
                 request.getPriceMax(),
                 request.getAllInclusive(),
-                request.getAmenities(),
+                // request.getAmenities(),
                 request.getCoveredParking(),
                 request.getBankApproved(),
                 request.getBanks()
@@ -161,6 +167,33 @@ public class EntityService {
         // Save to database
         projectDetails = projectDetailsRepository.save(projectDetails);
         System.out.println("✅ Project Details Saved with ID: " + projectDetails.getDetailId());
+
+        Amenities amenities = new Amenities(
+            project,
+            request.getSwimming_pool(),
+            request.getTemple(),
+            request.getGym(),
+            request.getCreche(),
+            request.getChildren_parks(),
+            request.getPark(),
+            request.getClub_house(),
+            request.getC_hall(),
+            request.getOther()
+            );
+        amenities = amenitiesRepository.save(amenities);
+        System.out.println("✅ Amenities Saved with ID: " + amenities.getAmenityId());
+
+        Nearby nearby = new Nearby(
+            project,
+            request.getSchools(),
+            request.getHospitals(),
+            request.getIt_parks(),
+            request.getHangouts(),
+            request.getCinemas(),
+            request.getMetro()
+            );
+        nearby = nearbyRepository.save(nearby);
+        System.out.println("✅ Nearby Saved with ID: " + nearby.getNearId());
 
 
         if (request.getOneBHKConfig() != null && !request.getOneBHKConfig().isEmpty()) {
@@ -421,6 +454,8 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
 } else {
     System.out.println("❌ No Project Timeline found. Skipping save.");
 }
+
+
 // catch(JsonProcessingException e){
 //     throw new RuntimeException("Failed to to parse JSON",e);
 // }
@@ -457,10 +492,10 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
                 response.setProjectVideoLink(project.getProjectVideoLink());
                 response.setProjectImages(project.getProjectImages());
                 // response.setProjectImages(Arrays.asList(project.getProjectImages()));
-                response.setSchools(Arrays.asList(project.getSchools().split(",")));
-                response.setHospitals(Arrays.asList(project.getHospitals().split(",")));
-                response.setMalls(Arrays.asList(project.getMalls().split(",")));
-                response.setMovieTheaters(Arrays.asList(project.getMovieTheaters().split(",")));
+                // response.setSchools(Arrays.asList(project.getSchools().split(",")));
+                // response.setHospitals(Arrays.asList(project.getHospitals().split(",")));
+                // response.setMalls(Arrays.asList(project.getMalls().split(",")));
+                // response.setMovieTheaters(Arrays.asList(project.getMovieTheaters().split(",")));
 
                 if (projectDetails != null) {
                     response.setUnits(projectDetails.getUnits());
@@ -475,7 +510,7 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
                     response.setPriceMin(projectDetails.getPriceMin());
                     response.setPriceMax(projectDetails.getPriceMax());
                     response.setAllInclusive(projectDetails.getAllInclusive());
-                    response.setAmenities(projectDetails.getAmenities());
+                    // response.setAmenities(projectDetails.getAmenities());
                     response.setCoveredParking(projectDetails.getCoveredParking());
                     response.setBankApproved(projectDetails.getBankApproved());
                     response.setBanks(projectDetails.getBanks());
@@ -536,10 +571,10 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
         response.setProjectVideoLink(latestProject.getProjectVideoLink());
         response.setProjectImages(latestProject.getProjectImages());
         // response.setProjectImages(Arrays.asList(latestProject.getProjectImages().split(",")));
-        response.setSchools(Arrays.asList(latestProject.getSchools().split(",")));
-        response.setHospitals(Arrays.asList(latestProject.getHospitals().split(",")));
-        response.setMalls(Arrays.asList(latestProject.getMalls().split(",")));
-        response.setMovieTheaters(Arrays.asList(latestProject.getMovieTheaters().split(",")));
+        // response.setSchools(Arrays.asList(latestProject.getSchools().split(",")));
+        // response.setHospitals(Arrays.asList(latestProject.getHospitals().split(",")));
+        // response.setMalls(Arrays.asList(latestProject.getMalls().split(",")));
+        // response.setMovieTheaters(Arrays.asList(latestProject.getMovieTheaters().split(",")));
     
         if (projectDetails != null) {
             response.setUnits(projectDetails.getUnits());
@@ -553,7 +588,7 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             response.setPriceMin(projectDetails.getPriceMin());
             response.setPriceMax(projectDetails.getPriceMax());
             response.setAllInclusive(projectDetails.getAllInclusive());
-            response.setAmenities(projectDetails.getAmenities());
+            // response.setAmenities(projectDetails.getAmenities());
             response.setCoveredParking(projectDetails.getCoveredParking());
             response.setBankApproved(projectDetails.getBankApproved());
             response.setBanks(projectDetails.getBanks());

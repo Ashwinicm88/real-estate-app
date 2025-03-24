@@ -43,26 +43,26 @@ public class CreateEntityRequest {
     @JsonProperty("projectimages")
     private List<String> projectImages;
 
-    @JsonProperty("schools")
-    private List<String> schools;
+    // @JsonProperty("schools")
+    // private List<String> schools;
 
-    @JsonProperty("hospitals")
-    private List<String> hospitals;
+    // @JsonProperty("hospitals")
+    // private List<String> hospitals;
 
-    @JsonProperty("malls")
-    private List<String> malls;
+    // @JsonProperty("malls")
+    // private List<String> malls;
 
-    @JsonProperty("movieTheaters")
-    private List<String> movieTheaters;
+    // @JsonProperty("movieTheaters")
+    // private List<String> movieTheaters;
 
-    @JsonProperty("itParks")
-    private List<String> itParks;
+    // @JsonProperty("itParks")
+    // private List<String> itParks;
 
-    @JsonProperty("hangouts")
-    private List<String> hangouts;
+    // @JsonProperty("hangouts")
+    // private List<String> hangouts;
 
-    @JsonProperty("metro")
-    private List<String> metro;
+    // @JsonProperty("metro")
+    // private List<String> metro;
 
 
      // Project Details Fields
@@ -74,10 +74,32 @@ public class CreateEntityRequest {
      private Integer priceMax;
      private Boolean allInclusive;
      
-     private String amenities;
+    //  private String amenities;
      private String coveredParking;
      private Boolean bankApproved;
      private String banks;
+
+
+    //Amenities Details
+    private String swimming_pool;
+    private String temple;
+    private String gym;
+    private String creche;
+    private String children_parks;
+    private String park;
+    private String club_house;
+    private String c_hall;
+    private String other;
+
+    //Nearby Details
+    private String schools;
+    private String hospitals;
+    private String malls;
+    private String movieTheaters;
+    private String it_parks;
+    private String hangouts;
+    private String cinemas;
+    private String metro;
 
     // BHK Configurations
     @JsonProperty("oneBHKConfig")

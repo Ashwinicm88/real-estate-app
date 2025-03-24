@@ -101,34 +101,34 @@ private List<ThreeBHKConfig> threeBhkConfig;
     @Column(name = "projectimages")
     private List<String> projectImages = new ArrayList<>();
 
-    @Column(name = "schools", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String schools;
+    // @Column(name = "schools", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String schools;
 
-    @Column(name = "hospitals", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String hospitals;
+    // @Column(name = "hospitals", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String hospitals;
 
-    @Column(name = "malls", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String malls;
+    // @Column(name = "malls", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String malls;
 
-    @Column(name = "movietheaters", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String movieTheaters;
+    // @Column(name = "movietheaters", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String movieTheaters;
 
-    @Column(name = "itparks", columnDefinition = "TEXT")
-    // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
-    private String itParks;
+    // @Column(name = "itparks", columnDefinition = "TEXT")
+    // // @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "Invalid format")
+    // private String itParks;
 
     @Column(columnDefinition = "TEXT DEFAULT 'N'")
-    private String preferred;  
+    private String preferred="N";  
     
-    @Column(name="hangouts")
-    private String hangouts;
+    // @Column(name="hangouts")
+    // private String hangouts;
 
-    @Column(name="metro")
-    private String metro;
+    // @Column(name="metro")
+    // private String metro;
 
     @Column(name = "deleted", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean deleted = false;
@@ -136,8 +136,7 @@ private List<ThreeBHKConfig> threeBhkConfig;
     public Project(Organisation organisation, String projectName, String city, String locality, String address,
             Double latitude, Double longitude, Integer propertyAreaSqmt,
             String reraNumber, String reraLink, String projectVideoLink,
-            List<String> projectImages, String schools, String hospitals,
-            String malls, String movieTheaters, String itParks, String preferred,String hangouts, String metro, Boolean deleted) {
+            List<String> projectImages, String preferred, Boolean deleted) {
 
         this.organisation = organisation;
         this.projectName = projectName;
@@ -151,14 +150,7 @@ private List<ThreeBHKConfig> threeBhkConfig;
         this.reraLink = reraLink;
         this.projectVideoLink = projectVideoLink;
         this.projectImages = projectImages;
-        this.schools = schools;
-        this.hospitals = hospitals;
-        this.malls = malls;
-        this.movieTheaters = movieTheaters;
-        this.itParks = itParks;
         this.preferred = preferred;
-        this.hangouts = hangouts;
-        this.metro= metro;
         this.deleted = deleted; // Now correctly assigned
     }
 }
