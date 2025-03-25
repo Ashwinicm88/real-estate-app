@@ -3121,8 +3121,7 @@ const MultiStageForm = () => {
                           ))}
                         </ul>
                       </div>
-                    )}
-                    {/* Balcony */}
+                    )}          {/* Balcony */}
                     <InputField
                       label="Balcony Availability"
                       section={`fiveBHKConfig[${index}]`}
