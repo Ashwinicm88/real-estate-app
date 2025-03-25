@@ -102,7 +102,7 @@ const Display_D = () => {
     {/* Map and Properties Section */}
 
       {/* Map Section */}
-      <div className="w-full h-96 mb-4">
+      <div className="w-full h-90 mb-4">
         <MapComponent center={mapCenter} properties={filteredProperties} />
       </div>
 

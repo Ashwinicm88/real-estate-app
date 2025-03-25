@@ -1,3 +1,33 @@
+// import React from "react";
+// import { FaBars } from "react-icons/fa";
+// import { IoCalendarOutline } from "react-icons/io5";
+
+// const Header = () => {
+//   return (
+//     <header className="fixed top-0 left-0 right-0 z-50 max-w-7xl mx-auto flex items-center justify-between px-6 py-4 border-b border-zinc-50 text-white bg-black shadow-md  ">
+//       {/* Left: Hamburger Menu + App Name */}
+//       <div className="flex items-center gap-4">
+//         <button className="text-white">
+//           <FaBars size={24} />
+//         </button>
+//         <span className="text-lg sm:text-xl font-semibold text-yellow-500">
+//           Casa
+//         </span>
+//       </div>
+
+//       {/* Center: Logo/Icon (Hidden on Small Screens) */}
+//       <div className="hidden sm:block text-xl font-bold">ICON</div>
+
+//       {/* Right: Book Consultation */}
+//       <button className="flex items-center gap-2 text-yellow-400 hover:underline text-sm sm:text-base">
+//         <IoCalendarOutline size={20} />
+//         Book Consultation
+//       </button>
+//     </header>
+//   );
+// };
+
+// export default Header;
 import React from "react";
 import { FaBars } from "react-icons/fa";
 import { IoCalendarOutline } from "react-icons/io5";
@@ -17,10 +47,17 @@ const Header = () => {
               Casa
             </span>
           </div>
+<<<<<<< HEAD
  
           {/* Center: Logo/Icon (Hidden on Small Screens) */}
           <div className="hidden sm:block text-xl font-bold">ICON</div>
  
+=======
+
+          {/* Center: Logo/Icon (Hidden on Small Screens) */}
+          <div className="hidden sm:block text-xl font-bold">ICON</div>
+
+>>>>>>> 804eb2b (Home Page Design Completed)
           {/* Right: Book Consultation */}
           <button className="flex items-center gap-2 text-yellow-400 hover:underline text-sm sm:text-base">
             <IoCalendarOutline size={20} />
@@ -33,3 +70,4 @@ const Header = () => {
 };
  
 export default Header;
+
