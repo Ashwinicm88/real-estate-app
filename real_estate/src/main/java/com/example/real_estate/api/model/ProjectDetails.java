@@ -74,7 +74,7 @@ public class ProjectDetails {
     // @Pattern(message="Banks should contain only letters, numbers, commas, and spaces", regexp = "^[A-Za-z\\\\s]+(,[A-Za-z\\\\s]+)*$")
     private String banks;
 
-    @PrePersist
+        @PrePersist
     @PreUpdate
     private void validatePriceRange() {
         if (priceMin != null && priceMax != null && priceMin >= priceMax) {

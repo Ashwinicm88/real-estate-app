@@ -6,9 +6,12 @@ import com.example.real_estate.api.repository.*;
 import com.example.real_estate.api.config.CorsConfig;
 import com.example.real_estate.api.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 // import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+// import com.example.real_estate.api.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.example.real_estate.api.service.FileUploadService;
@@ -615,57 +618,6 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             throw new RuntimeException("Error converting list to JSON", e);
         }
     }
-    
-    
-//     public List<GetEntityResponse> searchEntities(String name, String location, Integer minPrice, Integer maxPrice,Integer bhkType) {
-//     List<GetEntityResponse> results = entityRepository.searchProjects(name, location, minPrice, maxPrice,bhkType);
-
-//     for (GetEntityResponse response : results) {
-//         if (response.getProjectImages() == null) {
-//             response.setProjectImages(Collections.emptyList()); // Prevents null errors
-//         }
-//     }
-
-//     return results;
-// // }
-// public List<ProjectSearchProjection> searchProjects(String location, Integer minBudget, Integer maxBudget) {
-//     return projectRepository.searchProjects(location, minBudget, maxBudget);
-// }
-// public List<Project> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
-//         return projectRepository.findAll((root, query, criteriaBuilder) -> {
-//             List<Predicate> predicates = new ArrayList<>();
-
-//             if (budgetMin != null) {
-//                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("priceMin"), budgetMin));
-//             }
-//             if (budgetMax != null) {
-//                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("priceMax"), budgetMax));
-//             }
-//             if (city != null && !city.isEmpty()) {
-//                 predicates.add(criteriaBuilder.equal(root.get("city"), city));
-//             }
-//             if (bhkType != null && !bhkType.isEmpty()) {
-//                 predicates.add(criteriaBuilder.equal(root.get("bhkType"), bhkType));
-//             }
-
-//             // Apply OR condition instead of AND
-//             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
-//         });
-//     }
-
-// public List<ProjectSearchProjection> getFilteredProjects(String city) {
-//         List<Project> projects = projectRepository.findByCity(city);
-
-//         return projects.stream().map(project -> new ProjectSearchProjection(
-//                 project.getProjectName(),
-//                 project.getPropertyAreaSqmt(),
-//                 project.getProjectImages(),
-//                 project.getCity(),
-//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getUnits).sum(),
-//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0),
-//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0)
-//         )).collect(Collectors.toList());
-//     }
 public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
     List<Project> projects = projectRepository.searchProjects(city, budgetMin, budgetMax, bhkType);
     return projects.stream().map(this::convertToDTO).collect(Collectors.toList());
@@ -710,29 +662,122 @@ if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availabl
      
     return dto;
 }
-// private boolean hasValidData(Object config) {
-//     if (config == null) return false;
 
-//     if(config instanceof OneBHKConfig) {
-//         OneBHKConfig oneBhkConfig = (OneBHKConfig) config;
-//        return oneBhkConfig.getProject()!=null && oneBhkConfig.getProject().getProjectId() != null;
-//     }
-
-//     if(config instanceof TwoBHKConfig) {
-//         TwoBHKConfig twoBhkConfig = (TwoBHKConfig) config;
-//         return twoBhkConfig.getProject() != null && twoBhkConfig.getProject().getProjectId()!= null;
-//     }
-
-//     if(config instanceof ThreeBHKConfig) {
-//         ThreeBHKConfig threeBhkConfig = (ThreeBHKConfig) config;
-//         return threeBhkConfig.getProject() != null && threeBhkConfig.getProject().getProjectId() != null;
-//     }
-
-//     return false;
-
-
-// }
 private boolean hasValidData(BHKConfig config) {
     return config !=null && config.getProject()!=null && config.getProject().getProjectId() != null;
 }
+
+// public CardDetails getProjectById(Integer id) {
+//     Project project = projectRepository.findById(id)
+//             .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + id));
+
+//     // Fetch related entities
+//     List<ProjectDetails> projectDetails = projectDetailsRepository.findByProjectId(id);
+//     Amenities amenities = amenitiesRepository.findByProjectId(id);
+//     Nearby nearby = nearbyRepository.findByProjectId(id);
+//     OneBHKConfig oneBHKConfig = oneBHKConfigRepository.findByProjectId(id);
+//     TwoBHKConfig twoBHKConfig = twoBHKConfigRepository.findByProjectId(id);
+//     ThreeBHKConfig threeBHKConfig = threeBHKConfigRepository.findByProjectId(id);
+
+//     // Construct response DTO
+//     CardDetails cardDetails = new CardDetails();
+//     cardDetails.setProjectName(project.getProjectName());
+//     cardDetails.setAddress(project.getAddress());
+//     cardDetails.setProjectImages(project.getProjectImages());
+
+//     // Set price range
+//     if (projectDetails != null) {
+//         cardDetails.setPriceMin(projectDetails.getpriceMin());
+//         cardDetails.setPriceMax(projectDetails.getPriceMax());
+//     }
+
+//     // Set amenities details
+//     if (amenities != null) {
+//         cardDetails.setSwimming_Pool(Collections.singletonList(amenities.getSwimming_pool()));
+//         cardDetails.setGym(Collections.singletonList(amenities.getGym()));
+//         cardDetails.setTemple(Collections.singletonList(amenities.getTemple()));
+//         cardDetails.setPark(Collections.singletonList(amenities.getPark()));
+//         cardDetails.setCreche(Collections.singletonList(amenities.getCreche()));
+//         cardDetails.setChildren_parks(Collections.singletonList(amenities.getChildren_parks()));
+//         cardDetails.setClub_house(Collections.singletonList(amenities.getClub_house()));
+//         cardDetails.setC_hall(Collections.singletonList(amenities.getC_hall()));
+//         cardDetails.setOther(Collections.singletonList(amenities.getOther()));
+//     }
+
+//     // Set nearby places
+//     if (nearby != null) {
+//         cardDetails.setSchools(Collections.singletonList(nearby.getSchools()));
+//         cardDetails.setHospitals(Collections.singletonList(nearby.getHospitals()));
+//         cardDetails.setIt_parks(Collections.singletonList(nearby.getIt_parks()));
+//         cardDetails.setHangouts(Collections.singletonList(nearby.getHangouts()));
+//         cardDetails.setCinemas(Collections.singletonList(nearby.getCinemas()));
+//         cardDetails.setMetro(Collections.singletonList(nearby.getMetro()));
+//     }
+
+//     // Set BHK configurations
+//     cardDetails.setOneBHKConfig(oneBHKConfig);
+//     cardDetails.setTwoBHKConfig(twoBHKConfig);
+//     cardDetails.setThreeBHKConfig(threeBHKConfig);
+
+//     return cardDetails;
+// }
+
+public CardDetails getProjectById(Integer id) {
+    Project project = projectRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with ID: " + id));
+
+    // Fetch related entities
+    List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(id);
+    Amenities amenities = amenitiesRepository.findByProject_ProjectId(id);
+    Nearby nearby = nearbyRepository.findByProject_ProjectId(id);
+    List<OneBHKConfig> oneBHKConfig = oneBHKConfigRepository.findByProject_ProjectId(id);
+    List<TwoBHKConfig> twoBHKConfig = twoBHKConfigRepository.findByProject_ProjectId(id);
+    List<ThreeBHKConfig> threeBHKConfig = threeBHKConfigRepository.findByProject_ProjectId(id);
+
+    // Construct response DTO
+    CardDetails cardDetails = new CardDetails();
+    cardDetails.setProjectName(project.getProjectName());
+    cardDetails.setAddress(project.getAddress());
+    cardDetails.setProjectImages(project.getProjectImages());
+
+    // Set price range from multiple ProjectDetails entries
+    if (!projectDetailsList.isEmpty()) {
+        int minPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0);
+        int maxPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0);
+        cardDetails.setPriceMin(minPrice);
+        cardDetails.setPriceMax(maxPrice);
+    }
+
+    // Set amenities details
+    if (amenities != null) {
+        cardDetails.setSwimming_Pool(Collections.singletonList(amenities.getSwimming_pool()));
+        cardDetails.setGym(Collections.singletonList(amenities.getGym()));
+        cardDetails.setTemple(Collections.singletonList(amenities.getTemple()));
+        cardDetails.setPark(Collections.singletonList(amenities.getPark()));
+        cardDetails.setCreche(Collections.singletonList(amenities.getCreche()));
+        cardDetails.setChildren_parks(Collections.singletonList(amenities.getChildren_parks()));
+        cardDetails.setClub_house(Collections.singletonList(amenities.getClub_house()));
+        cardDetails.setC_hall(Collections.singletonList(amenities.getC_hall()));
+        cardDetails.setOther(Collections.singletonList(amenities.getOther()));
+    }
+
+    // Set nearby places
+    if (nearby != null) {
+        cardDetails.setSchools(Collections.singletonList(nearby.getSchools()));
+        cardDetails.setHospitals(Collections.singletonList(nearby.getHospitals()));
+        cardDetails.setIt_parks(Collections.singletonList(nearby.getIt_parks()));
+        cardDetails.setHangouts(Collections.singletonList(nearby.getHangouts()));
+        cardDetails.setCinemas(Collections.singletonList(nearby.getCinemas()));
+        cardDetails.setMetro(Collections.singletonList(nearby.getMetro()));
+    }
+
+    // Set BHK configurations
+    cardDetails.setOneBHKConfig(oneBHKConfig);
+    cardDetails.setTwoBHKConfig(twoBHKConfig);
+    cardDetails.setThreeBHKConfig(threeBHKConfig);
+
+    return cardDetails;
+}
+
+
 }

@@ -230,7 +230,7 @@ public ResponseEntity<?> searchProjects(
     return ResponseEntity.ok(result);
 }
 
-    @GetMapping("/recommended-properties")
+@GetMapping("/recommended-properties")
 public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
     List<Project> projects = projectRepository.findByPreferred("Y"); // Fetch only preferred projects
     List<RecommendedProperty> recommendedProperties = new ArrayList<>();
@@ -246,6 +246,18 @@ public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
     }
 
     return ResponseEntity.ok(recommendedProperties);
+}
+// @GetMapping("/project/{id}")
+// public ResponseEntity<GetEntityResponse> getProjectById(@PathVariable Long id) {
+//     GetEntityResponse response = entityService.getProjectById(id);
+//     return response != null
+//             ? ResponseEntity.ok(response)
+//             : ResponseEntity.notFound().build();
+// }
+@GetMapping("/{id}")
+public ResponseEntity<CardDetails> getProjectById(@PathVariable Integer id) {
+    CardDetails cardDetails = entityService.getProjectById(id);
+    return ResponseEntity.ok(cardDetails);
 }
 
 }

@@ -13,15 +13,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ProjectDetailsRepository extends JpaRepository<ProjectDetails, Integer> {
-//     // Optional<ProjectDetails> findByProject_ProjectId(Integer projectId);
-// @Query("SELECT pd FROM ProjectDetails pd WHERE pd.project.projectId = :projectId")
-// Optional<ProjectDetails> findByProjectId(@Param("projectId") Integer projectId);
-
-// List<ProjectDetails> findByProject(Project project);
-// Fetch project details using projectId directly
-// @Query("SELECT pd FROM ProjectDetails pd WHERE pd.project.projectId = :projectId")
-// List<ProjectDetails> findByProjectId(@Param("projectId") Integer projectId);
-// If you need multiple records (List<ProjectDetails>)
 @Query("SELECT pd FROM ProjectDetails pd WHERE pd.project.projectId = :projectId")
 List<ProjectDetails> findByProjectId(@Param("projectId") Integer projectId);
 
@@ -31,9 +22,6 @@ Optional<ProjectDetails> findFirstByProjectId(@Param("projectId") Integer projec
 // Fetch project details using a Project entity
 List<ProjectDetails> findByProject(Project project);
 
-    // Optional<ProjectDetails> findByProjectId(Integer projectId);
-    // Optional<ProjectDetails> findByProjectDetailId(Integer detailId);a
-    // Optional<ProjectDetails> findByProject(Project project);
 }
 
 

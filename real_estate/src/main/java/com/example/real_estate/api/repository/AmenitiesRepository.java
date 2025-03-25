@@ -7,5 +7,7 @@ import com.example.real_estate.api.model.Amenities;
 
 @Repository
 public interface AmenitiesRepository extends JpaRepository<Amenities, Integer> {
+
+    Amenities findByProject_ProjectId(Integer projectId); // Return a list if multiple entries exis 
     
 }
