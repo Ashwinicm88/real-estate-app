@@ -4,12 +4,20 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Custom arrows
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 804eb2b (Home Page Design Completed)
 const CustomSwiper = ({ images }) => {
   if (!images || images.length === 0) {
     return <p className="text-gray-400 text-center">No images available.</p>;
   }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 804eb2b (Home Page Design Completed)
   return (
     <div className="relative">
       {/* ✅ Swiper Component */}
@@ -30,7 +38,11 @@ const CustomSwiper = ({ images }) => {
             className="w-full h-full object-cover rounded-lg"
           />
         </SwiperSlide>
+<<<<<<< HEAD
        
+=======
+        
+>>>>>>> 804eb2b (Home Page Design Completed)
         ))}
         {/* ✅ Tailwind-styled pagination bullets */}
       <div className="swiper-pagination peer hidden"></div>
@@ -46,17 +58,30 @@ const CustomSwiper = ({ images }) => {
         `}
       </style>
       </Swiper>
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 804eb2b (Home Page Design Completed)
       {/* ✅ Custom Arrows */}
       <button className="custom-prev absolute top-1/2 left-2 transform -translate-y-1/2 z-10 bg-transparent text-gray-700 p-2 rounded-full shadow-md">
         <FaChevronLeft size={20} />
       </button>
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> 804eb2b (Home Page Design Completed)
       <button className="custom-next absolute top-1/2 right-2 transform -translate-y-1/2 z-10 bg-transparent text-gray-700 p-2 rounded-full shadow-md">
         <FaChevronRight size={20} />
       </button>
     </div>
   );
 };
+<<<<<<< HEAD
  
 export default CustomSwiper;
+=======
+
+export default CustomSwiper;
+>>>>>>> 804eb2b (Home Page Design Completed)

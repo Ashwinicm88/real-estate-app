@@ -3125,6 +3125,7 @@ const MultiStageForm = () => {
 
 
 
+<<<<<<< HEAD
 
                     {/* Balcony */}
                     <InputField
@@ -3147,6 +3148,8 @@ const MultiStageForm = () => {
                       error={warnings.fiveBHKConfig?.[index]?.type5parking}
                     />
 
+=======
+>>>>>>> 804eb2b (Home Page Design Completed)
 
                     <div className="mt-4 flex items-center mx-10 ">
                       <input
