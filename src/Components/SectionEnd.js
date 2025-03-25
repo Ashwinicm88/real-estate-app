@@ -57,7 +57,7 @@
 // export default Footer;
 import React from 'react';
 import { FaPhoneAlt } from 'react-icons/fa'; // Import the phone icon
-
+ 
 const Footer = () => {
   return (
     <footer className="bg-black text-gray-200 w-full pb-20">
@@ -67,7 +67,7 @@ const Footer = () => {
           <h2 className="text-xl font-bold text-white">Company Logo & Company Name</h2>
           <p className="text-gray-400">Company Motto</p>
         </div>
-
+ 
         {/* Footer Links Section - Evenly Spaced Columns */}
         <div className="flex flex-col sm:flex-row justify-between">
           {/* About ABC */}
@@ -79,7 +79,7 @@ const Footer = () => {
               <li><a href="/" className="hover:text-gray-400">Privacy Policy</a></li>
             </ul>
           </div>
-
+ 
           {/* Partners */}
           <div className="w-full sm:w-1/4 mb-4 sm:mb-0">
             <h3 className="text-lg font-bold text-white">Partners</h3>
@@ -89,7 +89,7 @@ const Footer = () => {
               <li><a href="/" className="hover:text-gray-400">Builders</a></li>
             </ul>
           </div>
-
+ 
           {/* Resources */}
           <div className="w-full sm:w-1/4 mb-4 sm:mb-0">
             <h3 className="text-lg font-bold text-white">Resources</h3>
@@ -101,7 +101,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
+ 
       {/* Book Consultation - Centered */}
       <div className="flex justify-center items-center py-6 border-b border-gray-700">
         <FaPhoneAlt className="text-red-500 text-lg mr-2" /> {/* Phone icon */}
@@ -110,5 +110,5 @@ const Footer = () => {
     </footer>
   );
 };
-
+ 
 export default Footer;

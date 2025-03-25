@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
+import axios from "axios";
 
 import {
   Button,
@@ -11,13 +12,14 @@ import {
   Grid,
   FormGroup,
 } from "@mui/material";
-import InputField from "./InputField";
-import DropdownField from "./DropdownField";
-import DatePicker from "./DateController";
-import CheckBox from "./CheckBoxControl";
+import InputField from "../Components/InputField";
+import DropdownField from "../Components/DropdownField";
+import DatePicker from "../Components/DateController";
+import CheckBox from "../Components/CheckBoxControl";
 import Header from "./Header";
-import ImageUpload from "./ImageUploader";
-import VideoUpload from "./VideoUploader";
+import ImageUpload from "../Components/ImageUpload";
+import VideoUpload from "../Components/VideoUpload";
+
 
 // Step Titles
 const initialSteps = [
@@ -520,9 +522,12 @@ const validationSchema = yup.object().shape({
       .required("Number of bathrooms is required")
       .min(1, "At least 1 bathroom is required"),
 
+
     penthouseBalcony: yup.string().required("Balcony details are required"),
 
+
     penthouseParking: yup.string().required("Parking information is required"),
+
 
     penthouseImages: yup
       .array()
@@ -570,7 +575,9 @@ const validationSchema = yup.object().shape({
       return acc;
     }, {}),
 
+
     enableconfig: yup.boolean(),
+
 
     // Conditional fields for additional configuration
     penthouseFloorPlan2: yup.array().when("enableconfig", {
@@ -598,6 +605,7 @@ const validationSchema = yup.object().shape({
     }),
   }),
 });
+
 
 const MultiStageForm = () => {
   useEffect(() => {
@@ -635,6 +643,8 @@ const MultiStageForm = () => {
       Images: [],
       Videos: [],
       ITpark:"",
+      // hangouts:"",
+      // metro:"",
     },
     projectDetails: {
       units: "",
@@ -742,8 +752,8 @@ const MultiStageForm = () => {
         typeNumber: 1,
         type5Units: "",
         type5area: "",
-        type5floorplan: [],
         type5images: [],
+        type5floorplan: [],
         type5Bedrooms: "",
         type5Bedroom1: "",
         type5Bedroom2: "",
@@ -822,6 +832,7 @@ const MultiStageForm = () => {
       return;
     }
 
+
     setFormData((prev) => {
       const updatedData = { ...prev };
 
@@ -871,7 +882,9 @@ const MultiStageForm = () => {
       console.log("✅ Field:", field);
       console.log("✅ Value:", value);
 
+
       await validationSchema.validateAt(`${section}.${field}`, updatedData);
+
 
       // ✅ Clear the error if validation is successful
       setWarnings((prev) => {
@@ -1026,7 +1039,9 @@ const MultiStageForm = () => {
         }));
       }
 
+
       console.log("✅ Stage data cached: ", cachedData);
+
 
       // 4. Navigate to the correct next stage based on conditions
       if (stage < Object.keys(requiredFields).length - 1) {
@@ -1187,6 +1202,346 @@ const MultiStageForm = () => {
       console.error("🚨 Error in nextStage: ", error);
     }
   };
+  const handleSubmit = async () => {
+    try {
+      // Create FormData object
+      // const formData = new FormData();
+  
+      const stateData={...formData};
+  
+      const formDataToSend=new FormData();
+  
+      // Convert JSON payload to a string and add it to FormData
+      const payload = {
+        organisationName: stateData.organization?.orgName || "",
+        organisationCin: stateData.organization?.orgCIN || "",
+        organisationOwners: stateData.organization?.orgOwners || "",
+        projectsCompleted: Number(stateData.organization?.projectsCompleted) || 0,
+  
+        projectName: stateData.project?.projectname || "",
+        city: stateData.project?.city || "",
+        locality: stateData.project?.locality || "",
+        address: stateData.project?.address || "",
+        latitude: isNaN(parseFloat(stateData.project?.latitude)) ? null : parseFloat(formData.project?.latitude),
+        longitude: isNaN(parseFloat(stateData.project?.longitude)) ? null : parseFloat(formData.project?.longitude),
+        propertyAreaSqmt: isNaN(parseInt(stateData.project?.area)) ? null : parseInt(formData.project?.area),
+  
+        reraNumber: stateData.project?.reranumber || "",
+        reraLink: stateData.project?.reralink || "",
+  
+        schools: stateData.project?.schools ? stateData.project.schools.split(",") : [],
+        hospitals: stateData.project?.hospitals ? stateData.project.hospitals.split(",") : [],
+        malls: stateData.project?.malls ? stateData.project.malls.split(",") : [],
+        movieTheaters: stateData.project?.movietheater ? stateData.project.movietheater.split(",") : [],
+        itParks: stateData.project?.ITpark ? stateData.project.ITpark.split(",") : [],
+  
+        units: Number(stateData.projectDetails?.units) || 0,
+        projectStatus: stateData.projectDetails?.projectstatus || "",
+        projectLaunch: stateData.projectDetails?.projectlaunch || "",
+        projectPlannedEnd: stateData.projectDetails?.ProjectPlannedEnd || "",
+        priceMin: isNaN(parseFloat(stateData.projectDetails?.pricemin)) ? null : parseFloat(formData.projectDetails?.pricemin),
+        priceMax: isNaN(parseFloat(stateData.projectDetails?.pricemax)) ? null : parseFloat(formData.projectDetails?.pricemax),
+  
+        allInclusive: Boolean(stateData.projectDetails?.allInclusive),
+        amenities: stateData.projectDetails?.amenities || "",
+        coveredParking: stateData.projectDetails?.coveredparking || "",
+        bankApproved: Boolean(stateData.projectDetails?.bankapproved || ""),
+        banks: stateData.projectDetails?.banks || "",
+      };
+      // **Conditionally add BHK configurations based on checkbox state**
+    if (proceedToOneBHK && formData.oneBHKConfig?.length) {
+      payload.oneBHKConfig = formData.oneBHKConfig.map((config) => ({
+        typeNumber: config.typeNumber,
+        type1Units: Number(config.type1Units) > 0 ? Number(config.type1Units) : null,
+        type1Area: Number(config?.type1area) > 0 ? Number(config.type1area) : null,
+        type1Bathrooms: Number(config.type1bathrooms) || 0,
+        type1Balcony: Number(config.type1balcony) || 0,
+        type1Parking: Number(config.type1parking) || 0,
+        hallArea: config.type1HallArea || "",
+        kitchenArea: config.type1KitchenArea || "",
+        bedroom1Area: config.type1BedroomArea || "",
+        bathroom1Area: config.type1bathroom1 || "",
+        bathroom2Area: config.type1bathroom2 || "",
+      }));
+    }
+    if (proceedToTwoBHK && formData.twoBHKConfig?.length) {
+      payload.twoBHKConfig = formData.twoBHKConfig.map((config) => ({
+        typeNumber: config.typeNumber,
+        type2Units: Number(config.type2Units) > 0 ? Number(config.type2Units) : null,
+        type2Area: Number(config?.type2area) > 0 ? Number(config.type2area) : null,
+        type2Bedrooms:Number(config.type2Bedrooms)||0,
+        type2Bathrooms: Number(config.type2bathrooms) || 0,
+        type2Balcony: Number(config.type2balcony) || 0,
+        type2Parking: Number(config.type2parking) || 0,
+        hallArea: config.type2HallArea || "",
+        kitchenArea: config.type2KitchenArea || "",
+        bedroom1Area: config.type2Bedroom1 || "",
+        bedroom2Area: config.type2Bedroom2 || "",
+        bathroom1Area: config.type2bathroom1 || "",
+        bathroom2Area: config.type2bathroom2 || "",
+      }));
+    }
+    if (proceedToThreeBHK && formData.threeBHKConfig?.length) {
+      payload.threeBHKConfig = formData.threeBHKConfig.map((config) => ({
+        typeNumber: config.typeNumber,
+        type3Units: Number(config.type3Units) > 0 ? Number(config.type3Units) : null,
+        type3Area: Number(config?.type3area) > 0 ? Number(config.type3area) : null,
+        type3Bedrooms:Number(config?.type3Bedrooms) || 0,
+        type3Bathrooms: Number(config.type3bathrooms) || 0,
+        type3Balcony: Number(config.type3balcony) || 0,
+        type3Parking: Number(config.type3parking) || 0,
+        hallArea: config.type3HallArea || "",
+        kitchenArea: config.type3KitchenArea || "",
+        bedroom1Area: config.type3Bedroom1 || "",
+        bedroom2Area: config.type3Bedroom2 || "",
+        bedroom3Area: config.type3Bedroom3 || "",
+        bathroom1Area: config.type3bathroom1 || "",
+        bathroom2Area: config.type3bathroom2 || "",
+        bathroom3Area: config.type3bathroom3 || "",
+      }));
+    }
+    if (proceedToFourBHK && formData.fourBHKConfig?.length) {
+      payload.fourBHKConfig = formData.fourBHKConfig.map((config) => ({
+        typeNumber: config.typeNumber,
+          type4Units: Number(config.type4Units) > 0 ? Number(config.type4Units) : null,
+          type4Area: Number(config?.type4area) > 0 ? Number(config.type4area) : null,
+          type4Bedrooms: Number(config.type4Bedrooms) || 0,
+          type4Bathrooms: Number(config.type4bathrooms) || 0,
+          type4Balcony: Number(config.type4balcony) || 0,
+          type4Parking: Number(config.type4parking) || 0,
+          hallArea: config.type4HallArea || "",
+          kitchenArea: config.type4KitchenArea || "",
+          bedroom1Area: config.type4Bedroom1 || "",
+          bedroom2Area: config.type4Bedroom2 || "",
+          bedroom3Area: config.type4Bedroom3 || "",
+          bedroom4Area: config.type4Bedroom4 || "",
+          bathroom1Area: config.type4bathroom1 || "",
+          bathroom2Area: config.type4bathroom2 || "",
+          bathroom3Area: config.type4bathroom3 || "",
+          bathroom4Area: config.type4bathroom4 || "",
+    }));
+    }
+    if (proceedToFiveBHK && formData.fiveBHKConfig?.length) {
+      payload.fiveBHKConfig = formData.fiveBHKConfig.map((config) => ({
+        typeNumber: config.typeNumber,
+          type5Units: Number(config.type5Units) > 0 ? Number(config.type5Units) : null,
+          type5Area: Number(config?.type5area) > 0 ? Number(config.type5area) : null,
+          type5Bedrooms: Number(config.type5Bedrooms) || 0,
+          type5Bathrooms: Number(config.type5bathrooms) || 0,
+          type5Balcony: Number(config.type5balcony) || 0,
+          type5Parking: Number(config.type5parking) || 0,
+          hallArea: config.type5HallArea || "",
+          kitchenArea: config.type5KitchenArea || "",
+          bedroom1Area: config.type5Bedroom1 || "",
+          bedroom2Area: config.type5Bedroom2 || "",
+          bedroom3Area: config.type5Bedroom3 || "",
+          bedroom4Area: config.type5Bedroom4 || "",
+          bedroom5Area: config.type5Bedroom5 || "",
+          bathroom1Area: config.type5bathroom1 || "",
+          bathroom2Area: config.type5bathroom2 || "",
+          bathroom3Area: config.type5bathroom3 || "",          
+          bathroom4Area: config.type5bathroom4 || "",
+          bathroom5Area: config.type5bathroom5 || "",
+    }));
+    }
+
+    if(proceedToPentHouse && formData.penthouseConfig?.length){
+      payload.penthouseConfig = formData.penthouseConfig.map((config) => ({
+        typeNumber: config.typeNumber,
+          penthouseUnits: Number(config.penthouseUnits) > 0 ? Number(config.penthouseUnits) : null,
+          penthouseArea: Number(config?.penthouseArea) > 0 ? Number(config.penthouseArea) : null,
+          penthouseBedrooms: Number(config.penthouseBedrooms) || 0,
+          penthouseBathrooms: Number(config.penthouseBathrooms) || 0,
+          penthouseBalcony: Number(config.penthouseBalcony) || 0,
+          penthouseParking: Number(config.penthouseParking) || 0,
+          penthouseHallArea: config.hallArea || "",
+          penthouseKitchenArea: config.kitchenArea || "",
+          penthouseBedroom1Area: config.bedroom1Area || "",
+          penthouseBedroom2Area: config.bedroom2Area || "",
+          penthouseBedroom3Area: config.bedroom3Area || "",
+          penthouseBedroom4Area: config.bedroom4Area || "",
+          penthouseBedroom5Area:config.bedroom5Area || "",
+          penthouseBedroom6Area:config.bedroom6Area || "",
+          penthouseBathroom1Area: config.bathroom1Area || "",
+          penthouseBathroom2Area: config.bathroom2Area || "",
+          penthouseBathroom3Area: config.bathroom3Area || "",
+          penthouseBathroom4Area: config.bathroom4Area || "",
+          penthouseBathroom5Area: config.bathroom5Area || "",
+          penthouseBathroom6Area: config.bathroom6Area || "",
+      }));
+    }
+
+      console.log("State",stateData);
+      console.log("Payload:",payload);
+      formDataToSend.append("data",JSON.stringify(payload));
+      console.log("after appending data:",formDataToSend.get("data"));
+          // ✅ Append images properly
+          const imageFiles = stateData.project?.Images || [];
+          imageFiles.forEach((file) => {
+            formDataToSend.append("images", file);
+          });
+      
+          // ✅ Append video file if available
+          const videoFile = stateData.project?.Videos?.[0] || null;
+          if (videoFile) {
+            formDataToSend.append("video", videoFile);
+          }
+
+          // ✅ Append OneBHKConfig images & floor plans correctly (grouped by typeNumber)
+      stateData.oneBHKConfig?.forEach((config) => {
+        const typeNumber = config.typeNumber;
+  
+        // ✅ Append images for this typeNumber
+        if (config.type1images?.length) {
+          config.type1images.forEach((file, imgIndex) => {
+            formDataToSend.append(`oneBHKType1Images_${typeNumber}_${imgIndex}`, file);
+          });
+        }
+      // ✅ Append floor plans for this typeNumber
+      if (config.type1floorplan?.length) {
+        config.type1floorplan.forEach((file, planIndex) => {
+          formDataToSend.append(`oneBHKType1FloorPlanImages_${typeNumber}_${planIndex}`, file);
+        });
+      }
+      
+      });
+      stateData.twoBHKConfig?.forEach((config) => {
+        const typeNumber = config.typeNumber;
+  
+        // ✅ Append images for this typeNumber
+        if (config.type2images?.length) {
+          config.type2images.forEach((file, imgIndex) => {
+            formDataToSend.append(`twoBHKType2Images_${typeNumber}_${imgIndex}`, file);
+          });
+        }
+        // Append floor plan images
+        if (config.type2floorplan?.length) {
+          config.type2floorplan.forEach((file, planIndex) => {
+            formDataToSend.append(`twoBHKType2FloorPlanImages_${typeNumber}_${planIndex}`, file);
+          });
+        }
+      });
+      stateData.threeBHKConfig?.forEach((config) => {
+        const typeNumber = config.typeNumber;
+  
+        // ✅ Append images for this typeNumber
+        if (config.type3images?.length) {
+          config.type3images.forEach((file, imgIndex) => {
+            formDataToSend.append(`threeBHKType3Images_${typeNumber}_${imgIndex}`, file);
+          });
+        }
+        // Append floor plan images
+        if (config.type3floorplan?.length) {
+          config.type3floorplan.forEach((file, planIndex) => {
+            formDataToSend.append(`threeBHKType3FloorPlanImages_${typeNumber}_${planIndex}`, file);
+          });
+        }
+      });
+      stateData.fourBHKConfig?.forEach((config) => {
+        const typeNumber = config.typeNumber;
+  
+        // ✅ Append images for this typeNumber
+        if (config.type4images?.length) {
+          config.type4images.forEach((file, imgIndex) => {
+            formDataToSend.append(`fourBHKType4Images_${typeNumber}_${imgIndex}`, file);
+          }); 
+        }
+        // Append floor plan images 
+        if (config.type4floorplan?.length) {
+          config.type4floorplan.forEach((file, planIndex) => {
+            formDataToSend.append(`fourBHKType4FloorPlanImages_${typeNumber}_${planIndex}`, file);
+          });   
+        }
+        });
+        stateData.fiveBHKConfig?.forEach((config) => {
+          const typeNumber = config.typeNumber;
+  
+          // ✅ Append images for this typeNumber
+          if (config.type5images?.length) {
+            config.type5images.forEach((file, imgIndex) => {
+              formDataToSend.append(`fiveBHKType5Images_${typeNumber}_${imgIndex}`, file);
+            }); 
+          } 
+          // Append floor plan images 
+          if (config.type5floorplan?.length) {
+            config.type5floorplan.forEach((file, planIndex) => {
+              formDataToSend.append(`fiveBHKType5FloorPlanImages_${typeNumber}_${planIndex}`, file);
+            });
+          }
+          });
+          stateData.penthouseConfig?.forEach((config) => {
+            const typeNumber = config.typeNumber;
+  
+            // ✅ Append images for this typeNumber
+            if (config.penthouseImages?.length) {
+              config.penthouseImages.forEach((file, imgIndex) => {
+                formDataToSend.append(`penthouseTypeImages_${typeNumber}_${imgIndex}`, file);
+              }); 
+            } 
+            // Append floor plan images 
+            if (config.penthouseFloorPlan?.length) {
+              config.penthouseFloorPlan.forEach((file, planIndex) => {
+                formDataToSend.append(`penthouseFloorPlanImages_${typeNumber}_${planIndex}`, file);
+              });
+            }
+          })
+      
+          // ✅ Debugging: Check if FormData has correct values
+          console.log("Final FormData check:");
+          for (let pair of formDataToSend.entries()) {
+            // console.log(pair[0], pair[1]);
+            console.log(`${pair[0]}:`, pair[1]);
+          }
+      
+      
+  
+      // console.log("Final FormData Sent to API:", formData);
+  
+      // Send form data via axios
+      const response = await axios.post(
+        "http://localhost:8080/api/entities/create",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+          withCredentials: true
+        }
+      );
+  
+      console.log("Server Response:", response.data);
+      alert("Entity created successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert(
+        `Error: ${error.response?.data?.message || "API error occurred"} \n
+         Status Code: ${error.response?.status}`
+      );
+    }
+  };
+  
+  // const uploadFiles = async (files, type) => {
+  //   if (!files || files.length === 0) return [];
+  
+  //   const formData = new FormData();
+  //   files.forEach((file) => {
+  //     formData.append("files", file);
+  //   });
+  
+  //   try {
+  //     const response = await axios.post(`http://localhost:8080/api/upload/${type}`, formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //       withCredentials: true,
+  //     });
+  
+  //     console.log(`${type} Upload Response:`, response.data);
+  //     return response.data.urls; // Assuming API returns an array of URLs
+  //   } catch (error) {
+  //     console.error(`Error uploading ${type}:`, error);
+  //     return [];
+  //   }
+  // };
+
 
 
   const prevStage = () => {
@@ -2090,20 +2445,14 @@ const MultiStageForm = () => {
                       error={warnings.threeBHKConfig?.[index]?.type3Units}
                     />
 
-                    {/* Type 3 Area */}
                     <InputField
-                      label="Type 3 Area (sq ft)"
-                      section={`threeBHKConfig[${index}]`}
                       field="type3area"
                       value={config.type3area}
                       onChange={handleChange}
                       error={warnings.threeBHKConfig?.[index]?.type3area}
                     />
 
-                    {/* Total Bedrooms */}
                     <InputField
-                      label="Total Bedrooms"
-                      section={`threeBHKConfig[${index}]`}
                       field="type3Bedrooms"
                       value={config.type3Bedrooms}
                       onChange={handleChange}
@@ -2457,26 +2806,6 @@ const MultiStageForm = () => {
                     />
 
 
-                     {/* Balcony */}
-                     <InputField
-                      label="Balcony Availability"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4balcony"
-                      value={config.type4balcony}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4balcony}
-                    />
-
-                    {/* Parking */}
-                    <InputField
-                      label="Parking Availability"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4parking"
-                      value={config.type4parking}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4parking}
-                    />
-
                       {/* Other Images Upload */}
                       <ImageUpload
                       handleChange={handleChange}
@@ -2515,7 +2844,28 @@ const MultiStageForm = () => {
                     )}
 
 
-                   
+
+
+                    {/* Balcony */}
+                    <InputField
+                      label="Balcony Availability"
+                      section={`fourBHKConfig[${index}]`}
+                      field="type4balcony"
+                      value={config.type4balcony}
+                      onChange={handleChange}
+                      error={warnings.fourBHKConfig?.[index]?.type4balcony}
+                    />
+
+
+                    {/* Parking */}
+                    <InputField
+                      label="Parking Availability"
+                      section={`fourBHKConfig[${index}]`}
+                      field="type4parking"
+                      value={config.type4parking}
+                      onChange={handleChange}
+                      error={warnings.fourBHKConfig?.[index]?.type4parking}
+                    />
                     {/* Checkbox to Add Another Four BHK Configuration */}
                     <div className="mt-4 flex items-center mx-10">
                       <input
@@ -2737,25 +3087,6 @@ const MultiStageForm = () => {
                       onChange={handleChange}
                       error={warnings.fiveBHKConfig?.[index]?.type5bathroom5}
                     />
-                          {/* Balcony */}
-                          <InputField
-                      label="Balcony Availability"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5balcony"
-                      value={config.type5balcony}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5balcony}
-                    />
-
-                    {/* Parking */}
-                    <InputField
-                      label="Parking Availability"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5parking"
-                      value={config.type5parking}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5parking}
-                    />
                          {/* Other Images Upload */}
                          <ImageUpload
                       handleChange={handleChange}
@@ -2795,6 +3126,34 @@ const MultiStageForm = () => {
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+                    {/* Balcony */}
+                    <InputField
+                      label="Balcony Availability"
+                      section={`fiveBHKConfig[${index}]`}
+                      field="type5balcony"
+                      value={config.type5balcony}
+                      onChange={handleChange}
+                      error={warnings.fiveBHKConfig?.[index]?.type5balcony}
+                    />
+
+
+                    {/* Parking */}
+                    <InputField
+                      label="Parking Availability"
+                      section={`fiveBHKConfig[${index}]`}
+                      field="type5parking"
+                      value={config.type5parking}
+                      onChange={handleChange}
+                      error={warnings.fiveBHKConfig?.[index]?.type5parking}
+                    />
+
+=======
+>>>>>>> 804eb2b (Home Page Design Completed)
+>>>>>>> origin/main
 
                     <div className="mt-4 flex items-center mx-10 ">
                       <input
@@ -2878,18 +3237,6 @@ const MultiStageForm = () => {
                       onChange={handleChange}
                       error={warnings.penthouseConfig?.[index]?.penthouseArea}
                     />
-                    
-                    {/* Total Bedrooms */}
-                    <InputField
-                      label="Total Bedrooms"
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseBedrooms"
-                      value={config.penthouseBedrooms}
-                      onChange={handleChange}
-                      error={
-                        warnings.penthouseConfig?.[index]?.penthouseBedrooms
-                      }
-                    />
 
                     {/* Total Bathrooms */}
                     <InputField
@@ -2900,6 +3247,19 @@ const MultiStageForm = () => {
                       onChange={handleChange}
                       error={
                         warnings.penthouseConfig?.[index]?.penthouseBathrooms
+                      }
+                    />
+
+
+                    {/* Total Bedrooms */}
+                    <InputField
+                      label="Total Bedrooms"
+                      section={`penthouseConfig[${index}]`}
+                      field="penthouseBedrooms"
+                      value={config.penthouseBedrooms}
+                      onChange={handleChange}
+                      error={
+                        warnings.penthouseConfig?.[index]?.penthouseBedrooms
                       }
                     />
 
@@ -3036,6 +3396,7 @@ const MultiStageForm = () => {
                                     (prev.penthouseConfig?.length || 0) + 1,
                                   penthouseUnits: "",
                                   penthouseArea: "",
+                                  penthouseBedrooms: "",
                                   penthouseFloorPlan: [],
                                   penthouseBathrooms: "",
                                   penthouseBalcony: "",
@@ -3192,7 +3553,11 @@ const MultiStageForm = () => {
             </div>
           ) : (
             <Button
+<<<<<<< HEAD
             onClick={() => console.log("Form Submitted", formData)}
+=======
+              onClick={handleSubmit}
+>>>>>>> origin/main
               sx={{
                 color: "yellow", // Set text color to yellow
                 backgroundColor: "transparent", // Remove background color

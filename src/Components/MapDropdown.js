@@ -1,58 +1,5 @@
-// import SearchIcon from '@mui/icons-material/Search';
-
-// const PropertyFilters = ({ filters, updateFilter }) => {
-//   return (
-//     <div className="rounded-lg flex items-center gap-4 justify-center">
-//       {/* Budget Dropdown */}
-//       <select
-//         value={filters.budget}
-//         onChange={(e) => updateFilter("budget", e.target.value)}
-//         className="p-3 w-52 bg-white text-gray-700 rounded-lg shadow-md focus:outline-none"
-//       >
-//         <option value="">Budget</option>
-//         <option value="500000">₹5 Lakh</option>
-//         <option value="1000000">₹10 Lakh</option>
-//         <option value="5000000">₹50 Lakh</option>
-//       </select>
-
-//       {/* Location Dropdown */}
-//       <select
-//         value={filters.location}
-//         onChange={(e) => updateFilter("location", e.target.value)}
-//         className="p-3 w-52 bg-white text-gray-700 rounded-lg shadow-md focus:outline-none"
-//       >
-//         <option value="">Location</option>
-//         <option value="Pune">Pune</option>
-//         <option value="Hyderabad">Hyderabad</option>
-//         <option value="Bangalore">Bangalore</option>
-//       </select>
-
-//       {/* BHK Dropdown */}
-//       <select
-//         value={filters.bhk}
-//         onChange={(e) => updateFilter("bhk", e.target.value)}
-//         className="p-3 w-52 bg-white text-gray-700 rounded-lg shadow-md focus:outline-none"
-//       >
-//         <option value="">Bedrooms</option>
-//         <option value="1">1 BHK</option>
-//         <option value="2">2 BHK</option>
-//         <option value="3">3 BHK</option>
-//       </select>
-
-//       {/* Find Button */}
-//       <button
-//         onClick={() => alert("Search Initiated")}
-//         className="p-3 w-32 bg-yellow-500 text-black font-semibold rounded-lg shadow-md flex items-center justify-center gap-2 hover:bg-yellow-400 transition"
-//       >
-//         FIND <SearchIcon />
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default PropertyFilters;
 import React from 'react';
-
+ 
 // Reusable Dropdown Component
 const DropdownField = ({ label, value, options, onChange }) => {
   return (
@@ -72,7 +19,7 @@ const DropdownField = ({ label, value, options, onChange }) => {
     </div>
   );
 };
-
+ 
 const PropertyFilters = ({ filters, updateFilter }) => {
   return (
     <div className="flex flex-wrap px-8 gap-4 py-4"> {/* Allow wrapping and adjust gap */}
@@ -87,31 +34,31 @@ const PropertyFilters = ({ filters, updateFilter }) => {
         ]}
         onChange={(e) => updateFilter('budget', e.target.value)}
       />
-
-      {/* Location Dropdown */}
+ 
+      {/* location Dropdown */}
       <DropdownField
-        label="Location"
+        label="location"
         value={filters.location}
         options={[
           { value: 'Pune', label: 'Pune' },
-          { value: 'Hyderabad', label: 'Hyderabad' },
-          { value: 'Bangalore', label: 'Bangalore' },
+          { value: 'Mumbai', label: 'Mumbai' },
+          { value: 'Airoli', label: 'airoli' },
         ]}
         onChange={(e) => updateFilter('location', e.target.value)}
       />
-
+ 
       {/* BHK Dropdown */}
       <DropdownField
         label="Bedrooms"
         value={filters.bhk}
         options={[
-          { value: '1', label: '1 BHK' },
-          { value: '2', label: '2 BHK' },
-          { value: '3', label: '3 BHK' },
+          { value: '1BHK', label: '1 BHK' },
+          { value: '2BHK', label: '2 BHK' },
+          { value: '3BHK', label: '3 BHK' },
         ]}
         onChange={(e) => updateFilter('bhk', e.target.value)}
       />
-
+ 
       {/* Find Button
       <button
         onClick={() => alert('Search Initiated')}
@@ -122,6 +69,5 @@ const PropertyFilters = ({ filters, updateFilter }) => {
     </div>
   );
 };
-
+ 
 export default PropertyFilters;
-

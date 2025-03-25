@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 // import React from "react";
 // import { Swiper, SwiperSlide } from "swiper/react";
 // import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -126,6 +131,10 @@
 
 // export default PropertySection;
 
+<<<<<<< HEAD
+=======
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
+>>>>>>> origin/main
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -133,16 +142,38 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+const BASE_URL = "http://localhost:8080"; // Update with your actual backend URL
+// const API_ENDPOINT = 'http://localhost:8080/api/entities/recommended-properties`;
+const API_ENDPOINT = "http://localhost:8080/api/entities/recommended-properties";
+
+=======
+>>>>>>> origin/main
  
 const BASE_URL = "http://localhost:8080"; // Update with your actual backend URL
 // const API_ENDPOINT = 'http://localhost:8080/api/entities/recommended-properties`;
 const API_ENDPOINT = "http://localhost:8080/api/entities/recommended-properties";
  
+<<<<<<< HEAD
+=======
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
+>>>>>>> origin/main
 const PropertySection = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+<<<<<<< HEAD
  
+=======
+<<<<<<< HEAD
+
+=======
+ 
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
+>>>>>>> origin/main
   useEffect(() => {
     axios
       .get(API_ENDPOINT)
@@ -157,10 +188,23 @@ const PropertySection = () => {
         setLoading(false);
       });
   }, []);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+  if (loading) return <p className="text-white text-center">Loading properties...</p>;
+  if (error) return <p className="text-red-500 text-center">{error}</p>;
+
+=======
+>>>>>>> origin/main
  
   if (loading) return <p className="text-white text-center">Loading properties...</p>;
   if (error) return <p className="text-red-500 text-center">{error}</p>;
  
+<<<<<<< HEAD
+=======
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
+>>>>>>> origin/main
   return (
     <div className="w-full bg-black text-white">
       <h1 className="text-3xl font-bold text-gray-200 text-center py-10">
@@ -178,6 +222,7 @@ const PropertySection = () => {
             <div className="mb-6">
               <h2 className="text-xl font-bold text-gray-400">{property.projectName}</h2>
               <p className="text-lg text-gray-400">{property.projectAddress}</p>
+<<<<<<< HEAD
             </div>
  
             {/* Video & Image Row */}
@@ -199,6 +244,82 @@ const PropertySection = () => {
                     No video available
                   </p>
                 )}
+=======
+            </div>
+<<<<<<< HEAD
+
+=======
+ 
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
+            {/* Video & Image Row */}
+            <div className="flex flex-col md:flex-row w-full justify-between gap-4 md:gap-16">
+              {/* Video Section */}
+              <div className="w-full md:w-1/2 h-[300px] rounded-lg overflow-hidden border border-gray-600">
+                {property.projectVideo ? (
+                  <video
+                    className="w-full h-full object-cover"
+                    src={
+                      property.projectVideo.startsWith("http")
+                        ? property.projectVideo
+                        : `${BASE_URL}${property.projectVideo}`
+                    }
+                    controls
+                  />
+                ) : (
+                  <p className="text-center text-gray-400 flex justify-center items-center h-full">
+                    No video available
+                  </p>
+                )}
+<<<<<<< HEAD
+              </div>
+
+              {/* Swiper Image Carousel */}
+              <div className="w-full md:w-1/2 h-[300px] relative">
+                <div className="w-full h-full rounded-lg border border-gray-600 overflow-hidden">
+                  <Swiper
+                    navigation={{
+                      nextEl: `.swiper-button-next-${index}`,
+                      prevEl: `.swiper-button-prev-${index}`,
+                    }}
+                    pagination={{ clickable: true }}
+                    autoplay={{ delay: 3000, disableOnInteraction: false }}
+                    modules={[Navigation, Pagination, Autoplay]}
+                    className="w-full h-full"
+                  >
+                    {property.projectPictures && property.projectPictures.length > 0 ? (
+                      property.projectPictures.map((image, imgIndex) => (
+                        <SwiperSlide key={imgIndex} className="h-full">
+                          <img
+                            src={image.startsWith("http") ? image : `${BASE_URL}${image}`}
+                            alt={`Property ${imgIndex}`}
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </SwiperSlide>
+                      ))
+                    ) : (
+                      <p className="text-center text-gray-400 flex justify-center items-center h-full">
+                        No images available
+                      </p>
+                    )}
+                  </Swiper>
+                </div>
+
+                {/* Navigation Arrows */}
+                <button
+                  className={`swiper-button-prev-${index} absolute left-[-15px] top-1/2 transform -translate-y-1/2 text-white text-2xl`}
+                >
+                  ❮
+                </button>
+                <button
+                  className={`swiper-button-next-${index} absolute right-[-15px] top-1/2 transform -translate-y-1/2 text-white text-2xl`}
+                >
+                  ❯
+                </button>
+              </div>
+            </div>
+
+=======
+>>>>>>> origin/main
               </div>
  
               {/* Swiper Image Carousel */}
@@ -246,6 +367,10 @@ const PropertySection = () => {
               </div>
             </div>
  
+<<<<<<< HEAD
+=======
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
+>>>>>>> origin/main
             {/* Additional Details */}
             <div className="mt-4">
               <p className="text-gray-300">
@@ -253,7 +378,15 @@ const PropertySection = () => {
               </p>
               <p className="text-gray-300">Amenities: {property.amenities || "Not listed"}</p>
             </div>
+<<<<<<< HEAD
  
+=======
+<<<<<<< HEAD
+
+=======
+ 
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
+>>>>>>> origin/main
             {/* View Details */}
             <div className="mt-4 w-full flex justify-center">
               <a href={`/property/${property.projectId}`} className="text-blue-400 hover:underline text-lg">

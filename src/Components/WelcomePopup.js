@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-
+ 
 const WelcomePopup = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+ 
   // Show popup when the page loads
   useEffect(() => {
     setIsOpen(true);
   }, []);
-
+ 
   return (
-    <>
+    <div>
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
           {/* Popup Box */}
@@ -21,14 +21,14 @@ const WelcomePopup = () => {
             >
               ✖
             </button>
-
+ 
             {/* Popup Content */}
             <h2 className="text-2xl font-bold mb-2">Welcome to Casa</h2>
             <p className="text-center text-gray-600">Your trusted partner in luxury real estate.</p>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

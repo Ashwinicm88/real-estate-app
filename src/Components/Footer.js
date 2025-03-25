@@ -1,6 +1,5 @@
-
 import React from "react";
-import {  Facebook, Instagram,WhatsApp } from "@mui/icons-material";
+import { WhatsApp, Facebook, Instagram } from "@mui/icons-material";
  
 const DemoFooter = () => {
   return (

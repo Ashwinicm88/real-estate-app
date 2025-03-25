@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/main
 // import { Swiper, SwiperSlide } from "swiper/react";
 // import { Navigation, Pagination } from "swiper/modules";
 // import "swiper/css";
@@ -71,18 +76,43 @@
 // };
 
 // export default PropertyList;
+<<<<<<< HEAD
+=======
+>>>>>>> 804eb2b (Home Page Design Completed)
+>>>>>>> origin/main
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import CustomSwiper from "../Components/CustomSwiper";
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+ 
+=======
+
+>>>>>>> 804eb2b (Home Page Design Completed)
+>>>>>>> origin/main
 const PropertyList = ({ properties }) => {
   if (!properties || properties.length === 0) {
     return <p className="text-gray-600">No properties found.</p>;
   }
+<<<<<<< HEAD
 
   console.log("Received Properties:", properties);
 
+=======
+<<<<<<< HEAD
+ 
+  console.log("Received Properties:", properties);
+  const BASE_URL = "http://localhost:8080"; // Update with your actual backend URL    
+ 
+=======
+
+  console.log("Received Properties:", properties);
+
+>>>>>>> 804eb2b (Home Page Design Completed)
+>>>>>>> origin/main
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
       {properties.map((property) => (
@@ -111,15 +141,64 @@ const PropertyList = ({ properties }) => {
           ) : (
             <p className="text-gray-400">No images available.</p>
           )} */}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+ 
+           {/* ✅ Render Swiper only if images exist */}
+          {/* ✅ Render Swiper if images exist, otherwise show message
+{property.image?.length > 0 ? (
+  <CustomSwiper images={property.projectImages} />
+) : (
+  <p className="text-gray-400 text-center p-2">No images available.</p>
+)}
+  */}
+  {property.projectImages?.length > 0 ? (
+  <CustomSwiper images={property.projectImages.map(img => `${BASE_URL}${img}`)} />
+=======
+>>>>>>> origin/main
 
            {/* ✅ Render Swiper only if images exist */}
           {/* ✅ Render Swiper if images exist, otherwise show message */}
 {property.bhk2_type1_images?.length > 0 ? (
   <CustomSwiper images={property.bhk2_type1_images} />
+<<<<<<< HEAD
+=======
+>>>>>>> 804eb2b (Home Page Design Completed)
+>>>>>>> origin/main
 ) : (
   <p className="text-gray-400 text-center p-2">No images available.</p>
 )}
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+         
+          <div className="p-1">
+            {/* ✅ Project Name */}
+            <h2 className="text-lg font-semibold text-white">
+            ₹{property.priceMax?.toLocaleString() || "N/A"}
+            </h2>
+ 
+            {/* ✅ BHK Types */}
+            <p className="text-white">
+              BHK:{
+                property.availableBHKs && property.availableBHKs.length>0
+                ? property.availableBHKs.map(bhk => bhk.replace("BHK","")).join(", ")
+                :"N/A"
+              }
+              {/* {property.bhk_1 ? " 1," : ""}
+              {property.bhk_2 ? " 2," : ""}
+              {property.bhk_3 ? " 3" : ""} */}
+              | Units: {property.units || "N/A"} | Location: {property.city || "Unknown"}
+            </p>
+ 
+            {/* ✅ Budget */}
+            <p className="text-white">
+            
+            
+=======
+>>>>>>> origin/main
           
           <div className="p-1">
             {/* ✅ Project Name */}
@@ -138,6 +217,10 @@ const PropertyList = ({ properties }) => {
 
             {/* ✅ Budget */}
             <p className="text-white">
+<<<<<<< HEAD
+=======
+>>>>>>> 804eb2b (Home Page Design Completed)
+>>>>>>> origin/main
               {property.address || "N/A"}
             </p>
           </div>
@@ -146,5 +229,13 @@ const PropertyList = ({ properties }) => {
     </div>
   );
 };
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+ 
+=======
+
+>>>>>>> 804eb2b (Home Page Design Completed)
+>>>>>>> origin/main
 export default PropertyList;

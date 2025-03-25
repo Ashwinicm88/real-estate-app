@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { MenuItem, FormControl, Select, InputLabel, Button } from "@mui/material";
 import { Search } from "@mui/icons-material";
-//import DemoNavbar from "../components/Navbar";
-import DemoFooter from "../Components/Footer";
+// import DemoFooter from "../Components/Footer";
+// import DemoNavbar from "../components/Navbar";
 
 const PropertySearch = () => {
   const [budget, setBudget] = useState("");
@@ -83,7 +83,7 @@ const PropertySearch = () => {
       </div>
  
       {/* ✅ Footer (Sticky at the Bottom) */}
-      <DemoFooter />
+      {/* <DemoFooter /> */}
     </div>
   );
 };
