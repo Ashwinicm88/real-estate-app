@@ -5,6 +5,10 @@ const { Sequelize, DataTypes, Op } = require("sequelize");
 const app = express();
 app.use(express.json());
 
+const cors = require("cors");
+app.use(cors());
+
+
 // Connect to PostgreSQL
 const sequelize = new Sequelize("realestate", "postgres", "Ashwini@26", {
   host: "localhost",
