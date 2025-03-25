@@ -81,25 +81,55 @@ public class CreateEntityRequest {
 
 
     //Amenities Details
-    private String swimming_pool;
-    private String temple;
-    private String gym;
-    private String creche;
-    private String children_parks;
-    private String park;
-    private String club_house;
-    private String c_hall;
-    private String other;
+    @JsonProperty("swimming_pool")
+    private List<String> swimming_pool;
+
+    @JsonProperty("temple")
+    private List<String> temple;
+
+    @JsonProperty("gym")
+    private List<String> gym;
+
+    @JsonProperty("creche")
+    private List<String> creche;
+
+    @JsonProperty("children_parks")
+    private List<String> children_parks;
+
+    @JsonProperty("park")
+    private List<String> park;
+
+    @JsonProperty("club_house")
+    private List<String> club_house;
+
+    @JsonProperty("c_hall")
+    private List<String> c_hall;
+
+    @JsonProperty("other")
+    private List<String> other;
 
     //Nearby Details
-    private String schools;
-    private String hospitals;
-    private String malls;
-    private String movieTheaters;
-    private String it_parks;
-    private String hangouts;
-    private String cinemas;
-    private String metro;
+
+    @JsonProperty("schools")
+    private List<String> schools;
+
+    @JsonProperty("hospitals")
+    private List<String> hospitals;
+
+    @JsonProperty("malls")
+    private List<String> malls;
+
+    @JsonProperty("itParks")
+    private List<String> it_parks;
+
+    @JsonProperty("hangouts")
+    private List<String> hangouts;
+
+    @JsonProperty("cinemas")
+    private List<String> cinemas;
+
+    @JsonProperty("metro")
+    private List<String> metro;
 
     // BHK Configurations
     @JsonProperty("oneBHKConfig")

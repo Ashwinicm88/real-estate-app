@@ -103,13 +103,7 @@ public class EntityService {
 
         // ✅ Convert List<String> to JSON String or CSV format
         // String projectImages = convertListToJson(request.getProjectImages());
-        // String schools = convertListToJson(request.getSchools());
-        // String hospitals = convertListToJson(request.getHospitals());
-        // String malls = convertListToJson(request.getMalls());
-        // String movieTheaters = convertListToJson(request.getMovieTheaters());
-        // String itParks = convertListToJson(request.getItParks()); 
-        // String hangouts = convertListToJson(request.getHangouts());
-        // String metro = convertListToJson(request.getMetro());
+   
 
 
         // ✅ Save Project
@@ -168,29 +162,45 @@ public class EntityService {
         projectDetails = projectDetailsRepository.save(projectDetails);
         System.out.println("✅ Project Details Saved with ID: " + projectDetails.getDetailId());
 
+        String Swimming_pool= convertListToJson(request.getSwimming_pool());
+        String Gym= convertListToJson(request.getGym());
+        String Temple= convertListToJson(request.getTemple());
+        String Creche= convertListToJson(request.getCreche());
+        String Park= convertListToJson(request.getPark());
+        String Children_parks= convertListToJson(request.getChildren_parks());
+        String Club_house= convertListToJson(request.getClub_house());
+        String C_hall= convertListToJson(request.getC_hall());
+        String other= convertListToJson(request.getOther());
         Amenities amenities = new Amenities(
             project,
-            request.getSwimming_pool(),
-            request.getTemple(),
-            request.getGym(),
-            request.getCreche(),
-            request.getChildren_parks(),
-            request.getPark(),
-            request.getClub_house(),
-            request.getC_hall(),
-            request.getOther()
+            Swimming_pool,
+            Gym,
+            Temple,
+            Creche,
+            Park,
+            Children_parks,
+            Club_house,
+            C_hall,
+            other
             );
         amenities = amenitiesRepository.save(amenities);
         System.out.println("✅ Amenities Saved with ID: " + amenities.getAmenityId());
 
+        String schools= convertListToJson(request.getSchools());
+        String hospitals= convertListToJson(request.getHospitals());
+        String it_parks= convertListToJson(request.getIt_parks());
+        String hangouts= convertListToJson(request.getHangouts());
+        String cinemas= convertListToJson(request.getCinemas());
+        String metro= convertListToJson(request.getMetro());
+
         Nearby nearby = new Nearby(
             project,
-            request.getSchools(),
-            request.getHospitals(),
-            request.getIt_parks(),
-            request.getHangouts(),
-            request.getCinemas(),
-            request.getMetro()
+            schools,
+            hospitals,
+            it_parks,
+            hangouts,
+            cinemas,
+            metro
             );
         nearby = nearbyRepository.save(nearby);
         System.out.println("✅ Nearby Saved with ID: " + nearby.getNearId());
