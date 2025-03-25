@@ -584,47 +584,79 @@ const Display_D = () => {
 
   return (
     <div className="bg-black min-h-screen px-4 sm:px-6 lg:px-14">
-      <DemoNavbar />
-      <div className="pt-16 sm:pt-12">
+    {/* 🏠 Navbar */}
+    <DemoNavbar />
 
-      {/* 🌟 Mobile View: Show Filters Summary */}
-      <div className="block md:hidden mb-4">
-        {!showDropdowns && (
-          <div className="flex justify-between items-center bg-gray-500 p-2 rounded-md">
-            <p className="text-sm font-medium text-white">
-              Location: {filters.location || "Any"}, Budget: {filters.budget || "Any"}, BHK: {filters.bhk || "Any"}
-            </p>
-            <button className="text-blue-600 underline text-sm" onClick={() => setShowDropdowns(true)}>
-              Edit Search
-            </button>
-          </div>
-        )}
+<div className="pt-16 sm:pt-12">
+  {/* 🌟 Mobile View: Show Filters Summary + Edit Button */}
+  <div className="block md:hidden mb-4">
+    {!showDropdowns && (
+      <div className="flex justify-between items-center bg-gray-500 p-2 rounded-md">
+        <p className="text-sm font-medium text-white">
+          Location: {filters.location || "Any"}, 
+          Budget: {filters.budget || "Any"}, 
+          BHK: {filters.bhk || "Any"}
+        </p>
+        <button 
+          className="text-blue-600 underline text-sm" 
+          onClick={() => setShowDropdowns(true)}
+        >
+          Edit Search
+        </button>
       </div>
+    )}
+    
+  </div>
 
-      {/* 📌 Dropdowns Section */}
-      <div className={`${showDropdowns ? "block" : "hidden md:block"} relative`}>
-        {showDropdowns && (
-          <button className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs" onClick={() => setShowDropdowns(false)}>
-            ✕
-          </button>
-        )}
-        <PropertyDropdowns filters={filters} updateFilter={updateFilter} />
+  {/* 📌 Dropdowns Section (Hidden on mobile initially, visible on large screens) */}
+  <div className={`${showDropdowns ? "block" : "hidden md:block"} relative`}>
+    {showDropdowns && (
+      <button 
+        className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs" 
+        onClick={() => setShowDropdowns(false)}
+      >
+        ✕
+      </button>
+    )}
+    <PropertyDropdowns filters={filters} updateFilter={updateFilter} />
+  </div>
+</div>
+
+    {/* 🌍 Main Layout (Map Left, Properties Right) */}
+    <div className="flex flex-col md:flex-row h-[calc(100vh-130px)] mt-1 px-4 md:px-6 lg:px-8">
+      {/* 🗺️ Map Section */}
+      <div
+        className={`relative w-full md:w-1/2 h-full transition-all duration-300 ${
+          showMap ? "block fixed inset-0 z-50 bg-white" : "hidden md:block"
+        }`}
+      >
+        <MapComponent 
+          center={mapCenter} 
+          properties={filteredProperties}
+          onVisiblePropertiesChange={handleVisiblePropertiesChange}
+        />
+        {/* 🔘 Button to switch to List View on small screens */}
+        <button
+          className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-4 py-2 rounded-md md:hidden"
+          onClick={() => setShowMap(false)}
+        >
+          List View
+        </button>
       </div>
+      
 
-      {/* 🌍 Main Layout */}
-      <div className="flex flex-col md:flex-row h-[calc(100vh-130px)] mt-1 px-4 md:px-6 lg:px-8">
-        {/* 🗺️ Map Section */}
-        <div className={`relative w-full md:w-1/2 h-full transition-all duration-300 ${showMap ? "block fixed inset-0 z-50 bg-white" : "hidden md:block"}`}>
-          <MapComponent center={mapCenter} properties={filteredProperties} onVisiblePropertiesChange={setVisibleProperties} />
-          <button className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-4 py-2 rounded-md md:hidden" onClick={() => setShowMap(false)}>
-            List View
-          </button>
-        </div>
-
-        {/* 🏡 Property List Section */}
-        <div className={`w-full md:w-1/2 overflow-y-auto max-h-full px-4 transition-all duration-300 ${showMap ? "hidden" : "block"}`}>
-          <div className="flex justify-center gap-2 mb-2">
-            <button className="bg-gray-500 text-white px-4 py-2 rounded-md md:hidden" onClick={() => setShowMap(true)}>
+      {/* 🏡 Property List Section */}
+      <div
+        className={`w-full md:w-1/2 overflow-y-auto max-h-full px-4 transition-all duration-300 ${
+          showMap ? "hidden" : "block"
+        }`}
+      >
+         {/* 🗺️ Map & List Buttons (Above Cards) */}
+         <div className="flex justify-center gap-2 mb-2">
+            <button
+              className="bg-gray-500 text-white px-4 py-2 rounded-md md:hidden"
+              onClick={() => setShowMap(true)}
+            >
               Map View
             </button>
           </div>
@@ -632,7 +664,7 @@ const Display_D = () => {
         </div>
       </div>
     </div>
-    </div>
+    
   );
 };
 
