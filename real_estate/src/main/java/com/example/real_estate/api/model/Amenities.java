@@ -48,7 +48,7 @@ public class Amenities {
     @Column(name="children_parks", columnDefinition = "TEXT")
     private String children_parks;
 
-    @Column(name="parks", columnDefinition="TEXT")
+    @Column(name="park", columnDefinition="TEXT")
     private String park; 
 
     @Column(name="club_house", columnDefinition = "TEXT")
