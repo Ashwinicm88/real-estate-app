@@ -239,14 +239,14 @@ const Display_D = () => {
   {/* 🌟 Mobile View: Show Filters Summary + Edit Button */}
   <div className="block md:hidden mb-4">
     {!showDropdowns && (
-      <div className="flex justify-between items-center bg-gray-500 p-2 rounded-md">
+      <div className="flex justify-between items-center p-2 rounded-md">
         <p className="text-sm font-medium text-white">
           Location: {filters.location || "Any"}, 
           Budget: {filters.budget || "Any"}, 
           BHK: {filters.bhk || "Any"}
         </p>
         <button 
-          className="text-blue-600 underline text-sm" 
+          className="text-blue-600 text-sm" 
           onClick={() => setShowDropdowns(true)}
         >
           Edit Search
@@ -260,7 +260,7 @@ const Display_D = () => {
   <div className={`${showDropdowns ? "block" : "hidden md:block"} relative`}>
     {showDropdowns && (
       <button 
-        className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs" 
+        className="absolute top-2 right-2  text-white px-2 py-1 rounded-full text-xs" 
         onClick={() => setShowDropdowns(false)}
       >
         ✕
@@ -285,7 +285,7 @@ const Display_D = () => {
         />
         {/* 🔘 Button to switch to List View on small screens */}
         <button
-          className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-gray-500 text-white px-4 py-2 rounded-md md:hidden"
+          className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-transparent text-white px-4 py-2 rounded-md md:hidden border border-white"
           onClick={() => setShowMap(false)}
         >
           List View
@@ -302,10 +302,10 @@ const Display_D = () => {
          {/* 🗺️ Map & List Buttons (Above Cards) */}
          <div className="flex justify-center gap-2 mb-2">
             <button
-              className="bg-gray-500 text-white px-4 py-2 rounded-md md:hidden"
+              className="absolute bottom-4 right-2 bg-transparent text-white px-4 py-2 rounded-md md:hidden border border-white"
               onClick={() => setShowMap(true)}
             >
-              Map View
+              View Map
             </button>
           </div>
         <PropertyDetails properties={visibleProperties.length > 0 ? visibleProperties : filteredProperties} />
