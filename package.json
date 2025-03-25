@@ -8,12 +8,18 @@
     "@babel/preset-react": "^7.26.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+<<<<<<< HEAD
     "@graphql-codegen/cli": "^5.0.5",
 <<<<<<< HEAD
 =======
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
 >>>>>>> 804eb2b (Home Page Design Completed)
+=======
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@graphql-codegen/cli": "^5.0.5",
+>>>>>>> 6b65a1e (Updating Gmap 25/03/25)
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^4.1.3",

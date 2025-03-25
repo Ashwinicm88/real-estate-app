@@ -37,7 +37,7 @@ import RealestateHome from "./Pages/Realestate-Home";
 import PostFormData from "./Components/PostwithForm";
 import AllStageData from "./Components/AllStageData"
 import SearchResult from "./Pages/SearchResult"
-import PropertyDetails from "./Pages/Display_Details";
+import PropertyDetails from "./Pages/PropertyDetails";
 import './App.css';
 
 //import MultiStageForm from "./Components/MultiStageForm";
