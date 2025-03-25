@@ -47,17 +47,10 @@ const Header = () => {
               Casa
             </span>
           </div>
-<<<<<<< HEAD
  
           {/* Center: Logo/Icon (Hidden on Small Screens) */}
           <div className="hidden sm:block text-xl font-bold">ICON</div>
  
-=======
-
-          {/* Center: Logo/Icon (Hidden on Small Screens) */}
-          <div className="hidden sm:block text-xl font-bold">ICON</div>
-
->>>>>>> 804eb2b (Home Page Design Completed)
           {/* Right: Book Consultation */}
           <button className="flex items-center gap-2 text-yellow-400 hover:underline text-sm sm:text-base">
             <IoCalendarOutline size={20} />

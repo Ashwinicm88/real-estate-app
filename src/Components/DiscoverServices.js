@@ -34,11 +34,7 @@ const Services = () => {
     <div className="fixed bottom-0 w-full bg-black text-white shadow-lg">
       {/* Header */}
       <h2 className="text-lg text-yellow-500 font-semibold mb-1 pl-5">Discover Our Services</h2>
-<<<<<<< HEAD
  
-=======
-
->>>>>>> 804eb2b (Home Page Design Completed)
       {/* Services Sections */}
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 gap-x-4 md:gap-x-6"> {/* Adjusted gap */}
         {/* Service Item 1 */}
@@ -49,11 +45,7 @@ const Services = () => {
             <p className='text-sm text-gray-400 mt-2 hidden md:block'>Your trusted partner in luxury real estate.</p>
           </div>
         </div>
-<<<<<<< HEAD
  
-=======
-
->>>>>>> 804eb2b (Home Page Design Completed)
         {/* Service Item 2 */}
         <div className="w-1/4 text-center p-4 rounded-lg relative">
           <div className="flex flex-col items-center">
@@ -62,11 +54,7 @@ const Services = () => {
             <p className='text-sm text-gray-400 mt-2 hidden md:block'>Your trusted partner in luxury real estate.</p>
           </div>
         </div>
-<<<<<<< HEAD
  
-=======
-
->>>>>>> 804eb2b (Home Page Design Completed)
         {/* Service Item 3 */}
         <div className="w-1/4 text-center p-4 rounded-lg relative">
           <div className="flex flex-col items-center">
@@ -75,11 +63,7 @@ const Services = () => {
             <p className='text-sm text-gray-400 mt-2 hidden md:block'>Your trusted partner in luxury real estate.</p>
           </div>
         </div>
-<<<<<<< HEAD
  
-=======
-
->>>>>>> 804eb2b (Home Page Design Completed)
         {/* Follow Up Section */}
         <div className="w-1/4 text-center p-4 rounded-lg relative">
           <FollowUp />
@@ -88,9 +72,5 @@ const Services = () => {
     </div>
   );
 };
-<<<<<<< HEAD
  
-=======
-
->>>>>>> 804eb2b (Home Page Design Completed)
 export default Services;
