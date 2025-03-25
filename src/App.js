@@ -33,7 +33,7 @@ import FormDataInput from "./Pages/FormData";
 import RealestateHome from "./Pages/Realestate-Home";
 import PostFormData from "./Components/PostwithForm";
 import AllStageData from "./Components/AllStageData"
-// import SearchResult from "./Pages/SearchResult"
+import SearchResult from "./Pages/SearchResult"
 import PropertyDetails from "./Pages/PropertyDetails";
 import './App.css';
 
@@ -43,7 +43,7 @@ import LatestEntity from "./Components/LatestEntity";
 import DisplayProperty from "./Pages/DisplayProperty";
 import PostwithForm from "./Pages/PostwithForm";
 // import AllStageData from "./Components/AllStageData";
-import SearchResult from "./Pages/SearchResult";
+// import SearchResult from "./Pages/SearchResult";
 
 
 const App = () => {
@@ -97,14 +97,11 @@ const App = () => {
      
        <Route path="/single-upload" element={<SingleImageUpload />}></Route>
        <Route path="/single-display" element={<SingleImageDisplay />}></Route>
-<<<<<<< HEAD
-=======
        <Route path="/property-search" element={<PropertySearch />}></Route>
       
        <Route path="/wing-details" element={<WingDetails />}></Route>
        <Route path="/show-needle" element={<ShowNeedle />}></Route>
        <Route path="/show-formdata" element={<FormDataInput />}></Route>
->>>>>>> 804eb2b (Home Page Design Completed)
        </Routes> */}
     </Router>
    

@@ -159,12 +159,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useRef, useEffect } from "react";
-
+ 
 const CustomSwiper = ({ images = [], height = "h-30 md:h-50" }) => {
   const swiperRef = useRef(null);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-
+ 
   useEffect(() => {
     const swiperInstance = swiperRef.current?.swiper;
     if (swiperInstance) {
@@ -174,48 +174,48 @@ const CustomSwiper = ({ images = [], height = "h-30 md:h-50" }) => {
       swiperInstance.navigation.update();
     }
   }, []);
-
+ 
   if (!images.length) {
     images = ["/default_project1.jpg", "/default_project2.jpg"];
   }
 
   return (
-    <div className="relative">
-      <Swiper
+<div className="relative">
+<Swiper
         ref={swiperRef}
         modules={[Navigation, Pagination]}
         pagination={{ clickable: true }}
         navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
         className={`rounded-lg ${height}`}
-      >
+>
         {images.map((img, index) => (
-          <SwiperSlide key={index} className="h-full">
-            <div className="w-full h-full flex items-center justify-center overflow-hidden">
-              <img
+<SwiperSlide key={index} className="h-full">
+<div className="w-full h-full flex items-center justify-center overflow-hidden">
+<img
                 src={img}
                 alt="Property"
                 className="w-full h-full object-cover rounded-lg"
+             
               />
-            </div>
-          </SwiperSlide>
+</div>
+</SwiperSlide>
         ))}
-      </Swiper>
-      
+</Swiper>
       {/* Custom Navigation Buttons */}
-      <button
+<button
         ref={prevRef}
         className="absolute top-1/2 left-2 transform -translate-y-1/2 z-10 bg-transparent text-gray-700 p-2 rounded-full shadow-md"
-      >
-        <FaChevronLeft size={20} />
-      </button>
-
+>
+<FaChevronLeft size={20} />
+</button>
+ 
       <button
         ref={nextRef}
         className="absolute top-1/2 right-2 transform -translate-y-1/2 z-10 bg-transparent text-gray-700 p-2 rounded-full shadow-md"
-      >
-        <FaChevronRight size={20} />
-      </button>
-    </div>
+>
+<FaChevronRight size={20} />
+</button>
+</div>
   );
 };
 

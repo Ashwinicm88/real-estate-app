@@ -3,8 +3,8 @@ package com.example.real_estate.api.dto;
 import java.util.List;
 
 import com.example.real_estate.api.model.OneBHKConfig;
-import com.example.real_estate.api.model.Amenities;
-import com.example.real_estate.api.model.Nearby;
+// import com.example.real_estate.api.model.Amenities;
+// import com.example.real_estate.api.model.Nearby;
 import com.example.real_estate.api.model.ThreeBHKConfig;
 import com.example.real_estate.api.model.TwoBHKConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
