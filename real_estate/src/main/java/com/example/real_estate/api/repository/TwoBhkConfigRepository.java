@@ -15,6 +15,7 @@ import java.util.*;
 public interface TwoBhkConfigRepository extends JpaRepository<TwoBHKConfig, Integer> {
 List<TwoBHKConfig> findByProject(Project project);
 List<TwoBHKConfig> findByProject_ProjectId(Integer projectId);
+// List<TwoBHKConfig> findByProjectId(Integer id);
 
 
 }

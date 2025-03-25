@@ -61,5 +61,10 @@ public class Nearby {
         this.cinemas=cinemas;
         this.metro=metro;
     }
+
+    public Object getMalls() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMalls'");
+    }
     
 }

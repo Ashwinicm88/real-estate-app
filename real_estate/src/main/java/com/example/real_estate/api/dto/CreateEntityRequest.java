@@ -43,27 +43,6 @@ public class CreateEntityRequest {
     @JsonProperty("projectimages")
     private List<String> projectImages;
 
-    // @JsonProperty("schools")
-    // private List<String> schools;
-
-    // @JsonProperty("hospitals")
-    // private List<String> hospitals;
-
-    // @JsonProperty("malls")
-    // private List<String> malls;
-
-    // @JsonProperty("movieTheaters")
-    // private List<String> movieTheaters;
-
-    // @JsonProperty("itParks")
-    // private List<String> itParks;
-
-    // @JsonProperty("hangouts")
-    // private List<String> hangouts;
-
-    // @JsonProperty("metro")
-    // private List<String> metro;
-
 
      // Project Details Fields
      private Integer units;

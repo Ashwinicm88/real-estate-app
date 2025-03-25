@@ -39,13 +39,16 @@ public class Project {
     private List<ProjectDetails> projectDetails;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OneBHKConfig> oneBhkConfig;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-private List<TwoBHKConfig> twoBhkConfig;
+    @JsonManagedReference
+    private List<TwoBHKConfig> twoBhkConfig;
 
-@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-private List<ThreeBHKConfig> threeBhkConfig;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<ThreeBHKConfig> threeBhkConfig;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectTimeLine> timelines;
@@ -152,5 +155,9 @@ private List<ThreeBHKConfig> threeBhkConfig;
         this.projectImages = projectImages;
         this.preferred = preferred;
         this.deleted = deleted; // Now correctly assigned
+    }
+    public Project orElse(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElse'");
     }
 }

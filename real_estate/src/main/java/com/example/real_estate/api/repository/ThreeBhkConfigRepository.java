@@ -14,6 +14,7 @@ import java.util.*;
 public interface ThreeBhkConfigRepository extends JpaRepository<ThreeBHKConfig,Integer > {
 List<ThreeBHKConfig> findByProject(Project project);
 List<ThreeBHKConfig> findByProject_ProjectId(Integer projectId);
+// List<ThreeBHKConfig> findByProjectId(Integer id);
 
 }
 

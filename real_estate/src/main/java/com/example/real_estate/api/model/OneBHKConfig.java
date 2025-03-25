@@ -7,6 +7,8 @@ import java.util.*;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 // import org.hibernate.annotations.JdbcTypeCode;
 // import org.hibernate.type.SqlTypes;
 /**
@@ -35,6 +37,7 @@ public class OneBHKConfig implements BHKConfig {
      */
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Added Lazy Fetch
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
     /**
