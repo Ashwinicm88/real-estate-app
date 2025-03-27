@@ -625,6 +625,7 @@ public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer b
 
 private ProjectSearchProjection convertToDTO(Project project) {
     ProjectSearchProjection dto = new ProjectSearchProjection();
+    dto.setProjectId(project.getProjectId());
     dto.setProjectName(project.getProjectName());
     dto.setProjectAreaSqmt(project.getPropertyAreaSqmt());
     dto.setProjectImages(project.getProjectImages());
@@ -667,64 +668,11 @@ private boolean hasValidData(BHKConfig config) {
     return config !=null && config.getProject()!=null && config.getProject().getProjectId() != null;
 }
 
-// public CardDetails getProjectById(Integer id) {
-//     Project project = projectRepository.findById(id)
-//             .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + id));
-
-//     // Fetch related entities
-//     List<ProjectDetails> projectDetails = projectDetailsRepository.findByProjectId(id);
-//     Amenities amenities = amenitiesRepository.findByProjectId(id);
-//     Nearby nearby = nearbyRepository.findByProjectId(id);
-//     OneBHKConfig oneBHKConfig = oneBHKConfigRepository.findByProjectId(id);
-//     TwoBHKConfig twoBHKConfig = twoBHKConfigRepository.findByProjectId(id);
-//     ThreeBHKConfig threeBHKConfig = threeBHKConfigRepository.findByProjectId(id);
-
-//     // Construct response DTO
-//     CardDetails cardDetails = new CardDetails();
-//     cardDetails.setProjectName(project.getProjectName());
-//     cardDetails.setAddress(project.getAddress());
-//     cardDetails.setProjectImages(project.getProjectImages());
-
-//     // Set price range
-//     if (projectDetails != null) {
-//         cardDetails.setPriceMin(projectDetails.getpriceMin());
-//         cardDetails.setPriceMax(projectDetails.getPriceMax());
-//     }
-
-//     // Set amenities details
-//     if (amenities != null) {
-//         cardDetails.setSwimming_Pool(Collections.singletonList(amenities.getSwimming_pool()));
-//         cardDetails.setGym(Collections.singletonList(amenities.getGym()));
-//         cardDetails.setTemple(Collections.singletonList(amenities.getTemple()));
-//         cardDetails.setPark(Collections.singletonList(amenities.getPark()));
-//         cardDetails.setCreche(Collections.singletonList(amenities.getCreche()));
-//         cardDetails.setChildren_parks(Collections.singletonList(amenities.getChildren_parks()));
-//         cardDetails.setClub_house(Collections.singletonList(amenities.getClub_house()));
-//         cardDetails.setC_hall(Collections.singletonList(amenities.getC_hall()));
-//         cardDetails.setOther(Collections.singletonList(amenities.getOther()));
-//     }
-
-//     // Set nearby places
-//     if (nearby != null) {
-//         cardDetails.setSchools(Collections.singletonList(nearby.getSchools()));
-//         cardDetails.setHospitals(Collections.singletonList(nearby.getHospitals()));
-//         cardDetails.setIt_parks(Collections.singletonList(nearby.getIt_parks()));
-//         cardDetails.setHangouts(Collections.singletonList(nearby.getHangouts()));
-//         cardDetails.setCinemas(Collections.singletonList(nearby.getCinemas()));
-//         cardDetails.setMetro(Collections.singletonList(nearby.getMetro()));
-//     }
-
-//     // Set BHK configurations
-//     cardDetails.setOneBHKConfig(oneBHKConfig);
-//     cardDetails.setTwoBHKConfig(twoBHKConfig);
-//     cardDetails.setThreeBHKConfig(threeBHKConfig);
-
-//     return cardDetails;
-// }
-
 public CardDetails getProjectById(Integer id) {
-    Project project = projectRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with ID: " + id));
+    // Project project = projectRepository.findById(id)
+    // .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+   Project project= projectRepository.findById(id)
+    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with id: " + id));
 
     // Fetch related entities
     List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(id);
@@ -740,8 +688,8 @@ public CardDetails getProjectById(Integer id) {
     cardDetails.setAddress(project.getAddress());
     cardDetails.setProjectImages(project.getProjectImages());
 
-    // Set price range from multiple ProjectDetails entries
-    if (!projectDetailsList.isEmpty()) {
+    // Set price range
+    if (projectDetailsList != null && !projectDetailsList.isEmpty() ) {
         int minPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0);
         int maxPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0);
         cardDetails.setPriceMin(minPrice);
@@ -750,26 +698,33 @@ public CardDetails getProjectById(Integer id) {
 
     // Set amenities details
     if (amenities != null) {
-        cardDetails.setSwimming_Pool(Collections.singletonList(amenities.getSwimming_pool()));
-        cardDetails.setGym(Collections.singletonList(amenities.getGym()));
-        cardDetails.setTemple(Collections.singletonList(amenities.getTemple()));
-        cardDetails.setPark(Collections.singletonList(amenities.getPark()));
-        cardDetails.setCreche(Collections.singletonList(amenities.getCreche()));
-        cardDetails.setChildren_parks(Collections.singletonList(amenities.getChildren_parks()));
-        cardDetails.setClub_house(Collections.singletonList(amenities.getClub_house()));
-        cardDetails.setC_hall(Collections.singletonList(amenities.getC_hall()));
-        cardDetails.setOther(Collections.singletonList(amenities.getOther()));
+        AmenitiesDto amenitiesDTO = new AmenitiesDto();
+        amenitiesDTO.setSwimmingPool(amenities.getSwimming_pool());
+        amenitiesDTO.setGym(amenities.getGym());
+        amenitiesDTO.setTemple(amenities.getTemple());
+        amenitiesDTO.setPark(amenities.getPark());
+        amenitiesDTO.setCreche(amenities.getCreche());
+        amenitiesDTO.setChildrenParks(amenities.getChildren_parks());
+        amenitiesDTO.setClubHouse(amenities.getClub_house());
+        amenitiesDTO.setCHall(amenities.getC_hall());
+        amenitiesDTO.setOther(amenities.getOther());
+       
+        cardDetails.setAmenities(amenitiesDTO);
     }
-
     // Set nearby places
     if (nearby != null) {
-        cardDetails.setSchools(Collections.singletonList(nearby.getSchools()));
-        cardDetails.setHospitals(Collections.singletonList(nearby.getHospitals()));
-        cardDetails.setIt_parks(Collections.singletonList(nearby.getIt_parks()));
-        cardDetails.setHangouts(Collections.singletonList(nearby.getHangouts()));
-        cardDetails.setCinemas(Collections.singletonList(nearby.getCinemas()));
-        cardDetails.setMetro(Collections.singletonList(nearby.getMetro()));
+        NearbyDTO nearbyDTO = new NearbyDTO();
+        nearbyDTO.setSchools(nearby.getSchools());
+        nearbyDTO.setHospitals(nearby.getHospitals());
+        nearbyDTO.setItParks(nearby.getIt_parks());
+        nearbyDTO.setHangouts(nearby.getHangouts());
+        nearbyDTO.setCinemas(nearby.getCinemas());
+        nearbyDTO.setMetro(nearby.getMetro());
+
+
+        cardDetails.setNearby(nearbyDTO);
     }
+
 
     // Set BHK configurations
     cardDetails.setOneBHKConfig(oneBHKConfig);
@@ -778,6 +733,8 @@ public CardDetails getProjectById(Integer id) {
 
     return cardDetails;
 }
+
+
 
 
 }

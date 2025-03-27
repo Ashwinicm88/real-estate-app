@@ -1,5 +1,7 @@
 package com.example.real_estate.api.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -17,8 +19,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name="amenities")
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Amenities {

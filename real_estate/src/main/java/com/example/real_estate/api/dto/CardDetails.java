@@ -14,9 +14,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CardDetails {
+public class CardDetails {  
 
     //Project Details
+    private Integer projectId;
     private String projectName;
     private String address;
     private List<String> projectImages;
@@ -28,24 +29,29 @@ public class CardDetails {
 
 
    //amenities details
-   private List<String> swimming_Pool;
-   private List<String> gym;
-   private List<String> temple;
-   private List<String> park;
-   private List<String> creche;
-   private List<String> children_parks;
-   private List<String> club_house;
-   private List<String> c_hall;
-   private List<String> other;
+//    private List<String> swimming_Pool;
+//    private List<String> gym;
+//    private List<String> temple;
+//    private List<String> park;
+//    private List<String> creche;
+//    private List<String> children_parks;
+//    private List<String> club_house;
+//    private List<String> c_hall;
+//    private List<String> other;
+// Amenities inside "details"
+@JsonProperty("Amenities")
+private AmenitiesDto amenities;
 
-   
+
+@JsonProperty("Nearby")
+private NearbyDTO nearby;
     // nearby details
-    private List<String> schools;
-    private List<String> hospitals;
-    private List<String> it_parks;
-    private List<String> hangouts;
-    private List<String> cinemas;
-    private List<String> metro;
+    // private List<String> schools;
+    // private List<String> hospitals;
+    // private List<String> it_parks;
+    // private List<String> hangouts;
+    // private List<String> cinemas;
+    // private List<String> metro;
 
     @JsonProperty("oneBHKConfig")
     private List<OneBHKConfig> oneBHKConfig;

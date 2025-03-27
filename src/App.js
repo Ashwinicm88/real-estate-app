@@ -75,7 +75,7 @@ const App = () => {
         <Route path="/all-stagedata" element={<AllStageData />}></Route>
         <Route path="/search-result" element={<SearchResult />}></Route>
         <Route path="/version-display" element={<VersionDisplay />}></Route>
-        <Route path="/property-details" element={<PropertyDetails />}></Route>
+        <Route path="/property-details/:projectId" element={<PropertyDetails />}></Route>
 
         
         <Route path="/version-display" element={<VersionDisplay />}></Route>

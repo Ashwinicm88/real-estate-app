@@ -2,6 +2,7 @@ package com.example.real_estate.api.dto;
 import java.util.List;
 
 public class ProjectSearchProjection {
+    private Integer projectId;
     private String projectName;
     private int projectAreaSqmt;
     private List<String> projectImages;
@@ -18,8 +19,9 @@ public class ProjectSearchProjection {
     public ProjectSearchProjection() {}
 
     // ✅ Correct Constructor (Removed `int` return type)
-    public ProjectSearchProjection(String projectName, int projectAreaSqmt, List<String> projectImages,Double latitude, Double longitude,
+    public ProjectSearchProjection(Integer projectId, String projectName, int projectAreaSqmt, List<String> projectImages,Double latitude, Double longitude,
                                    String city, String address,int units, int priceMin, int priceMax, List<String> availableBHKs) {
+        this.projectId = projectId;
         this.projectName = projectName;
         this.projectAreaSqmt = projectAreaSqmt;
         this.projectImages = projectImages;
@@ -34,6 +36,9 @@ public class ProjectSearchProjection {
     }
 
     // ✅ Getters & Setters
+
+    public Integer getProjectId() { return projectId; }
+    public void setProjectId(Integer projectId) { this.projectId = projectId; }
     public String getProjectName() { return projectName; }
     public void setProjectName(String projectName) { this.projectName = projectName; }
 
