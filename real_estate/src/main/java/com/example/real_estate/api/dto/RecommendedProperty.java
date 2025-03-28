@@ -22,6 +22,7 @@ public class RecommendedProperty{  // 🛠️ Fixed class name
     private String projectStatus;
     private Integer priceMin;
     private Integer priceMax;
+    private List<String> availableBHKs;
     private Boolean allInclusive;
     // private String Amenities;
     private String coveredParking;
@@ -41,6 +42,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // this.projectPlannedEnd = projectDetails.getProjectPlannedEnd();
         this.priceMin = projectDetails.getPriceMin();
         this.priceMax = projectDetails.getPriceMax();
+        
         // this.priceMin = projectDetails.getPriceMin() != null ? projectDetails.getPriceMin() : 0.0;
         // this.priceMax = projectDetails.getPriceMax() != null ? projectDetails.getPriceMax() : 0.0;
         this.allInclusive = projectDetails.getAllInclusive();
@@ -105,6 +107,8 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public Integer getPriceMax() { return priceMax; }
     public void setPriceMax(Integer priceMax) { this.priceMax = priceMax; }
 
+//  public List<String> getAvailableBHKs() { return availableBHKs; }
+//     public void setAvailableBHKs(List<String> availableBHKs) { this.availableBHKs = availableBHKs; }
     // public Boolean getAllInclusive() { return allInclusive; }
     // public void setAllInclusive(String allInclusive) { this.allInclusive = allInclusive; }
 

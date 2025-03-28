@@ -695,6 +695,15 @@ public CardDetails getProjectById(Integer id) {
         cardDetails.setPriceMin(minPrice);
         cardDetails.setPriceMax(maxPrice);
     }
+    // List<String> availableBHKs = new ArrayList<>();
+    //   // Check if valid data exists
+    // if (!oneBHKConfig.isEmpty() && hasValidData(oneBHKConfig.get(0))) availableBHKs.add("1BHK");
+    // if (!twoBHKConfig.isEmpty() && hasValidData(twoBHKConfig.get(0))) availableBHKs.add("2BHK");
+    // if (!threeBHKConfig.isEmpty() && hasValidData(threeBHKConfig.get(0))) availableBHKs.add("3BHK");
+
+
+    // cardDetails.setAvailableBHKs(availableBHKs);;
+
 
     // Set amenities details
     if (amenities != null) {

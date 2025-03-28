@@ -64,6 +64,7 @@ public class ProjectSearchProjection {
     public void setUnits(int units) { this.units = units; }
 
     public int getPriceMin() { return priceMin; }
+    
     public void setPriceMin(int priceMin) { this.priceMin = priceMin; }
 
     public int getPriceMax() { return priceMax; }

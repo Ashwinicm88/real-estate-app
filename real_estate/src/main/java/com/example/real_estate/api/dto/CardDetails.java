@@ -61,4 +61,9 @@ private NearbyDTO nearby;
 
     @JsonProperty("threeBHKConfig")
     private List<ThreeBHKConfig> threeBHKConfig;
+
+    public void setAvailableBHKs(List<String> availableBHKs) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAvailableBHKs'");
+    }
 }
