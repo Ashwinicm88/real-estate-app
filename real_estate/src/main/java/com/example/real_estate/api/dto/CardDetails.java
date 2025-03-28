@@ -21,37 +21,21 @@ public class CardDetails {
     private String projectName;
     private String address;
     private List<String> projectImages;
+    private String reralink;
 
 
     //PpojectDetails  details
     private Integer priceMin;
     private Integer priceMax;
-
-
-   //amenities details
-//    private List<String> swimming_Pool;
-//    private List<String> gym;
-//    private List<String> temple;
-//    private List<String> park;
-//    private List<String> creche;
-//    private List<String> children_parks;
-//    private List<String> club_house;
-//    private List<String> c_hall;
-//    private List<String> other;
 // Amenities inside "details"
 @JsonProperty("Amenities")
 private AmenitiesDto amenities;
 
 
+
 @JsonProperty("Nearby")
 private NearbyDTO nearby;
-    // nearby details
-    // private List<String> schools;
-    // private List<String> hospitals;
-    // private List<String> it_parks;
-    // private List<String> hangouts;
-    // private List<String> cinemas;
-    // private List<String> metro;
+
 
     @JsonProperty("oneBHKConfig")
     private List<OneBHKConfig> oneBHKConfig;
@@ -62,8 +46,10 @@ private NearbyDTO nearby;
     @JsonProperty("threeBHKConfig")
     private List<ThreeBHKConfig> threeBHKConfig;
 
+    @JsonProperty("expertReview")
+    private ExpertReviewDto expertReview;
+
     public void setAvailableBHKs(List<String> availableBHKs) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setAvailableBHKs'");
     }
 }

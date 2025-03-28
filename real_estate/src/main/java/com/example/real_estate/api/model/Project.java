@@ -157,7 +157,11 @@ public class Project {
         this.deleted = deleted; // Now correctly assigned
     }
     public Project orElse(Object object) {
-        // TODO Auto-generated method stub
+     
         throw new UnsupportedOperationException("Unimplemented method 'orElse'");
+    }
+    public Project orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
     }
 }

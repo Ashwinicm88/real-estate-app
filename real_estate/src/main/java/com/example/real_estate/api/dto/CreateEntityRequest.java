@@ -110,6 +110,8 @@ public class CreateEntityRequest {
     @JsonProperty("metro")
     private List<String> metro;
 
+    private String reviewText;
+
     // BHK Configurations
     @JsonProperty("oneBHKConfig")
     private List<OneBHKConfig> oneBHKConfig;
@@ -133,4 +135,6 @@ public class CreateEntityRequest {
     // New Field: Project Timeline
     @JsonProperty("projectTimeline")
     private List<ProjectTimeLine> projectTimeline;
+
+   
 }

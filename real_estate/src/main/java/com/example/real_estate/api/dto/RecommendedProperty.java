@@ -17,12 +17,13 @@ public class RecommendedProperty{  // 🛠️ Fixed class name
     private String projectName;
     private String projectAddress;
     private String projectVideo;
+    
     private List<String> projectPictures;
     private Integer units;
     private String projectStatus;
     private Integer priceMin;
     private Integer priceMax;
-    private List<String> availableBHKs;
+    // private List<String> availableBHKs;
     private Boolean allInclusive;
     // private String Amenities;
     private String coveredParking;
@@ -42,6 +43,8 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // this.projectPlannedEnd = projectDetails.getProjectPlannedEnd();
         this.priceMin = projectDetails.getPriceMin();
         this.priceMax = projectDetails.getPriceMax();
+
+     
         
         // this.priceMin = projectDetails.getPriceMin() != null ? projectDetails.getPriceMin() : 0.0;
         // this.priceMax = projectDetails.getPriceMax() != null ? projectDetails.getPriceMax() : 0.0;
@@ -76,6 +79,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         }
     }
 
+
     // Getters and Setters
     public String getProjectName() { return projectName; }
     public void setProjectName(String projectName) { this.projectName = projectName; }
@@ -107,8 +111,6 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public Integer getPriceMax() { return priceMax; }
     public void setPriceMax(Integer priceMax) { this.priceMax = priceMax; }
 
-//  public List<String> getAvailableBHKs() { return availableBHKs; }
-//     public void setAvailableBHKs(List<String> availableBHKs) { this.availableBHKs = availableBHKs; }
     // public Boolean getAllInclusive() { return allInclusive; }
     // public void setAllInclusive(String allInclusive) { this.allInclusive = allInclusive; }
 
@@ -129,4 +131,8 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public List<String> getBanks() { return banks; }
     public void setBanks(List<String> banks) { this.banks = banks; }
+    
+    // public void setAvailableBHKs(List<String> availableBHKs) {
+    //     throw new UnsupportedOperationException("Unimplemented method 'setAvailableBHKs'");
+    // }
 }

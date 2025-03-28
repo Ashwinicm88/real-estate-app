@@ -65,6 +65,8 @@ public class GetEntityResponse {
     private List<String> cinemas;
     private List<String> metro;
 
+    //Expert Review
+    private String reviewText;
 
     private OneBHKConfig oneBHKConfig;
     private TwoBHKConfig twoBHKConfig;

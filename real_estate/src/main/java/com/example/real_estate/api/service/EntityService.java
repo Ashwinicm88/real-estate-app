@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.example.real_estate.api.service.FileUploadService;
-import com.example.real_estate.api.service.FileStorageService;
+// import com.example.real_estate.api.service.FileStorageService;
 import jakarta.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -71,11 +71,8 @@ public class EntityService {
     @Autowired
     private AmenitiesRepository amenitiesRepository;
 
-    // @Autowired
-    // private EntityRepository entityRepository;
-
-    // @Autowired
-    // private EntityQueryService entityQueryService; // Inject EntityQueryService
+    @Autowired
+    private ExpertReviewRepository expertReviewRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
    public EntityService(CorsConfig corsConfig, FileStorageService fileStorageService, WebMvcConfigurer corsConfigurer) {
@@ -207,7 +204,22 @@ public class EntityService {
             );
         nearby = nearbyRepository.save(nearby);
         System.out.println("✅ Nearby Saved with ID: " + nearby.getNearId());
-
+        
+        ExpertReview expert = new ExpertReview(
+            project, 
+            request.getReviewText() // ❌ Removed extra comma
+        );
+        expert = expertReviewRepository.save(expert);
+        System.out.println("✅ Expert Review Saved with ID: " + expert.getReviewId());
+        
+        
+        // ExpertReview expert= new ExpertReview(
+        //     project,
+        //     request.getReviewText()
+        // );
+        // expert = expertReviewRepository.save(expert);
+        // System.out.println("✅ Expert Review Saved with ID: " + expert.getReviewId());
+        
 
         if (request.getOneBHKConfig() != null && !request.getOneBHKConfig().isEmpty()) {
             // int index=0; //track file index
@@ -671,8 +683,13 @@ private boolean hasValidData(BHKConfig config) {
 public CardDetails getProjectById(Integer id) {
     // Project project = projectRepository.findById(id)
     // .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
-   Project project= projectRepository.findById(id)
-    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with id: " + id));
+//    Project project= projectRepository.findByProjectId(id)
+//     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with id: " + id));
+Project project = projectRepository.findByProjectId(id);
+if (project == null) {
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with id: " + id);
+}
+
 
     // Fetch related entities
     List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(id);
@@ -681,12 +698,14 @@ public CardDetails getProjectById(Integer id) {
     List<OneBHKConfig> oneBHKConfig = oneBHKConfigRepository.findByProject_ProjectId(id);
     List<TwoBHKConfig> twoBHKConfig = twoBHKConfigRepository.findByProject_ProjectId(id);
     List<ThreeBHKConfig> threeBHKConfig = threeBHKConfigRepository.findByProject_ProjectId(id);
+    ExpertReview expertReview = expertReviewRepository.findByProject_ProjectId(id);
 
     // Construct response DTO
     CardDetails cardDetails = new CardDetails();
     cardDetails.setProjectName(project.getProjectName());
     cardDetails.setAddress(project.getAddress());
     cardDetails.setProjectImages(project.getProjectImages());
+    cardDetails.setReralink(project.getReraLink());
 
     // Set price range
     if (projectDetailsList != null && !projectDetailsList.isEmpty() ) {
@@ -702,7 +721,7 @@ public CardDetails getProjectById(Integer id) {
     // if (!threeBHKConfig.isEmpty() && hasValidData(threeBHKConfig.get(0))) availableBHKs.add("3BHK");
 
 
-    // cardDetails.setAvailableBHKs(availableBHKs);;
+    // cardDetails.setAvailableBHKs(availableBHKs);
 
 
     // Set amenities details
@@ -733,8 +752,13 @@ public CardDetails getProjectById(Integer id) {
 
         cardDetails.setNearby(nearbyDTO);
     }
+     
+    ExpertReviewDto expertReviewDto = new ExpertReviewDto();
+    expertReviewDto.setReviewText(expertReview.getReviewText());
 
+    cardDetails.setExpertReview(expertReviewDto);
 
+  
     // Set BHK configurations
     cardDetails.setOneBHKConfig(oneBHKConfig);
     cardDetails.setTwoBHKConfig(twoBHKConfig);
