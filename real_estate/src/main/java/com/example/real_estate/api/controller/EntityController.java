@@ -1,5 +1,6 @@
 package com.example.real_estate.api.controller;
 
+
 import com.example.real_estate.api.dto.*;
 import com.example.real_estate.api.model.Project;
 import com.example.real_estate.api.model.ProjectDetails;
@@ -14,8 +15,10 @@ import com.example.real_estate.api.repository.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,18 +33,23 @@ import org.springframework.http.MediaType;
 @Validated
 public class EntityController {
 
+
     // private static final Logger logger = LoggerFactory.getLogger(EntityController.class);
     private final EntityService entityService;
     private final FileStorageService fileStorageService;
 
+
     @Autowired
     private ProjectDetailsRepository projectDetailsRepository;
 
+
     @Autowired
     private ProjectRepository projectRepository;
-    
+   
+
 
     // private final EntityQueryService entityQueryService;
+
 
     /**
      * API to create a new entity dynamically.
@@ -64,8 +72,9 @@ public ResponseEntity<Map<String, String>> createEntity(
         @RequestPart(value = "video",required = false) MultipartFile video,
         @RequestParam Map<String, MultipartFile> allFiles // Capture all dynamic files
 
+
         ) throws JsonProcessingException {
-    
+   
      // Send files to FileUploadController and get URLs
      List<String> imageUrls = (images !=null && !images.isEmpty())? fileStorageService.uploadSingleImages(images):new ArrayList<>();
      String videoUrl = (video != null && !video.isEmpty()) ? fileStorageService.uploadVideo(video) : null;
@@ -77,30 +86,36 @@ public ResponseEntity<Map<String, String>> createEntity(
     Map<Integer, List<String>> twoBHKType2ImageUrls = new HashMap<>();  // ✅ Declare TwoBHK map
     Map<Integer, List<String>> twoBHKType2FloorPlanUrls = new HashMap<>();  // ✅ Declare TwoBHK floor plan map
 
+
     Map<Integer, List<String>> threeBHKType3ImageUrls = new HashMap<>();  // ✅ Declare TwoBHK map
     Map<Integer, List<String>> threeBHKType3FloorPlanUrls = new HashMap<>();  // ✅ Declare TwoBHK floor plan map
+
 
      
     Map<Integer, List<String>> fourBHKType4ImageUrls = new HashMap<>();  // ✅ Declare TwoBHK map
     Map<Integer, List<String>> fourBHKType4FloorPlanUrls = new HashMap<>();  // ✅ Declare TwoBHK floor plan map
 
+
      
     Map<Integer, List<String>> fiveBHKType5ImageUrls = new HashMap<>();  // ✅ Declare TwoBHK map
     Map<Integer, List<String>> fiveBHKType5FloorPlanUrls = new HashMap<>();  // ✅ Declare TwoBHK floor plan map
+
 
      
     Map<Integer, List<String>> penthouseTypeImageUrls = new HashMap<>();  // ✅ Declare TwoBHK map
     Map<Integer, List<String>> penthouseTypeFloorPlanUrls = new HashMap<>();  // ✅ Declare TwoBHK floor plan map
 
+
     for (Map.Entry<String, MultipartFile> entry : allFiles.entrySet()) {
         String key = entry.getKey();
         MultipartFile file = entry.getValue();
+
 
         if (key.startsWith("oneBHKType1Images_")) {
             int typeNumber = Integer.parseInt(key.split("_")[1]); // Extract typeNumber
             oneBHKType1ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
                     .add(fileStorageService.uploadImages(Collections.singletonList(file)).get(0));
-        } 
+        }
         else if (key.startsWith("oneBHKType1FloorPlanImages_")) {
             int typeNumber = Integer.parseInt(key.split("_")[1]); // Extract typeNumber
             oneBHKType1FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
@@ -110,7 +125,7 @@ public ResponseEntity<Map<String, String>> createEntity(
             int typeNumber = Integer.parseInt(key.split("_")[1]); // Extract typeNumber
             twoBHKType2ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
                     .add(fileStorageService.uploadImages(Collections.singletonList(file)).get(0));
-        } 
+        }
         else if (key.startsWith("twoBHKType2FloorPlanImages_")) {
             int typeNumber = Integer.parseInt(key.split("_")[1]); // Extract typeNumber
             twoBHKType2FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
@@ -120,7 +135,7 @@ public ResponseEntity<Map<String, String>> createEntity(
             int typeNumber = Integer.parseInt(key.split("_")[1]); // Extract typeNumber
             threeBHKType3ImageUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
                     .add(fileStorageService.uploadImages(Collections.singletonList(file)).get(0));
-        } 
+        }
         else if (key.startsWith("threeBHKType3FloorPlanImages_")) {
             int typeNumber = Integer.parseInt(key.split("_")[1]); // Extract typeNumber
             threeBHKType3FloorPlanUrls.computeIfAbsent(typeNumber, k -> new ArrayList<>())
@@ -167,8 +182,10 @@ public ResponseEntity<Map<String, String>> createEntity(
     //  ,penthouseTypeImageUrls,penthouseBHKTypeFloorPlanUrls);
  
 
+
     return ResponseEntity.ok(Map.of("message", "Entity created successfully!"));
 }
+
 
      /**
      * API to fetch all entities dynamically.
@@ -182,6 +199,7 @@ public ResponseEntity<Map<String, String>> createEntity(
         return ResponseEntity.ok(response);
     }
 
+
     @GetMapping("/latest")
     public ResponseEntity<GetEntityResponse> getLatestEntity() {
     GetEntityResponse latestEntity = entityService.getLatestEntity();
@@ -190,6 +208,7 @@ public ResponseEntity<Map<String, String>> createEntity(
             : ResponseEntity.notFound().build();
 }
 
+
 @GetMapping("/search")
 public ResponseEntity<?> searchProjects(
         @RequestParam(required = false) Integer budgetMin,
@@ -197,24 +216,29 @@ public ResponseEntity<?> searchProjects(
         @RequestParam(required = false) String city,
         @RequestParam(required = false) String bhkType) {
 
+
     // 1️⃣ Validate budgetMin and budgetMax
     if (budgetMin != null && budgetMax != null && budgetMin > budgetMax) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap("error", "budgetMin cannot be greater than budgetMax"));
     }
 
+
     // 2️⃣ Fetch search results from service
     List<ProjectSearchProjection> result = entityService.searchProjects(budgetMin, budgetMax, city, bhkType);
+
 
     // 3️⃣ Handle case where no results match
     if (result.isEmpty()) {
         StringBuilder errorMessage = new StringBuilder("No properties found for the given search criteria: ");
         List<String> appliedFilters = new ArrayList<>();
 
+
         if (bhkType != null) appliedFilters.add("BHK Type: " + bhkType);
         if (city != null) appliedFilters.add("City: " + city);
         if (budgetMin != null) appliedFilters.add("Min Budget: " + budgetMin);
         if (budgetMax != null) appliedFilters.add("Max Budget: " + budgetMax);
+
 
         if (appliedFilters.isEmpty()) {
             errorMessage.append("No filters applied.");
@@ -222,18 +246,22 @@ public ResponseEntity<?> searchProjects(
             errorMessage.append(String.join(", ", appliedFilters));
         }
 
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap("message", errorMessage.toString()));
     }
+
 
     // 4️⃣ Return successful response with matching properties
     return ResponseEntity.ok(result);
 }
 
-    @GetMapping("/recommended-properties")
+
+@GetMapping("/recommended-properties")
 public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
     List<Project> projects = projectRepository.findByPreferred("Y"); // Fetch only preferred projects
     List<RecommendedProperty> recommendedProperties = new ArrayList<>();
+
 
     for (Project project : projects) {
         List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(project.getProjectId());
@@ -245,7 +273,21 @@ public ResponseEntity<List<RecommendedProperty>> getRecommendedProperties() {
         }
     }
 
+
     return ResponseEntity.ok(recommendedProperties);
 }
+// @GetMapping("/project/{id}")
+// public ResponseEntity<GetEntityResponse> getProjectById(@PathVariable Long id) {
+//     GetEntityResponse response = entityService.getProjectById(id);
+//     return response != null
+//             ? ResponseEntity.ok(response)
+//             : ResponseEntity.notFound().build();
+// }
+@GetMapping("/{id}")
+public ResponseEntity<CardDetails> getProjectById(@PathVariable Integer id) {
+    CardDetails cardDetails = entityService.getProjectById(id);
+    return ResponseEntity.ok(cardDetails);
+}
+
 
 }

@@ -17,7 +17,8 @@ const VideoUpload = ({ handleChange, section, field, label, limit = 1 }) => {
   };
  
   return (
-    <div className="flex flex-col w-3/4">
+    <div className="w-full mb-1 mobile-s:mx-3  mobile-m:mx-4 
+    text-base mobile-s:text-sm mobile-m:text-md mobile-l:text-lg md:ml-10 md:w-3/4 mobile-s:w-3/4">
       {/* Dynamic Label */}
       {label && (
         <label

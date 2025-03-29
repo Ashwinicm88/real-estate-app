@@ -1,49 +1,4 @@
-// import React from 'react';
-// import { TextField } from '@mui/material';
 
-// const InputField = ({ label, section, field, value, onChange, error, type = 'text', maxLength }) => {
-//   const handleInputChange = (e) => {
-//     let newValue = e.target.value;
-
-//     // Allow only integers
-//     if (type === 'integer' && !/^\d*$/.test(newValue)) return;
-
-//     // Allow only floats
-//     if (type === 'float' && !/^\d*\.?\d*$/.test(newValue)) return;
-
-//     // Handle maxLength
-//     if (maxLength && newValue.length > maxLength) return;
-
-//     // Trigger validation only for this field
-//     onChange(section, field, newValue);
-//   };
-
-//   return (
-//     <div className="mb-2">
-//       <TextField
-//         label={label}
-//         variant="standard"
-//         fullWidth
-//         value={value}
-//         onChange={handleInputChange}
-//         error={Boolean(error)}
-//         helperText={error || ''}
-//         type={type === 'integer' || type === 'float' ? 'text' : type}
-//         inputMode={type === 'integer' ? 'numeric' : 'text'}
-//         sx={{
-//           '& .MuiInputLabel-root': { color: '#9CA3AF' },
-//           '& .MuiInput-root': {
-//             color: 'white',
-//             borderBottom: '1px solid #E5E7EB',
-//             width: '300px',
-//           },
-//         }}
-//       />
-//     </div>
-//   );
-// };
-
-// export default InputField;
 import React from 'react';
 import { TextField } from '@mui/material';
 

@@ -1,10 +1,14 @@
 package com.example.real_estate.api.dto;
 
+
 import com.example.real_estate.api.model.*;
+
 
 import lombok.*;
 
+
 import java.util.List;
+
 
 @Getter
 @Setter
@@ -16,6 +20,8 @@ public class GetEntityResponse {
     private String organisationCin;
     private String organisationOwners;
     private int projectsCompleted;
+
+
 
 
     //project details
@@ -32,6 +38,7 @@ public class GetEntityResponse {
     private List<String> projectImages;
     private Boolean preferred;
 
+
     //project_details details
     private int units;
     private String projectStatus;
@@ -45,6 +52,7 @@ public class GetEntityResponse {
     private boolean bankApproved;
     private String banks;
 
+
     //amenities details
     private List<String> swimming_Pool;
     private List<String> gym;
@@ -56,6 +64,7 @@ public class GetEntityResponse {
     private List<String> c_hall;
     private List<String> other;
 
+
     // nearby details
     private List<String> schools;
     private List<String> hospitals;
@@ -66,6 +75,10 @@ public class GetEntityResponse {
     private List<String> metro;
 
 
+    //Expert Review
+    private String reviewText;
+
+
     private OneBHKConfig oneBHKConfig;
     private TwoBHKConfig twoBHKConfig;
     private ThreeBHKConfig threeBHKConfig;
@@ -74,3 +87,5 @@ public class GetEntityResponse {
     private PenthouseConfig penthouseConfig;
     private ProjectTimeLine projectTimeLine;
 }
+
+

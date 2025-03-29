@@ -16,38 +16,25 @@ import ScatterChartComponent from "./Components/ScatterChartComponent";
 import Organizations from "./Components/Organizations";
 //import ShowOrganization from "./Components/MultiStageForm";
 import Displayprop from "./Pages/Display";
-<<<<<<< HEAD
 import ShowNeedle from "./Components/showneedle";
 import PropertySearch1 from "./Pages/PropertySearch";
 import VersionDisplay from "./Pages/Version2_Display";
 import WingDetails from "./Components/wing_details";
 // import ShowNeedle from "./Components/showneedle"
-=======
-
-// import DisplayImages from "./components/DisplayImages";
-
-// import SingleImageDisplay from "./components/SingleImageDisplay";
-// import SingleImageUpload from "./components/SingleImageUpload";
-import VersionDisplay from "./Pages/Version2_Display";
-// import WingDetails from "./components/wing_details";
-import ShowNeedle from "./Components/showneedle"
->>>>>>> 804eb2b (Home Page Design Completed)
 import FormDataInput from "./Pages/FormData";
 import RealestateHome from "./Pages/Realestate-Home";
 import PostFormData from "./Components/PostwithForm";
 import AllStageData from "./Components/AllStageData"
-import SearchResult from "./Pages/SearchResult"
-import PropertyDetails from "./Pages/PropertyDetails";
 import './App.css';
 
 //import MultiStageForm from "./Components/MultiStageForm";
 import ProjectList from "./Pages/PropertyAllData";
 import LatestEntity from "./Components/LatestEntity";
 import DisplayProperty from "./Pages/DisplayProperty";
-import PostwithForm from "./Pages/PostwithForm";
+
 // import AllStageData from "./Components/AllStageData";
 import SearchResult from "./Pages/SearchResult";
-
+import PropertyDetails from "./Pages/PropertyDetails";
 
 const App = () => {
   return (
@@ -76,10 +63,6 @@ const App = () => {
         <Route path="/post-formdata" element={<PostFormData />}></Route>
         <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
         <Route path="/all-stagedata" element={<AllStageData />}></Route>
-        <Route path="/search-result" element={<SearchResult />}></Route>
-        <Route path="/version-display" element={<VersionDisplay />}></Route>
-        <Route path="/property-details" element={<PropertyDetails />}></Route>
-
         
         <Route path="/version-display" element={<VersionDisplay />}></Route>
         <Route path="/show-needle" element={<ShowNeedle />}></Route>
@@ -94,20 +77,13 @@ const App = () => {
       {/* <Route path="/post-with-form" element={<PostwithForm/>}></Route> */}
       <Route path="all-stage-data" element={<AllStageData />}></Route>
       <Route path="/search-result" element={<SearchResult />}></Route>
+      <Route path="/property-details/:projectId" element={<PropertyDetails />}></Route>
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
        <Route path="/displayimages" element={<DisplayImages />}></Route>
      
        <Route path="/single-upload" element={<SingleImageUpload />}></Route>
        <Route path="/single-display" element={<SingleImageDisplay />}></Route>
-<<<<<<< HEAD
-=======
-       <Route path="/property-search" element={<PropertySearch />}></Route>
-      
-       <Route path="/wing-details" element={<WingDetails />}></Route>
-       <Route path="/show-needle" element={<ShowNeedle />}></Route>
-       <Route path="/show-formdata" element={<FormDataInput />}></Route>
->>>>>>> 804eb2b (Home Page Design Completed)
        </Routes> */}
     </Router>
    

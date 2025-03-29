@@ -1,26 +1,32 @@
-
 package com.example.real_estate.api.service;
+
 
 import com.example.real_estate.api.model.*;
 import com.example.real_estate.api.repository.*;
 import com.example.real_estate.api.config.CorsConfig;
 import com.example.real_estate.api.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 // import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+// import com.example.real_estate.api.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.example.real_estate.api.service.FileUploadService;
-import com.example.real_estate.api.service.FileStorageService;
+// import com.example.real_estate.api.service.FileStorageService;
 import jakarta.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 // import jakarta.persistence.criteria.Predicate;
 
+
 // import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 @Transactional // ✅ Apply at the class level to ensure consistency
@@ -28,51 +34,64 @@ public class EntityService {
     @Autowired
     private final WebMvcConfigurer corsConfigurer;
 
+
     private final FileStorageService fileStorageService;
 
+
     private final CorsConfig corsConfig;
+
 
     @Autowired
     private OrganisationRepository organisationRepository;
 
+
     @Autowired
     private ProjectRepository projectRepository;
+
 
     @Autowired
     private ProjectDetailsRepository projectDetailsRepository;
 
+
     @Autowired
     private OneBhkConfigRepository oneBHKConfigRepository;
+
 
     @Autowired
     private TwoBhkConfigRepository twoBHKConfigRepository;
 
+
     @Autowired
     private ThreeBhkConfigRepository threeBHKConfigRepository;
+
 
     @Autowired
     private FourBhkConfigRepository fourBHKConfigRepository;
 
+
     @Autowired
     private FiveBhkConfigRepository fiveBHKConfigRepository;
+
 
     @Autowired
     private PenthouseConfigRepository penthouseConfigRepository;
 
+
     @Autowired
     private ProjectTimeLineRepository projectTimeLineRepository;
+
 
     @Autowired
     private NearbyRepository nearbyRepository;
 
+
     @Autowired
     private AmenitiesRepository amenitiesRepository;
 
-    // @Autowired
-    // private EntityRepository entityRepository;
 
-    // @Autowired
-    // private EntityQueryService entityQueryService; // Inject EntityQueryService
+    @Autowired
+    private ExpertReviewRepository expertReviewRepository;
+
 
     private final ObjectMapper objectMapper = new ObjectMapper();
    public EntityService(CorsConfig corsConfig, FileStorageService fileStorageService, WebMvcConfigurer corsConfigurer) {
@@ -80,11 +99,11 @@ public class EntityService {
         this.fileStorageService = fileStorageService;
         this.corsConfigurer = corsConfigurer;
     } // JSON converter
-// public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls,Map<Integer, List<String>> twoBHKType2ImageUrls, 
+// public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls,Map<Integer, List<String>> twoBHKType2ImageUrls,
 // Map<Integer, List<String>> twoBHKType2FloorPlanUrls,Map<Integer,List<String>>threeBHKTy ) throws JsonProcessingException{
-    public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls, Map<Integer, List<String>> twoBHKType2ImageUrls, 
+    public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls, Map<Integer, List<String>> twoBHKType2ImageUrls,
     Map<Integer, List<String>> twoBHKType2FloorPlanUrls,
-    Map<Integer, List<String>> threeBHKType3ImageUrls, 
+    Map<Integer, List<String>> threeBHKType3ImageUrls,
     Map<Integer, List<String>> threeBHKType3FloorPlanUrls,
     Map<Integer, List<String>> fourBHKType4ImageUrls, Map<Integer, List<String>> fourBHKType4FloorPlanUrls,
     Map<Integer,List<String>>fiveBHKType5ImageUrls,Map<Integer,List<String>>fiveBHKType5FloorPlanUrls,
@@ -98,12 +117,16 @@ public class EntityService {
                 request.getOrganisationOwners(),
                 request.getProjectsCompleted());
 
+
         organisation = organisationRepository.save(organisation);
         System.out.println("✅ Organisation Saved with ID: " + organisation.getOrgId());
+
 
         // ✅ Convert List<String> to JSON String or CSV format
         // String projectImages = convertListToJson(request.getProjectImages());
    
+
+
 
 
         // ✅ Save Project
@@ -133,14 +156,17 @@ public class EntityService {
                 request.getPreferred() != null ? request.getPreferred() : "N", // Default preferred to 'N' if not provided
                 false // Default 'deleted' to false
 
+
         );
+
 
         project = projectRepository.save(project);
        // ✅ Upload Images and Update the Project
 // List<String> projectImageUrls = fileUploadService.uploadFiles(request.getProjectImages()); // Make sure request.getProjectImages() is a List<MultipartFile>
 // project.setProjectImages(projectImageUrls);
-        
+       
         System.out.println("✅ Project Saved with ID: " + project.getProjectId());
+
 
         // ✅ Save ProjectDetails
         ProjectDetails projectDetails = new ProjectDetails(
@@ -158,9 +184,11 @@ public class EntityService {
                 request.getBanks()
         );
 
+
         // Save to database
         projectDetails = projectDetailsRepository.save(projectDetails);
         System.out.println("✅ Project Details Saved with ID: " + projectDetails.getDetailId());
+
 
         String Swimming_pool= convertListToJson(request.getSwimming_pool());
         String Gym= convertListToJson(request.getGym());
@@ -186,12 +214,14 @@ public class EntityService {
         amenities = amenitiesRepository.save(amenities);
         System.out.println("✅ Amenities Saved with ID: " + amenities.getAmenityId());
 
+
         String schools= convertListToJson(request.getSchools());
         String hospitals= convertListToJson(request.getHospitals());
         String it_parks= convertListToJson(request.getIt_parks());
         String hangouts= convertListToJson(request.getHangouts());
         String cinemas= convertListToJson(request.getCinemas());
         String metro= convertListToJson(request.getMetro());
+
 
         Nearby nearby = new Nearby(
             project,
@@ -204,6 +234,22 @@ public class EntityService {
             );
         nearby = nearbyRepository.save(nearby);
         System.out.println("✅ Nearby Saved with ID: " + nearby.getNearId());
+       
+        ExpertReview expert = new ExpertReview(
+            project,
+            request.getReviewText() // ❌ Removed extra comma
+        );
+        expert = expertReviewRepository.save(expert);
+        System.out.println("✅ Expert Review Saved with ID: " + expert.getReviewId());
+       
+       
+        // ExpertReview expert= new ExpertReview(
+        //     project,
+        //     request.getReviewText()
+        // );
+        // expert = expertReviewRepository.save(expert);
+        // System.out.println("✅ Expert Review Saved with ID: " + expert.getReviewId());
+       
 
 
         if (request.getOneBHKConfig() != null && !request.getOneBHKConfig().isEmpty()) {
@@ -220,6 +266,7 @@ public class EntityService {
             List<String> OneBHKimageUrls = oneBHKType1ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             entity.setType1Images(OneBHKimageUrls);
 
+
             // ✅ Fetch floor plans based on typeNumber (handling null cases)
             List<String> floorPlanUrls = oneBHKType1FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             entity.setType1FloorPlan(floorPlanUrls);
@@ -231,16 +278,17 @@ public class EntityService {
                     entity.setBedroom1Area(config.getBedroom1Area());
                     entity.setBathroom1Area(config.getBathroom1Area());
                     entity.setBathroom2Area(config.getBathroom2Area());
-        
+       
                     // Save to database only if it's valid
                     entity = oneBHKConfigRepository.save(entity);
-                    System.out.println("✅ One BHK Config Saved with ID: " + entity.getOneBhkConfigId()); 
+                    System.out.println("✅ One BHK Config Saved with ID: " + entity.getOneBhkConfigId());
                     // index++;
                 }
             }
         } else {
             System.out.println("❌ No One BHK Config found. Skipping save.");
         }
+
 
         if (request.getTwoBHKConfig() != null && !request.getTwoBHKConfig().isEmpty()) {
             for (TwoBHKConfig config : request.getTwoBHKConfig()) {
@@ -253,6 +301,7 @@ public class EntityService {
                     twobhk.setType2Area(config.getType2Area());
                     List<String> TwoBHKimageUrls = twoBHKType2ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
                     twobhk.setType2Images(TwoBHKimageUrls);
+
 
             // ✅ Fetch floor plans based on typeNumber (handling null cases)
                     List<String> floorPlanUrls = twoBHKType2FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
@@ -268,7 +317,7 @@ public class EntityService {
                     twobhk.setBedroom2Area(config.getBedroom2Area());
                     twobhk.setBathroom1Area(config.getBathroom1Area());
                     twobhk.setBathroom2Area(config.getBathroom2Area()); // This line was duplicated, now fixed
-        
+       
                     // Save to database only if valid
                     twobhk = twoBHKConfigRepository.save(twobhk);
                     System.out.println("✅ Two BHK Config Saved with ID: " + twobhk.getTwoBhkConfigId());  
@@ -277,7 +326,7 @@ public class EntityService {
         } else {
             System.out.println("❌ No Two BHK Config found. Skipping save.");
         }
-        
+       
        
         // Save Three BHK Configurations
 if (request.getThreeBHKConfig() != null && !request.getThreeBHKConfig().isEmpty()) {
@@ -293,6 +342,7 @@ if (request.getThreeBHKConfig() != null && !request.getThreeBHKConfig().isEmpty(
             // threebhk.setType3Images(config.getType3Images() != null ? config.getType3Images() : new ArrayList<>());
             List<String> threeBHKImageUrls = threeBHKType3ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             threebhk.setType3Images(threeBHKImageUrls);
+
 
             List<String> floorPlanUrls = threeBHKType3FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             threebhk.setType3FloorPlan(floorPlanUrls);
@@ -315,6 +365,7 @@ if (request.getThreeBHKConfig() != null && !request.getThreeBHKConfig().isEmpty(
     System.out.println("❌ No Three BHK Config found. Skipping save.");
 }
 
+
         // Save Four BHK Configurations
 if (request.getFourBHKConfig() != null && !request.getFourBHKConfig().isEmpty()) {
     for (FourBHKConfig config : request.getFourBHKConfig()) {
@@ -327,6 +378,7 @@ if (request.getFourBHKConfig() != null && !request.getFourBHKConfig().isEmpty())
             fourbhk.setType4Area(config.getType4Area());
             List<String> fourBHKImageUrls = fourBHKType4ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             fourbhk.setType4Images(fourBHKImageUrls);
+
 
             List<String> floorPlanUrls = fourBHKType4FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             fourbhk.setType4FloorPlan(floorPlanUrls);
@@ -346,6 +398,7 @@ if (request.getFourBHKConfig() != null && !request.getFourBHKConfig().isEmpty())
             fourbhk.setBathroom3Area(config.getBathroom3Area());
             fourbhk.setBathroom4Area(config.getBathroom4Area());
 
+
             fourbhk = fourBHKConfigRepository.save(fourbhk);
             System.out.println("✅ Four BHK Config Saved with ID: " + fourbhk.getFourBhkConfigId());
         }
@@ -354,7 +407,8 @@ if (request.getFourBHKConfig() != null && !request.getFourBHKConfig().isEmpty())
     System.out.println("❌ No Four BHK Config found. Skipping save.");
 }
 
-        
+
+       
        
 // Save Five BHK Configurations
 if (request.getFiveBHKConfig() != null && !request.getFiveBHKConfig().isEmpty()) {
@@ -368,6 +422,7 @@ if (request.getFiveBHKConfig() != null && !request.getFiveBHKConfig().isEmpty())
             fivebhk.setType5Area(config.getType5Area());
             List<String> fiveBHKImageUrls = fiveBHKType5ImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             fivebhk.setType5Images(fiveBHKImageUrls);
+
 
             List<String> floorPlanUrls = fiveBHKType5FloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             fivebhk.setType5FloorPlan(floorPlanUrls);
@@ -389,6 +444,7 @@ if (request.getFiveBHKConfig() != null && !request.getFiveBHKConfig().isEmpty())
             fivebhk.setBathroom4Area(config.getBathroom4Area());
             fivebhk.setBathroom5Area(config.getBathroom5Area());
 
+
             fivebhk = fiveBHKConfigRepository.save(fivebhk);
             System.out.println("✅ Five BHK Config Saved with ID: " + fivebhk.getFiveBhkConfigId());
         }
@@ -396,6 +452,7 @@ if (request.getFiveBHKConfig() != null && !request.getFiveBHKConfig().isEmpty())
 } else {
     System.out.println("❌ No Five BHK Config found. Skipping save.");
 }
+
 
 // Save Penthouse Configurations
 if (request.getPenthouseConfig() != null && !request.getPenthouseConfig().isEmpty()) {
@@ -408,8 +465,10 @@ if (request.getPenthouseConfig() != null && !request.getPenthouseConfig().isEmpt
             ph.setPenthouseUnits(config.getPenthouseUnits());
             ph.setPenthouseArea(config.getPenthouseArea());
 
+
             List<String> penthouseImageUrls = penthouseTypeImageUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             ph.setPenthouseImages(penthouseImageUrls);
+
 
             List<String> floorPlanUrls = penthouseTypeFloorPlanUrls.getOrDefault(config.getTypeNumber(), new ArrayList<>());
             ph.setPenthouseFloorPlan(floorPlanUrls);
@@ -433,6 +492,7 @@ if (request.getPenthouseConfig() != null && !request.getPenthouseConfig().isEmpt
             ph.setBathroom5Area(config.getBathroom5Area());
             ph.setBathroom6Area(config.getBathroom6Area());
 
+
             ph = penthouseConfigRepository.save(ph);
             System.out.println("✅ Penthouse Config Saved with ID: " + ph.getPenthouseConfigId());
         }
@@ -440,6 +500,7 @@ if (request.getPenthouseConfig() != null && !request.getPenthouseConfig().isEmpt
 } else {
     System.out.println("❌ No Penthouse Config found. Skipping save.");
 }
+
 
 // Save Project Timelines
 if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpty()) {
@@ -450,11 +511,14 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             pt.setMilestoneDate1(timeline.getMilestoneDate1());
             pt.setMilestoneStatus1(timeline.getMilestoneStatus1());
 
+
             pt.setMilestoneDate2(timeline.getMilestoneDate2());
             pt.setMilestoneStatus2(timeline.getMilestoneStatus2());
 
+
             pt.setMilestoneDate3(timeline.getMilestoneDate3());
             pt.setMilestoneStatus3(timeline.getMilestoneStatus3());
+
 
             pt.setMilestoneDate4(timeline.getMilestoneDate4());
             pt = projectTimeLineRepository.save(pt);
@@ -464,6 +528,8 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
 } else {
     System.out.println("❌ No Project Timeline found. Skipping save.");
 }
+
+
 
 
 // catch(JsonProcessingException e){
@@ -476,19 +542,24 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 
+
+
         for (Organisation organisation : organisations) {
             List<Project> projects = projectRepository.findByOrganisation(organisation);
+
 
             for (Project project : projects) {
                 // ✅ FIX: Ensure projectDetails is fetched correctly
                 List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProject(project);
                 ProjectDetails projectDetails = projectDetailsList.stream().findFirst().orElse(null);
 
+
                 GetEntityResponse response = new GetEntityResponse();
                 response.setOrganisationName(organisation.getOrgName());
                 response.setOrganisationCin(organisation.getOrgCin());
                 response.setOrganisationOwners(organisation.getOrgOwners());
                 response.setProjectsCompleted(organisation.getProjectsCompleted());
+
 
                 response.setProjectName(project.getProjectName());
                 response.setCity(project.getCity());
@@ -507,12 +578,14 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
                 // response.setMalls(Arrays.asList(project.getMalls().split(",")));
                 // response.setMovieTheaters(Arrays.asList(project.getMovieTheaters().split(",")));
 
+
                 if (projectDetails != null) {
                     response.setUnits(projectDetails.getUnits());
                     response.setProjectStatus(projectDetails.getProjectStatus());
                     response.setProjectLaunch(projectDetails.getProjectLaunch() != null
                             ? dateFormat.format(projectDetails.getProjectLaunch())
                             : null);
+
 
                     response.setProjectPlannedEnd(projectDetails.getProjectPlannedEnd() != null
                             ? dateFormat.format(projectDetails.getProjectPlannedEnd())
@@ -526,31 +599,40 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
                     response.setBanks(projectDetails.getBanks());
                 }
 
+
                 // ✅ FIX: Ensure correct handling of list-based repository results
                 List<OneBHKConfig> oneBHKConfigs = oneBHKConfigRepository.findByProject(project);
                 response.setOneBHKConfig(!oneBHKConfigs.isEmpty() ? oneBHKConfigs.get(0) : null);
 
+
                 List<TwoBHKConfig> twoBHKConfigs = twoBHKConfigRepository.findByProject(project);
                 response.setTwoBHKConfig(!twoBHKConfigs.isEmpty() ? twoBHKConfigs.get(0) : null);
+
 
                 List<ThreeBHKConfig> threeBHKConfigs = threeBHKConfigRepository.findByProject(project);
                 response.setThreeBHKConfig(!threeBHKConfigs.isEmpty() ? threeBHKConfigs.get(0) : null);
 
+
                 List<FourBHKConfig> fourBHKConfigs = fourBHKConfigRepository.findByProject(project);
                 response.setFourBHKConfig(!fourBHKConfigs.isEmpty() ? fourBHKConfigs.get(0) : null);
+
 
                 List<FiveBHKConfig> fiveBHKConfigs = fiveBHKConfigRepository.findByProject(project);
                 response.setFiveBHKConfig(!fiveBHKConfigs.isEmpty() ? fiveBHKConfigs.get(0) : null);
 
+
                 List<PenthouseConfig> penthouseConfigs = penthouseConfigRepository.findByProject(project);
                 response.setPenthouseConfig(!penthouseConfigs.isEmpty() ? penthouseConfigs.get(0) : null);
+
 
                 List<ProjectTimeLine> projectTimelines = projectTimeLineRepository.findByProject(project);
                 response.setProjectTimeLine(!projectTimelines.isEmpty() ? projectTimelines.get(0):null);
 
+
                 responseList.add(response);
             }
         }
+
 
         return responseList;
     }
@@ -559,16 +641,16 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
         if (latestProject == null) {
             return null; // Handle case where no data exists
         }
-    
+   
         Organisation organisation = latestProject.getOrganisation();
         ProjectDetails projectDetails = projectDetailsRepository.findByProject(latestProject).stream().findFirst().orElse(null);
-    
+   
         GetEntityResponse response = new GetEntityResponse();
         response.setOrganisationName(organisation.getOrgName());
         response.setOrganisationCin(organisation.getOrgCin());
         response.setOrganisationOwners(organisation.getOrgOwners());
         response.setProjectsCompleted(organisation.getProjectsCompleted());
-    
+   
         response.setProjectName(latestProject.getProjectName());
         response.setCity(latestProject.getCity());
         response.setLocality(latestProject.getLocality());
@@ -585,7 +667,7 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
         // response.setHospitals(Arrays.asList(latestProject.getHospitals().split(",")));
         // response.setMalls(Arrays.asList(latestProject.getMalls().split(",")));
         // response.setMovieTheaters(Arrays.asList(latestProject.getMovieTheaters().split(",")));
-    
+   
         if (projectDetails != null) {
             response.setUnits(projectDetails.getUnits());
             response.setProjectStatus(projectDetails.getProjectStatus());
@@ -603,10 +685,10 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             response.setBankApproved(projectDetails.getBankApproved());
             response.setBanks(projectDetails.getBanks());
         }
-    
+   
         return response;
     }
-    
+   
     // ✅ Convert List<String> to JSON
     private String convertListToJson(List<String> list) {
         try {
@@ -615,64 +697,15 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             throw new RuntimeException("Error converting list to JSON", e);
         }
     }
-    
-    
-//     public List<GetEntityResponse> searchEntities(String name, String location, Integer minPrice, Integer maxPrice,Integer bhkType) {
-//     List<GetEntityResponse> results = entityRepository.searchProjects(name, location, minPrice, maxPrice,bhkType);
-
-//     for (GetEntityResponse response : results) {
-//         if (response.getProjectImages() == null) {
-//             response.setProjectImages(Collections.emptyList()); // Prevents null errors
-//         }
-//     }
-
-//     return results;
-// // }
-// public List<ProjectSearchProjection> searchProjects(String location, Integer minBudget, Integer maxBudget) {
-//     return projectRepository.searchProjects(location, minBudget, maxBudget);
-// }
-// public List<Project> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
-//         return projectRepository.findAll((root, query, criteriaBuilder) -> {
-//             List<Predicate> predicates = new ArrayList<>();
-
-//             if (budgetMin != null) {
-//                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("priceMin"), budgetMin));
-//             }
-//             if (budgetMax != null) {
-//                 predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("priceMax"), budgetMax));
-//             }
-//             if (city != null && !city.isEmpty()) {
-//                 predicates.add(criteriaBuilder.equal(root.get("city"), city));
-//             }
-//             if (bhkType != null && !bhkType.isEmpty()) {
-//                 predicates.add(criteriaBuilder.equal(root.get("bhkType"), bhkType));
-//             }
-
-//             // Apply OR condition instead of AND
-//             return criteriaBuilder.or(predicates.toArray(new Predicate[0]));
-//         });
-//     }
-
-// public List<ProjectSearchProjection> getFilteredProjects(String city) {
-//         List<Project> projects = projectRepository.findByCity(city);
-
-//         return projects.stream().map(project -> new ProjectSearchProjection(
-//                 project.getProjectName(),
-//                 project.getPropertyAreaSqmt(),
-//                 project.getProjectImages(),
-//                 project.getCity(),
-//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getUnits).sum(),
-//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0),
-//                 project.getProjectDetails().stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0)
-//         )).collect(Collectors.toList());
-//     }
 public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
     List<Project> projects = projectRepository.searchProjects(city, budgetMin, budgetMax, bhkType);
     return projects.stream().map(this::convertToDTO).collect(Collectors.toList());
 }
 
+
 private ProjectSearchProjection convertToDTO(Project project) {
     ProjectSearchProjection dto = new ProjectSearchProjection();
+    dto.setProjectId(project.getProjectId());
     dto.setProjectName(project.getProjectName());
     dto.setProjectAreaSqmt(project.getPropertyAreaSqmt());
     dto.setProjectImages(project.getProjectImages());
@@ -680,6 +713,8 @@ private ProjectSearchProjection convertToDTO(Project project) {
     dto.setLongitude(project.getLongitude());
     dto.setCity(project.getCity());
     dto.setAddress(project.getAddress());
+
+
 
 
     // Handling List<ProjectDetails>
@@ -693,46 +728,139 @@ private ProjectSearchProjection convertToDTO(Project project) {
      // ✅ Dynamically check available BHK types
      List<String> availableBHKs = new ArrayList<>();
 
+
      List<OneBHKConfig> oneBHKConfigs = oneBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
      List<TwoBHKConfig> twoBHKConfigs = twoBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
      List<ThreeBHKConfig> threeBHKConfigs = threeBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
+
 
      // Check if valid data exists
 if (!oneBHKConfigs.isEmpty() && hasValidData(oneBHKConfigs.get(0))) availableBHKs.add("1BHK");
 if (!twoBHKConfigs.isEmpty() && hasValidData(twoBHKConfigs.get(0))) availableBHKs.add("2BHK");
 if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availableBHKs.add("3BHK");
 
+
     //  if (project.getOneBhkConfig() != null && hasValidData(project.getOneBhkConfig())) availableBHKs.add("1BHK");
     //  if (project.getTwoBhkConfig() != null && hasValidData(project.getTwoBhkConfig())) availableBHKs.add("2BHK");
     //  if (project.getThreeBhkConfig() != null && hasValidData(project.getThreeBhkConfig())) availableBHKs.add("3BHK");
      dto.setAvailableBHKs(availableBHKs);
 
+
      
     return dto;
 }
-// private boolean hasValidData(Object config) {
-//     if (config == null) return false;
-
-//     if(config instanceof OneBHKConfig) {
-//         OneBHKConfig oneBhkConfig = (OneBHKConfig) config;
-//        return oneBhkConfig.getProject()!=null && oneBhkConfig.getProject().getProjectId() != null;
-//     }
-
-//     if(config instanceof TwoBHKConfig) {
-//         TwoBHKConfig twoBhkConfig = (TwoBHKConfig) config;
-//         return twoBhkConfig.getProject() != null && twoBhkConfig.getProject().getProjectId()!= null;
-//     }
-
-//     if(config instanceof ThreeBHKConfig) {
-//         ThreeBHKConfig threeBhkConfig = (ThreeBHKConfig) config;
-//         return threeBhkConfig.getProject() != null && threeBhkConfig.getProject().getProjectId() != null;
-//     }
-
-//     return false;
 
 
-// }
 private boolean hasValidData(BHKConfig config) {
     return config !=null && config.getProject()!=null && config.getProject().getProjectId() != null;
 }
+
+
+public CardDetails getProjectById(Integer id) {
+    // Project project = projectRepository.findById(id)
+    // .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+//    Project project= projectRepository.findByProjectId(id)
+//     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with id: " + id));
+Project project = projectRepository.findByProjectId(id);
+if (project == null) {
+    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found with id: " + id);
+}
+
+
+
+
+    // Fetch related entities
+    List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(id);
+    Amenities amenities = amenitiesRepository.findByProject_ProjectId(id);
+    Nearby nearby = nearbyRepository.findByProject_ProjectId(id);
+    List<OneBHKConfig> oneBHKConfig = oneBHKConfigRepository.findByProject_ProjectId(id);
+    List<TwoBHKConfig> twoBHKConfig = twoBHKConfigRepository.findByProject_ProjectId(id);
+    List<ThreeBHKConfig> threeBHKConfig = threeBHKConfigRepository.findByProject_ProjectId(id);
+    ExpertReview expertReview = expertReviewRepository.findByProject_ProjectId(id);
+
+
+    // Construct response DTO
+    CardDetails cardDetails = new CardDetails();
+    cardDetails.setProjectName(project.getProjectName());
+    cardDetails.setAddress(project.getAddress());
+    cardDetails.setProjectImages(project.getProjectImages());
+    cardDetails.setReralink(project.getReraLink());
+
+
+    // Set price range
+    if (projectDetailsList != null && !projectDetailsList.isEmpty() ) {
+        int minPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0);
+        int maxPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0);
+        cardDetails.setPriceMin(minPrice);
+        cardDetails.setPriceMax(maxPrice);
+    }
+    // List<String> availableBHKs = new ArrayList<>();
+    //   // Check if valid data exists
+    // if (!oneBHKConfig.isEmpty() && hasValidData(oneBHKConfig.get(0))) availableBHKs.add("1BHK");
+    // if (!twoBHKConfig.isEmpty() && hasValidData(twoBHKConfig.get(0))) availableBHKs.add("2BHK");
+    // if (!threeBHKConfig.isEmpty() && hasValidData(threeBHKConfig.get(0))) availableBHKs.add("3BHK");
+
+
+
+
+    // cardDetails.setAvailableBHKs(availableBHKs);
+
+
+
+
+    // Set amenities details
+    if (amenities != null) {
+        AmenitiesDto amenitiesDTO = new AmenitiesDto();
+        amenitiesDTO.setSwimmingPool(amenities.getSwimming_pool());
+        amenitiesDTO.setGym(amenities.getGym());
+        amenitiesDTO.setTemple(amenities.getTemple());
+        amenitiesDTO.setPark(amenities.getPark());
+        amenitiesDTO.setCreche(amenities.getCreche());
+        amenitiesDTO.setChildrenParks(amenities.getChildren_parks());
+        amenitiesDTO.setClubHouse(amenities.getClub_house());
+        amenitiesDTO.setCHall(amenities.getC_hall());
+        amenitiesDTO.setOther(amenities.getOther());
+       
+        cardDetails.setAmenities(amenitiesDTO);
+    }
+    // Set nearby places
+    if (nearby != null) {
+        NearbyDTO nearbyDTO = new NearbyDTO();
+        nearbyDTO.setSchools(nearby.getSchools());
+        nearbyDTO.setHospitals(nearby.getHospitals());
+        nearbyDTO.setItParks(nearby.getIt_parks());
+        nearbyDTO.setHangouts(nearby.getHangouts());
+        nearbyDTO.setCinemas(nearby.getCinemas());
+        nearbyDTO.setMetro(nearby.getMetro());
+
+
+
+
+        cardDetails.setNearby(nearbyDTO);
+    }
+     
+    ExpertReviewDto expertReviewDto = new ExpertReviewDto();
+    expertReviewDto.setReviewText(expertReview.getReviewText());
+
+
+    cardDetails.setExpertReview(expertReviewDto);
+
+
+ 
+    // Set BHK configurations
+    cardDetails.setOneBHKConfig(oneBHKConfig);
+    cardDetails.setTwoBHKConfig(twoBHKConfig);
+    cardDetails.setThreeBHKConfig(threeBHKConfig);
+
+
+    return cardDetails;
+}
+
+
+
+
+
+
+
+
 }
