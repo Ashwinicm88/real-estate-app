@@ -17,7 +17,7 @@ const CustomDropdownPage = () => {
   });
 
   // State for API response data
-  const [projects, setProjects] = useState([]);
+  const [ setProjects] = useState([]);
 
   // Function to handle dropdown change
   const handleDropdownChange = (section, field, value) => {

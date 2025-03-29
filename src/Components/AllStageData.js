@@ -19,20 +19,23 @@ import CheckBox from "../Components/CheckBoxControl";
 import Header from "./Header";
 import ImageUpload from "../Components/ImageUpload";
 import VideoUpload from "../Components/VideoUpload";
-
+import TextArea from "../Components/TextAreaC";
 
 // Step Titles
 const initialSteps = [
   "Add Organization", //stage 0
-  "Add Project", //stage 1
-  "Add Project Details", //stage 2
-  "Add One BHK", // This will be Stage 3
-  "Add Two BHK", // This will be Stage 4
-  "Add Three BHK", // This will be Stage 5
-  "Add Four BHK", // This will be Stage 6
-  "Add Five BHK", // This will be Stage 7
-  "Add PentHouse", // This will be Stage 8
-  "Review Details", // This will be Stage 9
+  "Add Project", 
+  "Add Amenities",
+  "Add Near by Places",
+  "Add Expert Review",
+  "Add Project Details", 
+  "Add One BHK", 
+  "Add Two BHK", 
+  "Add Three BHK", 
+  "Add Four BHK", 
+  "Add Five BHK", 
+  "Add PentHouse", 
+  "Review Details", 
 ];
 
 const validationSchema = yup.object().shape({
@@ -51,7 +54,10 @@ const validationSchema = yup.object().shape({
       .matches(/^[a-zA-Z0-9]+$/, "CIN must contain only letters and numbers"),
     orgOwners: yup
       .string()
-      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+      .matches(
+        /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
+        "Owner Name must contain only letters"
+      ),
     projectsCompleted: yup
       .number()
       .required("Projects Completed is required")
@@ -85,6 +91,14 @@ const validationSchema = yup.object().shape({
           "Organization name contains unsupported characters"
         )
         .max(100, "City cannot exceed 100 characters"),
+      TypeofProperty: yup
+        .string()
+        .required("Type of Property is required")
+        .matches(
+          /^[a-zA-Z\s]+$/,
+          "Type of property contains unsupported characters"
+        )
+        .max(100, "City cannot exceed 100 characters"),
       address: yup.string().required("Address is required"),
       latitude: yup
         .number()
@@ -110,21 +124,37 @@ const validationSchema = yup.object().shape({
       projectvideolink: yup.string(),
       projectimages: yup.string(),
       schools: yup
-      .string()
-      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+        .string()
+        .matches(
+          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
+          "Owner Name must contain only letters"
+        ),
       hospitals: yup
-      .string()
-      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
-      malls: yup.string()
-      .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+        .string()
+        .matches(
+          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
+          "Owner Name must contain only letters"
+        ),
+      malls: yup
+        .string()
+        .matches(
+          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
+          "Owner Name must contain only letters"
+        ),
       movietheater: yup
         .string()
         .typeError("Please enter in letters")
-        .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+        .matches(
+          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
+          "Owner Name must contain only letters"
+        ),
       ITpark: yup
         .string()
         .typeError("Please enter in letters")
-        .matches( /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/, "Owner Name must contain only letters"),
+        .matches(
+          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
+          "Owner Name must contain only letters"
+        ),
       Images: yup
         .array()
 
@@ -169,7 +199,28 @@ const validationSchema = yup.object().shape({
         .max(1, "You can upload up to 5 videos"),
     })
     .default(() => ({ videos: [] })),
-
+  Amenities: yup.object({
+    swimming_pool: yup.string().typeError("Please enter in letters"),
+    temple: yup.string(),
+    gym: yup.string().typeError("Please enter in letters"),
+    creche: yup.string(),
+    children_parks: yup.string(),
+    park: yup.string(),
+    club_house: yup.string(),
+    c_hall: yup.string(),
+    other: yup.string(),
+  }),
+  NearbyPlaces: yup.object({
+    schools: yup.string(),
+    hospitals: yup.string(),
+    it_parks: yup.string(),
+    hangouts: yup.string(),
+    cinemas: yup.string(),
+    metro: yup.string(),
+  }),
+  ExpertReview:yup.object({
+    expertReview: yup.string(),
+  }),
   projectDetails: yup.object({
     units: yup
       .number()
@@ -216,288 +267,72 @@ const validationSchema = yup.object().shape({
       ),
     // bhk1: yup.boolean(),
   }),
-  oneBHKConfig: yup.object({
-    type1Units: yup
-      .number()
-      .typeError("Type 1 Units must be a Number")
-      .required("Type 1 Units is required")
-      .min(0, "Type 1 Units cannot be negative"),
-    type2Units: yup
-      .number()
-      .typeError("Type 2 Units must be a Number")
-      .required("Type 2 Units is required")
-      .min(0, "Type 2 Units cannot be negative"),
-    type1area: yup
-      .number()
-      .typeError("Type 1 Area must be a number")
-      .min(0, "Type 1 Area cannot be negative")
-      .required("Type 1 Area is required"),
-    type1floorplan: yup
-      .array()
-      .of(
-        yup
-          .mixed()
-          .required("Image is required")
-          .test(
-            "fileType",
-            "Only images are allowed",
-            (file) =>
-              file &&
-              ["image/jpeg", "image/png", "image/webp"].includes(file.type)
-          )
-          .test("fileSize", "File size too large (max: 5MB)", (file) =>
-            file ? file.size <= 5 * 1024 * 1024 : true
-          )
-      )
-      .min(1, "You must upload at least 1 image")
-      .max(1, "You can upload up to 5 images"),
-
-    type1images: yup
-      .array()
-      .of(
-        yup
-          .mixed()
-          .required("Image is required")
-          .test(
-            "fileType",
-            "Only images are allowed",
-            (file) =>
-              file &&
-              ["image/jpeg", "image/png", "image/webp"].includes(file.type)
-          )
-          .test("fileSize", "File size too large (max: 5MB)", (file) =>
-            file ? file.size <= 5 * 1024 * 1024 : true
-          )
-      )
-      .min(1, "You must upload at least 1 image")
-      .max(1, "You can upload up to 5 images"),
-
-    type1bathrooms: yup
-      .number()
-      .typeError("Type 1 Bathrooms must be a number")
-      .min(0, "Type 1 Bathrooms cannot be negative")
-      .required("Type 1 Bathrooms is required"),
-    type1bathroom1: yup
-      .number()
-      .typeError("Type 1 Bathroom 1 must be a number")
-      .min(0, "Type 1 Bathrooms cannot be negative")
-      .required("Type 1 Bathrooms is required"),
-    type1bathroom2: yup
-      .number()
-      .typeError("Type 1 Bathroom 2 must be a number")
-      .min(0, "Type 1 Bathrooms cannot be negative")
-      .required("Type 1 Bathrooms is required"),
-    type2bathrooms: yup
-      .number()
-      .typeError("Type 2 Bathrooms must be a number")
-      .min(0, "Type 2 Bathrooms cannot be negative")
-      .required("Type 2 Bathrooms is required"),
-    type2bathroom1: yup
-      .number()
-      .typeError("Type 2 Bathroom 1 must be a number")
-      .min(0, "Type 2 Bathrooms cannot be negative")
-      .required("Type 2 Bathrooms is required"),
-    type2bathroom2: yup
-      .number()
-      .typeError("Type 2 Bathrooms must be a number")
-      .min(0, "Type 2 Bathrooms cannot be negative")
-      .required("Type 2 Bathrooms is required"),
-    type1balcony: yup
-      .number()
-      .typeError("Balconies must be a number")
-      .min(0, "Balconies cannot be negative")
-      .required("Balconies is required"),
-    type2balcony: yup
-      .number()
-      .typeError("Balconies must be a number")
-      .min(0, "Balconies cannot be negative")
-      .required("Balconies is required"),
-    type1parking: yup
-      .number()
-      .typeError("Parking must be a number")
-      .min(0, "Parking cannot be negative")
-      .required("Parking is required"),
-    type2parking: yup
-      .number()
-      .typeError("Parking must be a number")
-      .min(0, "Parking cannot be negative")
-      .required("Parking is required"),
-    type1BedroomArea: yup
-      .number()
-      .typeError("Bedroom Area must be a number")
-      .min(0, "Bedroom Area cannot be negative")
-      .required("Bedroom Area is required"),
-    type2BedroomArea: yup
-      .number()
-      .typeError("Bedroom Area must be a number")
-      .min(0, "Bedroom Area cannot be negative")
-      .required("Bedroom Area is required"),
-    type1HallArea: yup
-      .number()
-      .typeError("Hall Area must be a number")
-      .min(0, "Hall Area cannot be negative")
-      .required("Hall Area is required"),
-    type2HallArea: yup
-      .number()
-      .typeError("Hall Area must be a number")
-      .min(0, "Hall Area cannot be negative")
-      .required("Hall Area is required"),
-    type1KitchenArea: yup
-      .number()
-      .typeError("Kitchen Area must be a number")
-      .min(0, "Kitchen Area cannot be negative")
-      .required("Kitchen Area is required"),
-    type2KitchenArea: yup
-      .number()
-      .required("Kitchen Area is required")
-      .typeError("Kitchen Area must be a number")
-      .min(0, "Kitchen Area cannot be negative"),
-  }),
-  twoBHKConfig: yup.object({
-    type2Units: yup
-      .number()
-      .required("Type 2 Units is required")
-      .typeError("Type 2 Units must be a Number")
-      .min(0, "Type 2 Units cannot be negative"),
-    type2area: yup
-      .number()
-      .required("Type 2 Area is required")
-      .typeError("Type 2 Area must be a number")
-      .min(0, "Type 2 Area cannot be negative"),
-
-    type2floorplan: yup.string(),
-    type2images: yup.string(),
-    type2bathrooms: yup
-      .number()
-      .typeError("Type 2 Bathrooms must be a number")
-      .min(0, "Type 2 Bathrooms cannot be negative")
-      .required("Type 2 Bathrooms is required"),
-    type2balcony: yup
-      .number()
-      .typeError("Balconies must be a number")
-      .min(0, "Balconies cannot be negative")
-      .required("Balconies is required"),
-    type2parking: yup
-      .number()
-      .required("Parking is required")
-      .typeError("Parking must be a number")
-      .min(0, "Parking cannot be negative"),
-    type2Units2: yup
-      .number()
-      .required("Type 2 Units is required")
-      .typeError("Type 2 Units must be a Number")
-      .min(0, "Type 2 Units cannot be negative"),
-    type2area2: yup
-      .number()
-      .required("Type 2 Area is required")
-      .typeError("Type 2 Area must be a number")
-      .min(0, "Type 2 Area cannot be negative"),
-
-    type2floorplan2: yup.string(),
-    type2images2: yup.string(),
-    type2bathrooms2: yup
-      .number()
-      .typeError("Type 2 Bathrooms must be a number")
-      .min(0, "Type 2 Bathrooms cannot be negative")
-      .required("Type 2 Bathrooms is required"),
-    type2balcony2: yup
-      .number()
-      .typeError("Balconies must be a number")
-      .min(0, "Balconies cannot be negative")
-      .required("Balconies is required"),
-    type2parking2: yup
-      .number()
-      .required("Parking is required")
-      .typeError("Parking must be a number")
-      .min(0, "Parking cannot be negative"),
-  }),
-  threeBHKConfig: yup.object({
-    type3Units: yup
-      .number()
-      .typeError("Type 3 Units must be a Number")
-      .required("Type 3 Units is required")
-      .min(0, "Type 3 Units cannot be negative"),
-    type3area: yup
-      .number()
-      .typeError("Type 3 Area must be a number")
-      .min(0, "Type 3 Area cannot be negative")
-      .required("Type 3 Area is required"),
-    type3floorplan: yup.string(),
-    type3images: yup.string(),
-    type3bathrooms: yup
-      .number()
-      .typeError("Type 3 Bathrooms must be a number")
-      .min(0, "Type 3 Bathrooms cannot be negative")
-      .required("Type 3 Bathrooms is required"),
-    type3balcony: yup
-      .number()
-      .typeError("Balconies must be a number")
-      .min(0, "Balconies cannot be negative")
-      .required("Balconies is required"),
-    type3parking: yup
-      .number()
-      .typeError("Parking must be a number")
-      .min(0, "Parking cannot be negative")
-      .required("Parking is required"),
-  }),
-  fourBHKConfig: yup.object({
-    type4Units: yup
-      .number()
-      .typeError("Type 4 Units must be a Number")
-      .required("Type 4 Units is required")
-      .min(0, "Type 4 Units cannot be negative"),
-    type4area: yup
-      .number()
-      .typeError("Type 4 Area must be a number")
-      .min(0, "Type 4 Area cannot be negative")
-      .required("Type 4 Area is required"),
-    type4floorplan: yup.string(),
-    type4images: yup.string(),
-    type4bathrooms: yup
-      .number()
-      .typeError("Type 4 Bathrooms must be a number")
-      .min(0, "Type 4 Bathrooms cannot be negative")
-      .required("Type 4 Bathrooms is required"),
-    type4balcony: yup
-      .number()
-      .typeError("Balconies must be a number")
-      .min(0, "Balconies cannot be negative")
-      .required("Balconies is required"),
-    type4parking: yup
-      .number()
-      .typeError("Parking must be a number")
-      .min(0, "Parking cannot be negative")
-      .required("Parking is required"),
-  }),
-  fiveBHKConfig: yup.object({
-    type5Units: yup
-      .number()
-      .typeError("Type 5 Units must be a Number")
-      .required("Type 5 Units is required")
-      .min(0, "Type 5 Units cannot be negative"),
-    type5area: yup
-      .number()
-      .typeError("Type 5 Area must be a number")
-      .min(0, "Type 5 Area cannot be negative")
-      .required("Type 5 Area is required"),
-    type5floorplan: yup.string(),
-    type5images: yup.string(),
-    type5bathrooms: yup
-      .number()
-      .typeError("Type 5 Bathrooms must be a number")
-      .min(0, "Type 5 Bathrooms cannot be negative")
-      .required("Type 5 Bathrooms is required"),
-    type5balcony: yup
-      .number()
-      .typeError("Balconies must be a number")
-      .min(0, "Balconies cannot be negative")
-      .required("Balconies is required"),
-    type5parking: yup
-      .number()
-      .typeError("Parking must be a number")
-      .min(0, "Parking cannot be negative")
-      .required("Parking is required"),
-  }),
+  oneBHKConfig:yup.array().of(
+    yup.object().shape({
+      typeNumber: yup.number().required("typeNumber is required").typeError("please dispaly"),
+      type1Units: yup.string().required("type1Units is required"),
+      type1area: yup.string().required("type1area is required"),
+      type1floorplan: yup.array().of(yup.string()).required("type1floorplan is required"),
+      type1images: yup.array().of(yup.string()).required("type1images is required"),
+      type1BedroomArea: yup.string().required("type1BedroomArea is required"),
+      type1HallArea: yup.string().required("type1HallArea is required"),
+      type1KitchenArea: yup.string().required("type1KitchenArea is required"),
+      type1bathrooms: yup.string().required("type1bathrooms is required"),
+      type1bathroom1: yup.string().required("type1bathroom1 is required"),
+      type1bathroom2: yup.string().nullable(), // Optional field
+      type1balcony: yup.string().required("type1balcony is required"),
+      type1parking: yup.string().required("type1parking is required"),
+      enableconfig: yup.boolean().required("enableconfig is required"),
+    })
+  ),
+  twoBHKConfig: yup.array().of(
+    yup.object().shape({
+      typeNumber: yup.number().required("Type Number is required"),
+      type2Units: yup.number().required("Type 2 Units is required").min(0, "Type 2 Units cannot be negative"),
+      type2area: yup.number().required("Type 2 Area is required").min(0, "Type 2 Area cannot be negative"),
+      type2floorplan: yup.array().of(yup.string()).required("Type 2 Floor Plan is required"),
+      type2images: yup.array().of(yup.string()).required("Type 2 Images are required"),
+      type2bathrooms: yup.number().required("Type 2 Bathrooms is required").min(0, "Type 2 Bathrooms cannot be negative"),
+      type2balcony: yup.number().required("Type 2 Balcony is required").min(0, "Type 2 Balcony cannot be negative"),
+      type2parking: yup.number().required("Type 2 Parking is required").min(0, "Type 2 Parking cannot be negative"),
+    })
+  ),
+  threeBHKConfig: yup.array().of(
+    yup.object().shape({
+      typeNumber: yup.number().required("Type Number is required"),
+      type3Units: yup.number().required("Type 3 Units is required").min(0, "Type 3 Units cannot be negative"),
+      type3area: yup.number().required("Type 3 Area is required").min(0, "Type 3 Area cannot be negative"),
+      type3floorplan: yup.array().of(yup.string()).required("Type 3 Floor Plan is required"),
+      type3images: yup.array().of(yup.string()).required("Type 3 Images are required"),
+      type3bathrooms: yup.number().required("Type 3 Bathrooms is required").min(0, "Type 3 Bathrooms cannot be negative"),
+      type3balcony: yup.number().required("Type 3 Balcony is required").min(0, "Type 3 Balcony cannot be negative"),
+      type3parking: yup.number().required("Type 3 Parking is required").min(0, "Type 3 Parking cannot be negative"),
+    })
+  ),
+  fourBHKConfig: yup.array().of(
+    yup.object().shape({
+      typeNumber: yup.number().required("Type Number is required"),
+      type4Units: yup.number().required("Type 4 Units is required").min(0, "Type 4 Units cannot be negative"),
+      type4area: yup.number().required("Type 4 Area is required").min(0, "Type 4 Area cannot be negative"),
+      type4floorplan: yup.array().of(yup.string()).required("Type 4 Floor Plan is required"),
+      type4images: yup.array().of(yup.string()).required("Type 4 Images are required"),
+      type4bathrooms: yup.number().required("Type 4 Bathrooms is required").min(0, "Type 4 Bathrooms cannot be negative"),
+      type4balcony: yup.number().required("Type 4 Balcony is required").min(0, "Type 4 Balcony cannot be negative"),
+      type4parking: yup.number().required("Type 4 Parking is required").min(0, "Type 4 Parking cannot be negative"),
+    })
+  ),
+  fiveBHKConfig: yup.array().of(
+    yup.object().shape({
+      typeNumber: yup.number().required("Type Number is required"),
+      type5Units: yup.number().required("Type 5 Units is required").min(0, "Type 5 Units cannot be negative"),
+      type5area: yup.number().required("Type 5 Area is required").min(0, "Type 5 Area cannot be negative"),
+      type5floorplan: yup.array().of(yup.string()).required("Type 5 Floor Plan is required"),
+      type5images: yup.array().of(yup.string()).required("Type 5 Images are required"),
+      type5bathrooms: yup.number().required("Type 5 Bathrooms is required").min(0, "Type 5 Bathrooms cannot be negative"),
+      type5balcony: yup.number().required("Type 5 Balcony is required").min(0, "Type 5 Balcony cannot be negative"),
+      type5parking: yup.number().required("Type 5 Parking is required").min(0, "Type 5 Parking cannot be negative"),
+    })
+  ),
   penthouseConfig: yup.object({
     penthouseUnits: yup
       .number()
@@ -522,12 +357,9 @@ const validationSchema = yup.object().shape({
       .required("Number of bathrooms is required")
       .min(1, "At least 1 bathroom is required"),
 
-
     penthouseBalcony: yup.string().required("Balcony details are required"),
 
-
     penthouseParking: yup.string().required("Parking information is required"),
-
 
     penthouseImages: yup
       .array()
@@ -554,7 +386,7 @@ const validationSchema = yup.object().shape({
       .typeError("Kitchen Area must be a number")
       .required("Kitchen Area is required")
       .positive("Kitchen Area must be positive"),
- 
+
     // Dynamic bedroom areas (bedroom1Area to bedroom6Area)
     ...Array.from({ length: 6 }, (_, i) => i + 1).reduce((acc, num) => {
       acc[`bedroom${num}Area`] = yup
@@ -575,9 +407,7 @@ const validationSchema = yup.object().shape({
       return acc;
     }, {}),
 
-
     enableconfig: yup.boolean(),
-
 
     // Conditional fields for additional configuration
     penthouseFloorPlan2: yup.array().when("enableconfig", {
@@ -606,12 +436,15 @@ const validationSchema = yup.object().shape({
   }),
 });
 
-
 const MultiStageForm = () => {
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      oneBHKConfig: prev.oneBHKConfig || [{}], // Ensure array is initialized
+      oneBHKConfig: prev.oneBHKConfig || [{}],
+      twoBHKConfig: prev.twoBHKConfig || [{}],
+      threeBHKConfig: prev.threeBHKConfig || [{}],
+      fourBHKConfig: prev.fourBHKConfig || [{}],
+      fiveBHKConfig: prev.fiveBHKConfig || [{}], // Ensure array is initialized
     }));
   }, []);
 
@@ -628,6 +461,7 @@ const MultiStageForm = () => {
       projectname: "",
       city: "Pune",
       locality: "",
+      TypeofProperty: "",
       address: "",
       latitude: "",
       longitude: "",
@@ -642,9 +476,29 @@ const MultiStageForm = () => {
       movietheater: "",
       Images: [],
       Videos: [],
-      ITpark:"",
-      // hangouts:"",
-      // metro:"",
+      ITpark: "",
+    },
+    Amenities: {
+      swimming_pool: "",
+      temple: "",
+      gym: "",
+      creche: "",
+      children_parks: "",
+      park: "",
+      club_house: "",
+      c_hall: "",
+      other: "",
+    },
+    NearbyPlaces: {
+      schools: "",
+      hospitals: "",
+      it_parks: "",
+      hangouts: "",
+      cinemas: "",
+      metro: "",
+    },
+    ExpertReview:{
+      expertReview:"",
     },
     projectDetails: {
       units: "",
@@ -659,7 +513,6 @@ const MultiStageForm = () => {
       bankapproved: false,
       banks: "",
       deleted: false,
-  
     },
     oneBHKConfig: [
       {
@@ -786,7 +639,7 @@ const MultiStageForm = () => {
         penthouseImages: [],
         hallArea: "",
         kitchenArea: "",
-        bedrooms:"",
+        bedrooms: "",
         bedroom1Area: "",
         bedroom2Area: "",
         bedroom3Area: "",
@@ -808,6 +661,9 @@ const MultiStageForm = () => {
     organization: {},
     project: {},
     projectDetails: {},
+    Amenities: {},
+    NearbyPlaces: {},
+    ExpertReview:{},
     oneBHKConfig: {},
     twoBHKConfig: {},
     threeBHKConfig: {},
@@ -832,88 +688,93 @@ const MultiStageForm = () => {
       return;
     }
 
-
     setFormData((prev) => {
       const updatedData = { ...prev };
-
-
-      // Handle Arrays (like oneBHKConfig[0])
+  
+      // Check if the section is an array (e.g., oneBHKConfig[0])
       const arrayMatch = section.match(/^(\w+)\[(\d+)\]$/);
-
-
       if (arrayMatch) {
         const [, arrayName, index] = arrayMatch;
         const arrayIndex = Number(index);
-
-
-        updatedData[arrayName] = updatedData[arrayName] || [];
+  
+        updatedData[arrayName] = [...(updatedData[arrayName] || [])]; // Ensure a new array reference
         updatedData[arrayName][arrayIndex] = {
-          ...updatedData[arrayName][arrayIndex],
-          [field]: Array.isArray(value)
-            ? value // Handle image uploads or multiple items
-            : value,
+          ...(updatedData[arrayName][arrayIndex] || {}),
+          [field]: value,
         };
+  
+         // ✅ Call validateField() like in the next stage
+        validateField(arrayName, field, value, updatedData, arrayIndex);
+         console.log("✅ Calling validateField for:", section, field, "Index:", index);
+
       } else {
-        // For regular nested objects (e.g., organization)
+        // Handle normal nested objects
         updatedData[section] = {
           ...(updatedData[section] || {}),
           [field]: value,
         };
+  
+        // Validate normally
+        validateField(section, field, value, updatedData);
       }
-
-
+  
       console.log("✅ Updated Form Data: ", updatedData);
-
-
-      // Trigger validation (if required)
-      validateField(section, field, value, updatedData);
-
-
-      return updatedData;
+      return { ...updatedData }; // Ensure React detects the state change
     });
   };
 
-  const validateField = async (section, field, value, updatedData) => {
+   const validateField = async (section, field, value, updatedData, index = null) => {
     try {
-      // Validate the field using Yup schema
-      console.log("🔍 Validating: ", { section, field, value });
-      console.log("📊 Updated Data: ", updatedData);
-      console.log("✅ Section:", section);
-      console.log("✅ Field:", field);
-      console.log("✅ Value:", value);
+     // Validate the field using Yup schema
+    console.log("🔍 Validating: ", { section, field, value });
+    await validationSchema.validateAt(`${section}.${field}`, updatedData);
 
-
-      await validationSchema.validateAt(`${section}.${field}`, updatedData);
-
-
-      // ✅ Clear the error if validation is successful
+      // Clear the error if validation is successful
       setWarnings((prev) => {
-        const updatedWarnings = { ...prev };
-        if (updatedWarnings[section]) {
-          delete updatedWarnings[section][field];
-          // If the section has no more errors, remove it entirely
-          if (Object.keys(updatedWarnings[section]).length === 0) {
-            delete updatedWarnings[section];
+        if (index !== null) {
+          // Ensure we have an array for the section
+          const arr = prev[section] ? [...prev[section]] : [];
+          if (arr[index]) {
+            // Remove the field error from the object at this index
+            const { [field]: removed, ...rest } = arr[index];
+            arr[index] = rest;
           }
+          return { ...prev, [section]: arr };
+        } else {
+          const updatedWarnings = { ...prev };
+          if (updatedWarnings[section]) {
+            delete updatedWarnings[section][field];
+            if (Object.keys(updatedWarnings[section]).length === 0) {
+              delete updatedWarnings[section];
+            }
+          }
+          return updatedWarnings;
         }
-        return updatedWarnings;
       });
-
-      return true; // ✅ Validation passed
+  
+      return true; // Validation passed
     } catch (error) {
-      // ❌ Set error message if validation fails
-      setWarnings((prev) => ({
-        ...prev,
-        [section]: {
-          ...prev[section],
-          [field]: error.message,
-        },
-      }));
-
-      return false; // ❌ Validation failed
+      // Set error message if validation fails
+      setWarnings((prev) => {
+        if (index !== null) {
+          const arr = prev[section] ? [...prev[section]] : [];
+          arr[index] = { ...(arr[index] || {}), [field]: error.message };
+          return { ...prev, [section]: arr };
+        } else {
+          return {
+            ...prev,
+            [section]: {
+              ...prev[section],
+              [field]: error.message,
+            },
+          };
+        }
+      });
+      console.log("❌ Validation Failed:", error.message);
+      return false; // Validation failed
     }
   };
-
+  
   const nextStage = async () => {
     // const isType2Enabled = formData.oneBHKConfig.enableconfig === "yes";
 
@@ -935,6 +796,25 @@ const MultiStageForm = () => {
           "project.area",
         ],
         2: [
+          "Amenities.swimming_pool",
+          "Amenities.temple",
+          "Amenities.gym",
+          "Amenities.creche",
+          "Amenities.children_parks",
+          "Amenities.park",
+          "Amenities.club_house",
+          "Amenities.c_hall",
+          "Amenities.other",
+        ], // Stage 2
+        3: [
+          "NearbyPlaces.schools",
+          "NearbyPlaces.hospitals",
+          "NearbyPlaces.it_parks",
+          "NearbyPlaces.hangouts",
+          "NearbyPlaces.cinemas",
+          "NearbyPlaces.metro",
+        ], // Stage 3
+        5: [
           "projectDetails.units",
           "projectDetails.projectstatus",
           "projectDetails.projectlaunch",
@@ -943,39 +823,49 @@ const MultiStageForm = () => {
           "projectDetails.pricemax",
           "projectDetails.allInclusive",
           "projectDetails.amenities",
-        ],
-        3: [
+          "projectDetails.coveredparking",
+          "projectDetails.bankapproved",
+          "projectDetails.banks",
+        ], // Stage 4
+        6: [
           "oneBHKConfig[].type1Units",
           "oneBHKConfig[].type1area",
           "oneBHKConfig[].type1bathrooms",
-        ],
-        4: [
-          "twoBHKConfig.type2Units",
-          "twoBHKConfig.type2area",
-          "twoBHKConfig.type2bathrooms",
-          "twoBHKConfig.type2balcony",
-          "twoBHKConfig.type2parking",
-        ],
-        5: [
-          "threeBHKConfig.type3Units",
-          "threeBHKConfig.type3area",
-          "threeBHKConfig.type3bathrooms",
-          "threeBHKConfig.type3balcony",
-          "threeBHKConfig.type3parking",
-        ],
-        6: [
-          "fourBHKConfig.type4Units",
-          "fourBHKConfig.type4area",
-          "fourBHKConfig.type4bathrooms",
-          "fourBHKConfig.type4balcony",
-          "fourBHKConfig.type4parking",
-        ],
+        ], // Stage 5
         7: [
-          "fiveBHKConfig.type5Units",
-          "fiveBHKConfig.type5area",
-          "fiveBHKConfig.type5bathrooms",
-          "fiveBHKConfig.type5balcony",
-          "fiveBHKConfig.type5parking",
+          "twoBHKConfig[].type2Units",
+          "twoBHKConfig[].type2area",
+          "twoBHKConfig[].type2bathrooms",
+          "twoBHKConfig[].type2balcony",
+          "twoBHKConfig[].type2parking",
+        ], // Stage 6
+        8: [
+          "threeBHKConfig[].type3Units",
+          "threeBHKConfig[].type3area",
+          "threeBHKConfig[].type3bathrooms",
+          "threeBHKConfig[].type3balcony",
+          "threeBHKConfig[].type3parking",
+        ], // Stage 7
+        9: [
+          "fourBHKConfig[].type4Units",
+          "fourBHKConfig[].type4area",
+          "fourBHKConfig[].type4bathrooms",
+          "fourBHKConfig[].type4balcony",
+          "fourBHKConfig[].type4parking",
+        ], // Stage 8
+        10: [
+          "fiveBHKConfig[].type5Units",
+          "fiveBHKConfig[].type5area",
+          "fiveBHKConfig[].type5bathrooms",
+          "fiveBHKConfig[].type5balcony",
+          "fiveBHKConfig[].type5parking",
+        ], // Stage 9
+        11: [
+          "penthouseConfig.typePenthouseUnits",
+          "penthouseConfig.typePenthouseArea",
+          "penthouseConfig.typePenthouseBathrooms",
+          "penthouseConfig.typePenthouseBalcony",
+          "penthouseConfig.typePenthouseParking",
         ],
       };
 
@@ -985,51 +875,71 @@ const MultiStageForm = () => {
       const safeAccess = (obj, path) => {
         return path.split(".").reduce((acc, key) => {
           if (!acc) return undefined;
-          // Handle array syntax (e.g., "oneBHKConfig[]")
           if (key.endsWith("[]")) {
             const arrayKey = key.replace("[]", "");
             return Array.isArray(acc[arrayKey]) ? acc[arrayKey] : [];
+          } else if (/\[\d+\]/.test(key)) {
+            const [arrayKey, index] = key.match(/(\w+)\[(\d+)\]/).slice(1);
+            return acc[arrayKey] ? acc[arrayKey][Number(index)] : undefined;
           }
           return acc[key];
         }, obj);
       };
+      
 
-     // Validate all fields
-     const validations = currentFields.flatMap((field) => {
-      if (field.includes("[]")) {
-        const [arrayName, property] = field.replace("[]", "").split(".");
-        const arrayData = safeAccess(formData, arrayName) || [];
+      // Validate all fields
+      // const validations = currentFields.flatMap((field) => {
+      //   if (field.includes("[]")) {
+      //     const [arrayName, property] = field.replace("[]", "").split(".");
+      //     const arrayData = safeAccess(formData, arrayName) || [];
 
-
-        return arrayData.map((item) =>
-          validateField(arrayName, property, item?.[property], formData)
-        );
-      } else {
-        const [section, key] = field.split(".");
-        const value = safeAccess(formData, field);
-        return [validateField(section, key, value, formData)];
-      }
-    });
-
+      //     return arrayData.map((item) =>
+      //       validateField(arrayName, property, item?.[property], formData)
+      //     );
+      //   } else {
+      //     const [section, key] = field.split(".");
+      //     const value = safeAccess(formData, field);
+      //     return [validateField(section, key, value, formData)];
+      //   }
+      // });
+      const validations = currentFields.flatMap((field) => {
+        if (field.includes("[]")) {
+          const [arrayName, property] = field.replace("[]", "").split(".");
+          const arrayData = safeAccess(formData, arrayName) || [];
+          return arrayData.map((item, index) =>
+            validateField(arrayName, property, item?.[property], formData, index)
+          );
+        } else {
+          const [section, key] = field.split(".");
+          const value = safeAccess(formData, field);
+          return [validateField(section, key, value, formData)];
+        }
+      });
+      
       // Wait for all validations and allow navigation
       const validationResults = await Promise.all(validations);
 
       // Log validation results for debugging
-      console.log("✅ Validation Results: ", validationResults);
+    console.log("✅ Validation Results: ", validationResults);
 
-      // Move to the next stage even if validation fails (prevent double increments)
+    // Check if all validations passed
+    if (validationResults.every(result => result === true)) {
+      // Move to the next stage
       setStage((prevStage) => prevStage + 1);
-      // 3. Cache current stage data
+
       const cacheMap = {
         0: "organization",
         1: "project",
         2: "projectDetails",
-        3: "oneBHKConfig",
-        4: "twoBHKConfig",
-        5: "threeBHKConfig",
-        6: "fourBHKConfig",
-        7: "fiveBHKConfig",
-        8: "PentHouse",
+        3: "Amenities",
+        4: "NearbyPlaces",
+        5:"ExpertReview",
+        6: "oneBHKConfig",
+        7: "twoBHKConfig",
+        8: "threeBHKConfig",
+        9: "fourBHKConfig",
+        10: "fiveBHKConfig",
+        11: "penthouseConfig",
       };
 
       if (cacheMap[stage]) {
@@ -1039,66 +949,91 @@ const MultiStageForm = () => {
         }));
       }
 
-
       console.log("✅ Stage data cached: ", cachedData);
-
-
-      // 4. Navigate to the correct next stage based on conditions
-      if (stage < Object.keys(requiredFields).length - 1) {
-        setStage((prevStage) => prevStage + 1);
-      } else {
-        console.log("🎉 All stages completed!");
-        setStage((prevStage) => prevStage + 1);
-      }
-      if (stage === 0) {
-        setCachedData((prev) => ({
-          ...prev,
-          organization: formData.organization,
-        }));
-      } else if (stage === 1) {
-        setCachedData((prev) => ({
-          ...prev,
-          project: formData.project,
-        }));
-      } else if (stage === 2) {
-        setCachedData((prev) => ({
-          ...prev,
-          projectDetails: formData.projectDetails,
-        }));
-      } else if (stage === 3) {
-        setCachedData((prev) => ({
-          ...prev,
-          oneBHKConfig: formData.oneBHKConfig,
-        }));
-      } else if (stage === 4) {
-        setCachedData((prev) => ({
-          ...prev,
-          twoBHKConfig: formData.twoBHKConfig,
-        }));
-        // }
-      } else if (stage === 5) {
-        setCachedData((prev) => ({
-          ...prev,
-          threeBHKConfig: formData.threeBHKConfig,
-        }));
-      } else if (stage === 6) {
-        setCachedData((prev) => ({
-          ...prev,
-          fourBHKConfig: formData.fourBHKConfig,
-        }));
-      } else if (stage === 7) {
-        setCachedData((prev) => ({
-          ...prev,
-          fiveBHKConfig: formData.fiveBHKConfig,
-        }));
-      } else if (stage === 8) {
-        setCachedData((prev) => ({
-          ...prev,
-          penthouseConfig: formData.penthouseConfig,
-        }));
-      }
       switch (stage) {
-        case 2: // Stage 2 (Initial Navigation)
+        case 0:
+          setCachedData((prev) => ({
+            ...prev,
+            organization: formData.organization,
+          }));
+          break;
+        case 1:
+          setCachedData((prev) => ({
+            ...prev,
+            project: formData.project,
+          }));
+          break;
+        case 2:
+          setCachedData((prev) => ({
+            ...prev,
+            Amenities: formData.Amenities,
+          }));
+          break;
+        case 3:
+          setCachedData((prev) => ({
+            ...prev,
+            NearbyPlaces: formData.NearbyPlaces,
+          }));
+          break;
+        case 4:
+          setCachedData((prev) => ({
+            ...prev,
+            ExpertReview: formData.ExpertReview, // Newly added stage
+          }));
+          break;
+        case 5:
+          setCachedData((prev) => ({
+            ...prev,
+            projectDetails: formData.projectDetails,
+          }));
+          break;
+        case 6:
+          setCachedData((prev) => ({
+            ...prev,
+            oneBHKConfig: formData.oneBHKConfig,
+          }));
+          break;
+        case 7:
+          setCachedData((prev) => ({
+            ...prev,
+            twoBHKConfig: formData.twoBHKConfig,
+          }));
+          break;
+        case 8:
+          setCachedData((prev) => ({
+            ...prev,
+            threeBHKConfig: formData.threeBHKConfig,
+          }));
+          break;
+        case 9:
+          setCachedData((prev) => ({
+            ...prev,
+            fourBHKConfig: formData.fourBHKConfig,
+          }));
+          break;
+        case 10:
+          setCachedData((prev) => ({
+            ...prev,
+            fiveBHKConfig: formData.fiveBHKConfig,
+          }));
+          break;
+        case 11:
+          setCachedData((prev) => ({
+            ...prev,
+            penthouseConfig: formData.penthouseConfig,
+          }));
+          break;
+        default:
+          console.log("🚀 No matching stage found.");
+      }
+      
+      // Updating stage progression logic
+      switch (stage) {
+        case 4: // Stage 4 (Expert Review)
+          setStage(5); // Move to Project Details (Stage 5)
+          break;
+      
+        case 5: // Stage 5 (Project Details)
           if (
             proceedToOneBHK &&
             proceedToTwoBHK &&
@@ -1107,97 +1042,96 @@ const MultiStageForm = () => {
             proceedToFiveBHK &&
             proceedToPentHouse
           ) {
-            setStage(3); // Move to One BHK Config (Stage 3)
+            setStage(6); // Move to One BHK Config (Stage 6)
           } else if (proceedToOneBHK) {
-            setStage(3); // Move to One BHK Config (Stage 3)
+            setStage(6);
           } else if (proceedToTwoBHK) {
-            setStage(4); // Move to Two BHK Config (Stage 4)
+            setStage(7);
           } else if (proceedToThreeBHK) {
-            setStage(5); // Move to Three BHK Config (Stage 5)
+            setStage(8);
           } else if (proceedToFourBHK) {
-            setStage(6); // Move to Four BHK Config (Stage 6)
+            setStage(9);
           } else if (proceedToFiveBHK) {
-            setStage(7); // Move to Five BHK Config (Stage 7)
+            setStage(10);
           } else if (proceedToPentHouse) {
-            setStage(8); // Move to Penthouse Config (Stage 8)
+            setStage(11);
           } else {
-            setStage(9); // Move to Review Data (Stage 9)
+            setStage(12); // Move to Review Data (Stage 12)
           }
           break;
-
-          case 3: // Stage 3 (One BHK Config)
+      
+        case 6: // Stage 6 (One BHK Config)
           if (proceedToTwoBHK) {
-            setStage(4); // Move to Two BHK Config (Stage 4)
+            setStage(7);
           } else if (proceedToThreeBHK) {
-            setStage(5); // Move to Three BHK Config (Stage 5)
+            setStage(8);
           } else if (proceedToFourBHK) {
-            setStage(6); // Move to Four BHK Config (Stage 6)
+            setStage(9);
           } else if (proceedToFiveBHK) {
-            setStage(7); // Move to Five BHK Config (Stage 7)
+            setStage(10);
           } else if (proceedToPentHouse) {
-            setStage(8); // Move to Penthouse Config (Stage 8)
+            setStage(11);
           } else {
-            setStage(9); // Move to Review Data (Stage 9)
+            setStage(12);
           }
           break;
-
-        case 4: // Stage 4 (Two BHK Config)
+      
+        case 7: // Stage 7 (Two BHK Config)
           if (proceedToThreeBHK) {
-            setStage(5); // Move to Three BHK Config (Stage 5)
+            setStage(8);
           } else if (proceedToFourBHK) {
-            setStage(6); // Move to Four BHK Config (Stage 6)
+            setStage(9);
           } else if (proceedToFiveBHK) {
-            setStage(7); // Move to Five BHK Config (Stage 7)
+            setStage(10);
           } else if (proceedToPentHouse) {
-            setStage(8); // Move to Penthouse Config (Stage 8)
+            setStage(11);
           } else {
-            setStage(9); // Move to Review Data (Stage 9)
+            setStage(12);
           }
           break;
-
-        case 5: // Stage 5 (Three BHK Config)
+      
+        case 8: // Stage 8 (Three BHK Config)
           if (proceedToFourBHK) {
-            setStage(6); // Move to Four BHK Config (Stage 6)
+            setStage(9);
           } else if (proceedToFiveBHK) {
-            setStage(7); // Move to Five BHK Config (Stage 7)
+            setStage(10);
           } else if (proceedToPentHouse) {
-            setStage(8); // Move to Penthouse Config (Stage 8)
+            setStage(11);
           } else {
-            setStage(9); // Move to Review Data (Stage 9)
+            setStage(12);
           }
           break;
-
-        case 6: // Stage 6 (Four BHK Config)
+      
+        case 9: // Stage 9 (Four BHK Config)
           if (proceedToFiveBHK) {
-            setStage(7); // Move to Five BHK Config (Stage 7)
+            setStage(10);
           } else if (proceedToPentHouse) {
-            setStage(8); // Move to Penthouse Config (Stage 8)
+            setStage(11);
           } else {
-            setStage(9); // Move to Review Data (Stage 9)
+            setStage(12);
           }
           break;
-
-
-        case 7: // Stage 7 (Five BHK Config)
+      
+        case 10: // Stage 10 (Five BHK Config)
           if (proceedToPentHouse) {
-            setStage(8); // Move to Penthouse Config (Stage 8)
+            setStage(11);
           } else {
-            setStage(9); // Move to Review Data (Stage 9)
+            setStage(12);
           }
           break;
-
-
-        case 8: // Stage 8 (Penthouse Config)
-          setStage(9); // Move to Review Data (Stage 9)
+      
+        case 11: // Stage 11 (Penthouse Config)
+          setStage(12); // Move to Review Data (Stage 12)
           break;
-
-
-        default: // Handle unknown stages or linear progression
+      
+        default:
           if (stage < initialSteps.length - 1) {
-            setStage(stage + 1); // Move to the next step if available
+            setStage(stage + 1);
           }
           break;
       }
+      
+    }
     } catch (error) {
       console.error("🚨 Error in nextStage: ", error);
     }
@@ -1206,42 +1140,63 @@ const MultiStageForm = () => {
     try {
       // Create FormData object
       // const formData = new FormData();
-  
-      const stateData={...formData};
-  
-      const formDataToSend=new FormData();
-  
+
+      const stateData = { ...formData };
+
+      const formDataToSend = new FormData();
+
       // Convert JSON payload to a string and add it to FormData
       const payload = {
         organisationName: stateData.organization?.orgName || "",
         organisationCin: stateData.organization?.orgCIN || "",
         organisationOwners: stateData.organization?.orgOwners || "",
-        projectsCompleted: Number(stateData.organization?.projectsCompleted) || 0,
-  
+        projectsCompleted:
+          Number(stateData.organization?.projectsCompleted) || 0,
+
         projectName: stateData.project?.projectname || "",
         city: stateData.project?.city || "",
         locality: stateData.project?.locality || "",
         address: stateData.project?.address || "",
-        latitude: isNaN(parseFloat(stateData.project?.latitude)) ? null : parseFloat(formData.project?.latitude),
-        longitude: isNaN(parseFloat(stateData.project?.longitude)) ? null : parseFloat(formData.project?.longitude),
-        propertyAreaSqmt: isNaN(parseInt(stateData.project?.area)) ? null : parseInt(formData.project?.area),
-  
+        latitude: isNaN(parseFloat(stateData.project?.latitude))
+          ? null
+          : parseFloat(formData.project?.latitude),
+        longitude: isNaN(parseFloat(stateData.project?.longitude))
+          ? null
+          : parseFloat(formData.project?.longitude),
+        propertyAreaSqmt: isNaN(parseInt(stateData.project?.area))
+          ? null
+          : parseInt(formData.project?.area),
+
         reraNumber: stateData.project?.reranumber || "",
         reraLink: stateData.project?.reralink || "",
-  
-        schools: stateData.project?.schools ? stateData.project.schools.split(",") : [],
-        hospitals: stateData.project?.hospitals ? stateData.project.hospitals.split(",") : [],
-        malls: stateData.project?.malls ? stateData.project.malls.split(",") : [],
-        movieTheaters: stateData.project?.movietheater ? stateData.project.movietheater.split(",") : [],
-        itParks: stateData.project?.ITpark ? stateData.project.ITpark.split(",") : [],
-  
+
+        schools: stateData.project?.schools
+          ? stateData.project.schools.split(",")
+          : [],
+        hospitals: stateData.project?.hospitals
+          ? stateData.project.hospitals.split(",")
+          : [],
+        malls: stateData.project?.malls
+          ? stateData.project.malls.split(",")
+          : [],
+        movieTheaters: stateData.project?.movietheater
+          ? stateData.project.movietheater.split(",")
+          : [],
+        itParks: stateData.project?.ITpark
+          ? stateData.project.ITpark.split(",")
+          : [],
+
         units: Number(stateData.projectDetails?.units) || 0,
         projectStatus: stateData.projectDetails?.projectstatus || "",
         projectLaunch: stateData.projectDetails?.projectlaunch || "",
         projectPlannedEnd: stateData.projectDetails?.ProjectPlannedEnd || "",
-        priceMin: isNaN(parseFloat(stateData.projectDetails?.pricemin)) ? null : parseFloat(formData.projectDetails?.pricemin),
-        priceMax: isNaN(parseFloat(stateData.projectDetails?.pricemax)) ? null : parseFloat(formData.projectDetails?.pricemax),
-  
+        priceMin: isNaN(parseFloat(stateData.projectDetails?.pricemin))
+          ? null
+          : parseFloat(formData.projectDetails?.pricemin),
+        priceMax: isNaN(parseFloat(stateData.projectDetails?.pricemax))
+          ? null
+          : parseFloat(formData.projectDetails?.pricemax),
+
         allInclusive: Boolean(stateData.projectDetails?.allInclusive),
         amenities: stateData.projectDetails?.amenities || "",
         coveredParking: stateData.projectDetails?.coveredparking || "",
@@ -1249,62 +1204,70 @@ const MultiStageForm = () => {
         banks: stateData.projectDetails?.banks || "",
       };
       // **Conditionally add BHK configurations based on checkbox state**
-    if (proceedToOneBHK && formData.oneBHKConfig?.length) {
-      payload.oneBHKConfig = formData.oneBHKConfig.map((config) => ({
-        typeNumber: config.typeNumber,
-        type1Units: Number(config.type1Units) > 0 ? Number(config.type1Units) : null,
-        type1Area: Number(config?.type1area) > 0 ? Number(config.type1area) : null,
-        type1Bathrooms: Number(config.type1bathrooms) || 0,
-        type1Balcony: Number(config.type1balcony) || 0,
-        type1Parking: Number(config.type1parking) || 0,
-        hallArea: config.type1HallArea || "",
-        kitchenArea: config.type1KitchenArea || "",
-        bedroom1Area: config.type1BedroomArea || "",
-        bathroom1Area: config.type1bathroom1 || "",
-        bathroom2Area: config.type1bathroom2 || "",
-      }));
-    }
-    if (proceedToTwoBHK && formData.twoBHKConfig?.length) {
-      payload.twoBHKConfig = formData.twoBHKConfig.map((config) => ({
-        typeNumber: config.typeNumber,
-        type2Units: Number(config.type2Units) > 0 ? Number(config.type2Units) : null,
-        type2Area: Number(config?.type2area) > 0 ? Number(config.type2area) : null,
-        type2Bedrooms:Number(config.type2Bedrooms)||0,
-        type2Bathrooms: Number(config.type2bathrooms) || 0,
-        type2Balcony: Number(config.type2balcony) || 0,
-        type2Parking: Number(config.type2parking) || 0,
-        hallArea: config.type2HallArea || "",
-        kitchenArea: config.type2KitchenArea || "",
-        bedroom1Area: config.type2Bedroom1 || "",
-        bedroom2Area: config.type2Bedroom2 || "",
-        bathroom1Area: config.type2bathroom1 || "",
-        bathroom2Area: config.type2bathroom2 || "",
-      }));
-    }
-    if (proceedToThreeBHK && formData.threeBHKConfig?.length) {
-      payload.threeBHKConfig = formData.threeBHKConfig.map((config) => ({
-        typeNumber: config.typeNumber,
-        type3Units: Number(config.type3Units) > 0 ? Number(config.type3Units) : null,
-        type3Area: Number(config?.type3area) > 0 ? Number(config.type3area) : null,
-        type3Bedrooms:Number(config?.type3Bedrooms) || 0,
-        type3Bathrooms: Number(config.type3bathrooms) || 0,
-        type3Balcony: Number(config.type3balcony) || 0,
-        type3Parking: Number(config.type3parking) || 0,
-        hallArea: config.type3HallArea || "",
-        kitchenArea: config.type3KitchenArea || "",
-        bedroom1Area: config.type3Bedroom1 || "",
-        bedroom2Area: config.type3Bedroom2 || "",
-        bedroom3Area: config.type3Bedroom3 || "",
-        bathroom1Area: config.type3bathroom1 || "",
-        bathroom2Area: config.type3bathroom2 || "",
-        bathroom3Area: config.type3bathroom3 || "",
-      }));
-    }
-    if (proceedToFourBHK && formData.fourBHKConfig?.length) {
-      payload.fourBHKConfig = formData.fourBHKConfig.map((config) => ({
-        typeNumber: config.typeNumber,
-          type4Units: Number(config.type4Units) > 0 ? Number(config.type4Units) : null,
-          type4Area: Number(config?.type4area) > 0 ? Number(config.type4area) : null,
+      if (proceedToOneBHK && formData.oneBHKConfig?.length) {
+        payload.oneBHKConfig = formData.oneBHKConfig.map((config) => ({
+          typeNumber: config.typeNumber,
+          type1Units:
+            Number(config.type1Units) > 0 ? Number(config.type1Units) : null,
+          type1Area:
+            Number(config?.type1area) > 0 ? Number(config.type1area) : null,
+          type1Bathrooms: Number(config.type1bathrooms) || 0,
+          type1Balcony: Number(config.type1balcony) || 0,
+          type1Parking: Number(config.type1parking) || 0,
+          hallArea: config.type1HallArea || "",
+          kitchenArea: config.type1KitchenArea || "",
+          bedroom1Area: config.type1BedroomArea || "",
+          bathroom1Area: config.type1bathroom1 || "",
+          bathroom2Area: config.type1bathroom2 || "",
+        }));
+      }
+      if (proceedToTwoBHK && formData.twoBHKConfig?.length) {
+        payload.twoBHKConfig = formData.twoBHKConfig.map((config) => ({
+          typeNumber: config.typeNumber,
+          type2Units:
+            Number(config.type2Units) > 0 ? Number(config.type2Units) : null,
+          type2Area:
+            Number(config?.type2area) > 0 ? Number(config.type2area) : null,
+          type2Bedrooms: Number(config.type2Bedrooms) || 0,
+          type2Bathrooms: Number(config.type2bathrooms) || 0,
+          type2Balcony: Number(config.type2balcony) || 0,
+          type2Parking: Number(config.type2parking) || 0,
+          hallArea: config.type2HallArea || "",
+          kitchenArea: config.type2KitchenArea || "",
+          bedroom1Area: config.type2Bedroom1 || "",
+          bedroom2Area: config.type2Bedroom2 || "",
+          bathroom1Area: config.type2bathroom1 || "",
+          bathroom2Area: config.type2bathroom2 || "",
+        }));
+      }
+      if (proceedToThreeBHK && formData.threeBHKConfig?.length) {
+        payload.threeBHKConfig = formData.threeBHKConfig.map((config) => ({
+          typeNumber: config.typeNumber,
+          type3Units:
+            Number(config.type3Units) > 0 ? Number(config.type3Units) : null,
+          type3Area:
+            Number(config?.type3area) > 0 ? Number(config.type3area) : null,
+          type3Bedrooms: Number(config?.type3Bedrooms) || 0,
+          type3Bathrooms: Number(config.type3bathrooms) || 0,
+          type3Balcony: Number(config.type3balcony) || 0,
+          type3Parking: Number(config.type3parking) || 0,
+          hallArea: config.type3HallArea || "",
+          kitchenArea: config.type3KitchenArea || "",
+          bedroom1Area: config.type3Bedroom1 || "",
+          bedroom2Area: config.type3Bedroom2 || "",
+          bedroom3Area: config.type3Bedroom3 || "",
+          bathroom1Area: config.type3bathroom1 || "",
+          bathroom2Area: config.type3bathroom2 || "",
+          bathroom3Area: config.type3bathroom3 || "",
+        }));
+      }
+      if (proceedToFourBHK && formData.fourBHKConfig?.length) {
+        payload.fourBHKConfig = formData.fourBHKConfig.map((config) => ({
+          typeNumber: config.typeNumber,
+          type4Units:
+            Number(config.type4Units) > 0 ? Number(config.type4Units) : null,
+          type4Area:
+            Number(config?.type4area) > 0 ? Number(config.type4area) : null,
           type4Bedrooms: Number(config.type4Bedrooms) || 0,
           type4Bathrooms: Number(config.type4bathrooms) || 0,
           type4Balcony: Number(config.type4balcony) || 0,
@@ -1319,13 +1282,15 @@ const MultiStageForm = () => {
           bathroom2Area: config.type4bathroom2 || "",
           bathroom3Area: config.type4bathroom3 || "",
           bathroom4Area: config.type4bathroom4 || "",
-    }));
-    }
-    if (proceedToFiveBHK && formData.fiveBHKConfig?.length) {
-      payload.fiveBHKConfig = formData.fiveBHKConfig.map((config) => ({
-        typeNumber: config.typeNumber,
-          type5Units: Number(config.type5Units) > 0 ? Number(config.type5Units) : null,
-          type5Area: Number(config?.type5area) > 0 ? Number(config.type5area) : null,
+        }));
+      }
+      if (proceedToFiveBHK && formData.fiveBHKConfig?.length) {
+        payload.fiveBHKConfig = formData.fiveBHKConfig.map((config) => ({
+          typeNumber: config.typeNumber,
+          type5Units:
+            Number(config.type5Units) > 0 ? Number(config.type5Units) : null,
+          type5Area:
+            Number(config?.type5area) > 0 ? Number(config.type5area) : null,
           type5Bedrooms: Number(config.type5Bedrooms) || 0,
           type5Bathrooms: Number(config.type5bathrooms) || 0,
           type5Balcony: Number(config.type5balcony) || 0,
@@ -1339,17 +1304,23 @@ const MultiStageForm = () => {
           bedroom5Area: config.type5Bedroom5 || "",
           bathroom1Area: config.type5bathroom1 || "",
           bathroom2Area: config.type5bathroom2 || "",
-          bathroom3Area: config.type5bathroom3 || "",          
+          bathroom3Area: config.type5bathroom3 || "",
           bathroom4Area: config.type5bathroom4 || "",
           bathroom5Area: config.type5bathroom5 || "",
-    }));
-    }
+        }));
+      }
 
-    if(proceedToPentHouse && formData.penthouseConfig?.length){
-      payload.penthouseConfig = formData.penthouseConfig.map((config) => ({
-        typeNumber: config.typeNumber,
-          penthouseUnits: Number(config.penthouseUnits) > 0 ? Number(config.penthouseUnits) : null,
-          penthouseArea: Number(config?.penthouseArea) > 0 ? Number(config.penthouseArea) : null,
+      if (proceedToPentHouse && formData.penthouseConfig?.length) {
+        payload.penthouseConfig = formData.penthouseConfig.map((config) => ({
+          typeNumber: config.typeNumber,
+          penthouseUnits:
+            Number(config.penthouseUnits) > 0
+              ? Number(config.penthouseUnits)
+              : null,
+          penthouseArea:
+            Number(config?.penthouseArea) > 0
+              ? Number(config.penthouseArea)
+              : null,
           penthouseBedrooms: Number(config.penthouseBedrooms) || 0,
           penthouseBathrooms: Number(config.penthouseBathrooms) || 0,
           penthouseBalcony: Number(config.penthouseBalcony) || 0,
@@ -1360,155 +1331,188 @@ const MultiStageForm = () => {
           penthouseBedroom2Area: config.bedroom2Area || "",
           penthouseBedroom3Area: config.bedroom3Area || "",
           penthouseBedroom4Area: config.bedroom4Area || "",
-          penthouseBedroom5Area:config.bedroom5Area || "",
-          penthouseBedroom6Area:config.bedroom6Area || "",
+          penthouseBedroom5Area: config.bedroom5Area || "",
+          penthouseBedroom6Area: config.bedroom6Area || "",
           penthouseBathroom1Area: config.bathroom1Area || "",
           penthouseBathroom2Area: config.bathroom2Area || "",
           penthouseBathroom3Area: config.bathroom3Area || "",
           penthouseBathroom4Area: config.bathroom4Area || "",
           penthouseBathroom5Area: config.bathroom5Area || "",
           penthouseBathroom6Area: config.bathroom6Area || "",
-      }));
-    }
+        }));
+      }
 
-      console.log("State",stateData);
-      console.log("Payload:",payload);
-      formDataToSend.append("data",JSON.stringify(payload));
-      console.log("after appending data:",formDataToSend.get("data"));
-          // ✅ Append images properly
-          const imageFiles = stateData.project?.Images || [];
-          imageFiles.forEach((file) => {
-            formDataToSend.append("images", file);
-          });
-      
-          // ✅ Append video file if available
-          const videoFile = stateData.project?.Videos?.[0] || null;
-          if (videoFile) {
-            formDataToSend.append("video", videoFile);
-          }
+      console.log("State", stateData);
+      console.log("Payload:", payload);
+      formDataToSend.append("data", JSON.stringify(payload));
+      console.log("after appending data:", formDataToSend.get("data"));
+      // ✅ Append images properly
+      const imageFiles = stateData.project?.Images || [];
+      imageFiles.forEach((file) => {
+        formDataToSend.append("images", file);
+      });
 
-          // ✅ Append OneBHKConfig images & floor plans correctly (grouped by typeNumber)
+      // ✅ Append video file if available
+      const videoFile = stateData.project?.Videos?.[0] || null;
+      if (videoFile) {
+        formDataToSend.append("video", videoFile);
+      }
+
+      // ✅ Append OneBHKConfig images & floor plans correctly (grouped by typeNumber)
       stateData.oneBHKConfig?.forEach((config) => {
         const typeNumber = config.typeNumber;
-  
+
         // ✅ Append images for this typeNumber
         if (config.type1images?.length) {
           config.type1images.forEach((file, imgIndex) => {
-            formDataToSend.append(`oneBHKType1Images_${typeNumber}_${imgIndex}`, file);
+            formDataToSend.append(
+              `oneBHKType1Images_${typeNumber}_${imgIndex}`,
+              file
+            );
           });
         }
-      // ✅ Append floor plans for this typeNumber
-      if (config.type1floorplan?.length) {
-        config.type1floorplan.forEach((file, planIndex) => {
-          formDataToSend.append(`oneBHKType1FloorPlanImages_${typeNumber}_${planIndex}`, file);
-        });
-      }
-      
+        // ✅ Append floor plans for this typeNumber
+        if (config.type1floorplan?.length) {
+          config.type1floorplan.forEach((file, planIndex) => {
+            formDataToSend.append(
+              `oneBHKType1FloorPlanImages_${typeNumber}_${planIndex}`,
+              file
+            );
+          });
+        }
       });
       stateData.twoBHKConfig?.forEach((config) => {
         const typeNumber = config.typeNumber;
-  
+
         // ✅ Append images for this typeNumber
         if (config.type2images?.length) {
           config.type2images.forEach((file, imgIndex) => {
-            formDataToSend.append(`twoBHKType2Images_${typeNumber}_${imgIndex}`, file);
+            formDataToSend.append(
+              `twoBHKType2Images_${typeNumber}_${imgIndex}`,
+              file
+            );
           });
         }
         // Append floor plan images
         if (config.type2floorplan?.length) {
           config.type2floorplan.forEach((file, planIndex) => {
-            formDataToSend.append(`twoBHKType2FloorPlanImages_${typeNumber}_${planIndex}`, file);
+            formDataToSend.append(
+              `twoBHKType2FloorPlanImages_${typeNumber}_${planIndex}`,
+              file
+            );
           });
         }
       });
       stateData.threeBHKConfig?.forEach((config) => {
         const typeNumber = config.typeNumber;
-  
+
         // ✅ Append images for this typeNumber
         if (config.type3images?.length) {
           config.type3images.forEach((file, imgIndex) => {
-            formDataToSend.append(`threeBHKType3Images_${typeNumber}_${imgIndex}`, file);
+            formDataToSend.append(
+              `threeBHKType3Images_${typeNumber}_${imgIndex}`,
+              file
+            );
           });
         }
         // Append floor plan images
         if (config.type3floorplan?.length) {
           config.type3floorplan.forEach((file, planIndex) => {
-            formDataToSend.append(`threeBHKType3FloorPlanImages_${typeNumber}_${planIndex}`, file);
+            formDataToSend.append(
+              `threeBHKType3FloorPlanImages_${typeNumber}_${planIndex}`,
+              file
+            );
           });
         }
       });
       stateData.fourBHKConfig?.forEach((config) => {
         const typeNumber = config.typeNumber;
-  
+
         // ✅ Append images for this typeNumber
         if (config.type4images?.length) {
           config.type4images.forEach((file, imgIndex) => {
-            formDataToSend.append(`fourBHKType4Images_${typeNumber}_${imgIndex}`, file);
-          }); 
+            formDataToSend.append(
+              `fourBHKType4Images_${typeNumber}_${imgIndex}`,
+              file
+            );
+          });
         }
-        // Append floor plan images 
+        // Append floor plan images
         if (config.type4floorplan?.length) {
           config.type4floorplan.forEach((file, planIndex) => {
-            formDataToSend.append(`fourBHKType4FloorPlanImages_${typeNumber}_${planIndex}`, file);
-          });   
-        }
-        });
-        stateData.fiveBHKConfig?.forEach((config) => {
-          const typeNumber = config.typeNumber;
-  
-          // ✅ Append images for this typeNumber
-          if (config.type5images?.length) {
-            config.type5images.forEach((file, imgIndex) => {
-              formDataToSend.append(`fiveBHKType5Images_${typeNumber}_${imgIndex}`, file);
-            }); 
-          } 
-          // Append floor plan images 
-          if (config.type5floorplan?.length) {
-            config.type5floorplan.forEach((file, planIndex) => {
-              formDataToSend.append(`fiveBHKType5FloorPlanImages_${typeNumber}_${planIndex}`, file);
-            });
-          }
+            formDataToSend.append(
+              `fourBHKType4FloorPlanImages_${typeNumber}_${planIndex}`,
+              file
+            );
           });
-          stateData.penthouseConfig?.forEach((config) => {
-            const typeNumber = config.typeNumber;
-  
-            // ✅ Append images for this typeNumber
-            if (config.penthouseImages?.length) {
-              config.penthouseImages.forEach((file, imgIndex) => {
-                formDataToSend.append(`penthouseTypeImages_${typeNumber}_${imgIndex}`, file);
-              }); 
-            } 
-            // Append floor plan images 
-            if (config.penthouseFloorPlan?.length) {
-              config.penthouseFloorPlan.forEach((file, planIndex) => {
-                formDataToSend.append(`penthouseFloorPlanImages_${typeNumber}_${planIndex}`, file);
-              });
-            }
-          })
-      
-          // ✅ Debugging: Check if FormData has correct values
-          console.log("Final FormData check:");
-          for (let pair of formDataToSend.entries()) {
-            // console.log(pair[0], pair[1]);
-            console.log(`${pair[0]}:`, pair[1]);
-          }
-      
-      
-  
+        }
+      });
+      stateData.fiveBHKConfig?.forEach((config) => {
+        const typeNumber = config.typeNumber;
+
+        // ✅ Append images for this typeNumber
+        if (config.type5images?.length) {
+          config.type5images.forEach((file, imgIndex) => {
+            formDataToSend.append(
+              `fiveBHKType5Images_${typeNumber}_${imgIndex}`,
+              file
+            );
+          });
+        }
+        // Append floor plan images
+        if (config.type5floorplan?.length) {
+          config.type5floorplan.forEach((file, planIndex) => {
+            formDataToSend.append(
+              `fiveBHKType5FloorPlanImages_${typeNumber}_${planIndex}`,
+              file
+            );
+          });
+        }
+      });
+      stateData.penthouseConfig?.forEach((config) => {
+        const typeNumber = config.typeNumber;
+
+        // ✅ Append images for this typeNumber
+        if (config.penthouseImages?.length) {
+          config.penthouseImages.forEach((file, imgIndex) => {
+            formDataToSend.append(
+              `penthouseTypeImages_${typeNumber}_${imgIndex}`,
+              file
+            );
+          });
+        }
+        // Append floor plan images
+        if (config.penthouseFloorPlan?.length) {
+          config.penthouseFloorPlan.forEach((file, planIndex) => {
+            formDataToSend.append(
+              `penthouseFloorPlanImages_${typeNumber}_${planIndex}`,
+              file
+            );
+          });
+        }
+      });
+
+      // ✅ Debugging: Check if FormData has correct values
+      console.log("Final FormData check:");
+      for (let pair of formDataToSend.entries()) {
+        // console.log(pair[0], pair[1]);
+        console.log(`${pair[0]}:`, pair[1]);
+      }
+
       // console.log("Final FormData Sent to API:", formData);
-  
+
       // Send form data via axios
       const response = await axios.post(
         "http://localhost:8080/api/entities/create",
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
           },
-          withCredentials: true
+          withCredentials: true,
         }
       );
-  
+
       console.log("Server Response:", response.data);
       alert("Entity created successfully!");
     } catch (error) {
@@ -1519,2032 +1523,2133 @@ const MultiStageForm = () => {
       );
     }
   };
-  
-  // const uploadFiles = async (files, type) => {
-  //   if (!files || files.length === 0) return [];
-  
-  //   const formData = new FormData();
-  //   files.forEach((file) => {
-  //     formData.append("files", file);
-  //   });
-  
-  //   try {
-  //     const response = await axios.post(`http://localhost:8080/api/upload/${type}`, formData, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //       withCredentials: true,
-  //     });
-  
-  //     console.log(`${type} Upload Response:`, response.data);
-  //     return response.data.urls; // Assuming API returns an array of URLs
-  //   } catch (error) {
-  //     console.error(`Error uploading ${type}:`, error);
-  //     return [];
-  //   }
-  // };
-
-
 
   const prevStage = () => {
     if (stage > 0) setStage(stage - 1);
   };
-  
 
   return (
     <div>
       <header className="bg-black text-white p-4 sm:mx-8 md:mx-10 xl:mx-24">
         <Header />
       </header>
-      <div className="flex items-center justify-center  bg-black text-base mobile-s:text-sm 
-      mobile-m:text-md mobile-l:text-lg ">
-      <div className="w-full max-w-4xl bg-black p-4 rounded text-white ">
-        <LinearProgress
-          variant="determinate"
-          value={stage === 0 ? 0 : ((stage + 1) / initialSteps.length) * 100}
-          className="w-[768px] max-w-[calc(100%-2rem)] mb-2 h-2 mx-10 
+      <div
+        className="flex p-6 items-center justify-center  bg-black text-base mobile-s:text-sm 
+      mobile-m:text-md mobile-l:text-lg "
+      >
+        <div className="w-full max-w-4xl bg-black p-4 rounded text-white ">
+          <LinearProgress
+            variant="determinate"
+            value={stage === 0 ? 0 : ((stage + 1) / initialSteps.length) * 100}
+            className="w-[768px] max-w-[calc(100%-2rem)] mb-2 h-2 mx-10 
           mobile-s:w-[280px] mobile-s:mx-3 mobile-m:w-[300px] mobile-l:w-[380px] md:w-[620px] md:mx-10 lg:w-[768px]"
-          sx={{
-            backgroundColor: "white", // Tailwind equivalent: bg-gray-300
-            "& .MuiLinearProgress-bar": {
-              backgroundColor: "#D4AF37", // Tailwind equivalent: bg-white
-            },
-          }}
-        />
-        {/* navigation */}
-        <div className="flex justify-between items-center mb-5 ">
-          <div className="flex items-center gap-2">
-            <p           
-              className="text-yellow-500 text-base mobile-s:text-sm mobile-s:mx-3 mobile-m:text-md mobile-l:text-lg md:mx-10 "
-            >
-              {initialSteps[stage]}
-            </p>
+            sx={{
+              backgroundColor: "white", // Tailwind equivalent: bg-gray-300
+              "& .MuiLinearProgress-bar": {
+                backgroundColor: "#D4AF37", // Tailwind equivalent: bg-white
+              },
+            }}
+          />
+          {/* navigation */}
+          <div className="flex justify-between items-center mb-5 ">
+            <div className="flex items-center gap-2">
+              <p className="text-yellow-500 text-base mobile-s:text-sm mobile-s:mx-3 mobile-m:text-md mobile-l:text-lg md:mx-10 ">
+                {initialSteps[stage]}
+              </p>
+            </div>
           </div>
-          
-        </div>
 
-        <div className="w-full mb-3 mx-auto">
-          {stage === 0 && (
-            <div className="w-full mx-auto max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between">
-              <InputField
-                label="Organization Name"
-                section="organization"
-                field="orgName"
-                value={formData.organization.orgName}
-                onChange={handleChange}
-                error={warnings.organization?.orgName}
-                type="text"
-                maxLength={100}
-              />
-              <InputField
-                label="Organization CIN"
-                section="organization"
-                field="orgCIN"
-                value={formData.organization.orgCIN}
-                onChange={handleChange}
-                error={warnings.organization?.orgCIN}
-                maxLength={21}
-              />
-              <InputField
-                label="Organization Owners"
-                section="organization"
-                field="orgOwners"
-                value={formData.organization.orgOwners}
-                onChange={handleChange}
-                error={warnings.organization?.orgOwners}
-              />
-              <InputField
-                label="Projects Completed"
-                section="organization"
-                field="projectsCompleted"
-                value={formData.organization.projectsCompleted}
-                onChange={handleChange}
-                error={warnings.organization?.projectsCompleted}
-              />
-            </div>
-          )}
-
-          {stage === 1 && (
-            <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
-              <InputField
-                label="Project Name"
-                section="project"
-                field="projectname"
-                value={formData.project.projectname}
-                onChange={handleChange}
-                error={warnings.project?.projectname}
-              />
-              <InputField
-                label="City"
-                section="project"
-                field="city"
-                value={formData.project.city}
-                onChange={handleChange}
-                error={warnings.project?.city}
-              />
-              <DropdownField
-                label="Enter Locality"
-                section="project"
-                field="locality"
-                value={formData.project.locality}
-                onChange={handleChange}
-                error={warnings.project?.locality}
-                options={[
-                  { label: "Hadapsar", value: "hadapsar" },
-                  { label: "Kothrud", value: "kothrud" },
-                  { label: "Airoli", value: "airoli" },
-                ]}
-              />
-              <InputField
-                label="Address"
-                section="project"
-                field="address"
-                value={formData.project.address}
-                onChange={handleChange}
-                error={warnings.project?.address}
-              />
-              <InputField
-                label="Latitude"
-                section="project"
-                field="latitude"
-                value={formData.project.latitude}
-                onChange={handleChange}
-                error={warnings.project?.latitude}
-              />
-              <InputField
-                label="Longitude"
-                section="project"
-                field="longitude"
-                value={formData.project.longitude}
-                onChange={handleChange}
-                error={warnings.project?.longitude}
-              />
-              <InputField
-                label="Area in sqft"
-                section="project"
-                field="area"
-                value={formData.project.area}
-                onChange={handleChange}
-                error={warnings.project?.area}
-              />
-              <InputField
-                label="Rera Number"
-                section="project"
-                field="reranumber"
-                value={formData.project.reranumber}
-                onChange={handleChange}
-                error={warnings.project?.reranumber}
-              />
-              <InputField
-                label="Rera Link"
-                section="project"
-                field="reralink"
-                value={formData.project.reralink}
-                onChange={handleChange}
-                error={warnings.project?.reralink}
-              />
-              <InputField
-                label="Schools"
-                section="project"
-                field="schools"
-                value={formData.project.schools}
-                onChange={handleChange}
-                error={warnings.project?.schools}
-              />
-              <InputField
-                label="Hospitals"
-                section="project"
-                field="hospitals"
-                value={formData.project.hospitals}
-                onChange={handleChange}
-                error={warnings.project?.hospitals}
-              />
-              <InputField
-                label="Malls"
-                section="project"
-                field="malls"
-                value={formData.project.malls}
-                onChange={handleChange}
-                error={warnings.project?.malls}
-              />
-              <InputField
-                label="Movie Theaters"
-                section="project"
-                field="movietheater"
-                value={formData.project.movietheater}
-                onChange={handleChange}
-                error={warnings.project?.movietheater}
-              />
-              <InputField
-                label="IT Parks"
-                section="project"
-                field="ITpark"
-                value={formData.project.ITpark}
-                onChange={handleChange}
-                error={warnings.project?.ITpark}
-              />
-              <div>
-                <ImageUpload
-                  handleChange={handleChange}
-                  section="project"
-                  field="Images"
-                  label="Upload project Images"
-                  limit={1}
-                />
-
-                {formData?.project?.Images?.length > 0 && (
-                  <div>
-                    <h3>Uploaded Images:</h3>
-                    <ul>
-                      {formData.project.Images.map((file, index) => (
-                        <li key={index}>{file.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-              <div>
-                <VideoUpload
-                  handleChange={handleChange}
-                  section="project"
-                  field="Videos"
-                  label="Upload Project Videos"
-                  limit={2}
-                />
-                {formData?.project?.Videos?.length > 0 && (
-                  <div>
-                    <h3>Uploaded Videos :</h3>
-                    <ul>
-                      {formData.project.Videos.map((file, index) => (
-                        <li key={index}>{file.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {stage === 2 && (
-            <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto"    >
-              <InputField
-                label="Project Units"
-                section="projectDetails"
-                field="units"
-                value={formData.projectDetails.units}
-                onChange={handleChange}
-                error={warnings.projectDetails?.units}
-              />
+          <div className="w-full mb-3 mx-auto">
+            {stage === 0 && (
+              <div className="w-full mx-auto max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between">
                 <InputField
-                label="Amenities"
-                section="projectDetails"
-                field="amenities"
-                value={formData.projectDetails.amenities}
-                onChange={handleChange}
-                error={warnings.projectDetails?.amenities}
-              />
-             
-              {/* Project Launch Date Picker */}
-              <DatePicker
-                label={"Project Launch Date"}
-                section="projectDetails"
-                // placeholder="Select Project Launch Date"
-                field="projectlaunch"
-                value={formData.projectDetails.projectlaunch}
-                onChange={handleChange}
-                error={warnings.projectDetails?.projectlaunch}
-              />
-              <DatePicker
-                label={"Project Planned-end Date"}
-                section="projectDetails"
-                placeholder="Select Project Planned-end Date"
-                field="ProjectPlannedEnd"
-                value={formData.projectDetails.ProjectPlannedEnd}
-                onChange={handleChange}
-                error={warnings.projectDetails?.ProjectPlannedEnd}
-              />
-              <InputField
-                label="Price Min"
-                section="projectDetails"
-                field="pricemin"
-                value={formData.projectDetails.pricemin}
-                onChange={handleChange}
-                error={warnings.projectDetails?.pricemin}
-              />
-              <InputField
-                label="Price Max"
-                section="projectDetails"
-                field="pricemax"
-                value={formData.projectDetails.pricemax}
-                onChange={handleChange}
-                error={warnings.projectDetails?.pricemax}
-              />
-
-            
-              <DropdownField
-                label="Covered Parking"
-                section="projectDetails"
-                field="coveredparking"
-                value={formData.projectDetails.coveredparking}
-                onChange={handleChange}
-                error={warnings.projectDetails?.coveredparking}
-                options={[
-                  { label: "Available", value: "Available" },
-                  { label: "Not Available", value: "Not Available" },
-                  { label: "Reserved", value: "Reserved" },
-                ]}
-              />
-               <DropdownField
-                label="Project Status"
-                section="projectDetails"
-                field="projectstatus"
-                value={formData.projectDetails.projectstatus}
-                onChange={handleChange}
-                error={warnings.projectDetails?.projectstatus}
-                options={[
-                  { label: "pre-development", value: "predevelopment" },
-                  { label: "construction", value: "construction" },
-                  { label: "closeout", value: "closeout" },
-                ]}
-              />
-              <FormGroup className="p-1">
-                <CheckBox
-                  label="All Inclusive"
-                  section="projectDetails"
-                  field="allInclusive"
-                  checked={formData.allInclusive}
+                  label="Organization Name"
+                  section="organization"
+                  field="orgName"
+                  value={formData.organization.orgName}
                   onChange={handleChange}
-                  error={warnings.projectDetails?.allInclusive}
+                  error={warnings.organization?.orgName}
+                  type="text"
+                  maxLength={100}
                 />
-
-                <CheckBox
-                  label="Bank Approved"
-                  section="projectDetails"
-                  field="bankapproved"
-                  checked={formData.bankapproved}
+                <InputField
+                  label="Organization CIN"
+                  section="organization"
+                  field="orgCIN"
+                  value={formData.organization.orgCIN}
                   onChange={handleChange}
-                  error={warnings.projectDetails?.bankapproved}
+                  error={warnings.organization?.orgCIN}
+                  maxLength={21}
                 />
-                {/* Banks Input - Shown Only When Bank Approved is Checked */}
-                {formData.projectDetails.bankapproved && (
-                  <InputField
-                    label="Banks"
-                    section="projectDetails"
-                    field="banks"
-                    value={formData.projectDetails.banks}
-                    onChange={handleChange}
-                    error={warnings.projectDetails?.banks}
+                <InputField
+                  label="Organization Owners"
+                  section="organization"
+                  field="orgOwners"
+                  value={formData.organization.orgOwners}
+                  onChange={handleChange}
+                  error={warnings.organization?.orgOwners}
+                />
+                <InputField
+                  label="Projects Completed"
+                  section="organization"
+                  field="projectsCompleted"
+                  value={formData.organization.projectsCompleted}
+                  onChange={handleChange}
+                  error={warnings.organization?.projectsCompleted}
+                />
+              </div>
+            )}
+
+            {stage === 1 && (
+              <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                <InputField
+                  label="Project Name"
+                  section="project"
+                  field="projectname"
+                  value={formData.project.projectname}
+                  onChange={handleChange}
+                  error={warnings.project?.projectname}
+                />
+                <InputField
+                  label="City"
+                  section="project"
+                  field="city"
+                  value={formData.project.city}
+                  onChange={handleChange}
+                  error={warnings.project?.city}
+                />
+                <DropdownField
+                  label="Enter Locality"
+                  section="project"
+                  field="locality"
+                  value={formData.project.locality}
+                  onChange={handleChange}
+                  error={warnings.project?.locality}
+                  options={[
+                    { label: "Hadapsar", value: "hadapsar" },
+                    { label: "Kothrud", value: "kothrud" },
+                    { label: "Airoli", value: "airoli" },
+                  ]}
+                />
+                <DropdownField
+                  label="Type of Property"
+                  section="project"
+                  field="TypeofProperty"
+                  value={formData.project.TypeofProperty}
+                  onChange={handleChange}
+                  error={warnings.project?.TypeofProperty}
+                  options={[
+                    { label: "Apartment", value: "Apartment" },
+                    { label: "Bunglow", value: "Bunglow" },
+                    { label: "Row House", value: "Row House" },
+                    { label: "Plot", value: "Plot" },
+                    { label: "Commercial", value: "Commercial" },
+                  ]}
+                />
+                <InputField
+                  label="Address"
+                  section="project"
+                  field="address"
+                  value={formData.project.address}
+                  onChange={handleChange}
+                  error={warnings.project?.address}
+                />
+                <InputField
+                  label="Latitude"
+                  section="project"
+                  field="latitude"
+                  value={formData.project.latitude}
+                  onChange={handleChange}
+                  error={warnings.project?.latitude}
+                />
+                <InputField
+                  label="Longitude"
+                  section="project"
+                  field="longitude"
+                  value={formData.project.longitude}
+                  onChange={handleChange}
+                  error={warnings.project?.longitude}
+                />
+                <InputField
+                  label="Area in sqft"
+                  section="project"
+                  field="area"
+                  value={formData.project.area}
+                  onChange={handleChange}
+                  error={warnings.project?.area}
+                />
+                <InputField
+                  label="Rera Number"
+                  section="project"
+                  field="reranumber"
+                  value={formData.project.reranumber}
+                  onChange={handleChange}
+                  error={warnings.project?.reranumber}
+                />
+                <InputField
+                  label="Rera Link"
+                  section="project"
+                  field="reralink"
+                  value={formData.project.reralink}
+                  onChange={handleChange}
+                  error={warnings.project?.reralink}
+                />
+                <InputField
+                  label="Schools"
+                  section="project"
+                  field="schools"
+                  value={formData.project.schools}
+                  onChange={handleChange}
+                  error={warnings.project?.schools}
+                />
+                <InputField
+                  label="Hospitals"
+                  section="project"
+                  field="hospitals"
+                  value={formData.project.hospitals}
+                  onChange={handleChange}
+                  error={warnings.project?.hospitals}
+                />
+                <InputField
+                  label="Malls"
+                  section="project"
+                  field="malls"
+                  value={formData.project.malls}
+                  onChange={handleChange}
+                  error={warnings.project?.malls}
+                />
+                <InputField
+                  label="Movie Theaters"
+                  section="project"
+                  field="movietheater"
+                  value={formData.project.movietheater}
+                  onChange={handleChange}
+                  error={warnings.project?.movietheater}
+                />
+                <InputField
+                  label="IT Parks"
+                  section="project"
+                  field="ITpark"
+                  value={formData.project.ITpark}
+                  onChange={handleChange}
+                  error={warnings.project?.ITpark}
+                />
+                <div>
+                  <ImageUpload
+                    handleChange={handleChange}
+                    section="project"
+                    field="Images"
+                    label="Upload project Images"
+                    limit={1}
                   />
-                )}
-              </FormGroup>
 
-              <FormGroup>
-                <div className="grid grid-cols-2 items-center ml-10">
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={proceedToOneBHK}
-                          onChange={(e) => setProceedToOneBHK(e.target.checked)}
-                          sx={{
-                            "&.MuiSvgIcon-root": { fill: "white" },
-                            color: "white",
-                            "&.Mui-checked": {
-                              color: "white",
-                            },
-                          }}
-                        />
-                      }
-                      label="1 BHK"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={proceedToTwoBHK}
-                          onChange={(e) => setProceedToTwoBHK(e.target.checked)}
-                          sx={{
-                            "&.MuiSvgIcon-root": { fill: "white" },
-                            color: "white",
-                            "&.Mui-checked": {
-                              color: "white",
-                            },
-                          }}
-                        />
-                      }
-                      label="2 BHK"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={proceedToThreeBHK}
-                          onChange={(e) =>
-                            setProceedToThreeBHK(e.target.checked)
-                          }
-                          sx={{
-                            "&.MuiSvgIcon-root": { fill: "white" },
-                            color: "white",
-                            "&.Mui-checked": {
-                              color: "white",
-                            },
-                          }}
-                        />
-                      }
-                      label="3 BHK"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={proceedToFourBHK}
-                          onChange={(e) =>
-                            setProceedToFourBHK(e.target.checked)
-                          }
-                          sx={{
-                            "&.MuiSvgIcon-root": { fill: "white" },
-                            color: "white",
-                            "&.Mui-checked": {
-                              color: "white",
-                            },
-                          }}
-                        />
-                      }
-                      label="4 BHK"
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={proceedToFiveBHK}
-                          onChange={(e) =>
-                            setProceedToFiveBHK(e.target.checked)
-                          }
-                          sx={{
-                            "&.MuiSvgIcon-root": { fill: "white" },
-                            color: "white",
-                            "&.Mui-checked": {
-                              color: "white",
-                            },
-                          }}
-                        />
-                      }
-                      label="5 BHK"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={proceedToPentHouse}
-                          onChange={(e) =>
-                            setProceedToPentHouse(e.target.checked)
-                          }
-                          sx={{
-                            "&.MuiSvgIcon-root": {
-                              fill: "white",
-                              backgroundColor: "white",
-                            },
-                            color: "white",
-                            "&.Mui-checked": {
-                              color: "white",
-                            },
-                          }}
-                        />
-                      }
-                      label="PentHouse"
-                    />
-                  </Grid>
+                  {formData?.project?.Images?.length > 0 && (
+                    <div>
+                      <h3>Uploaded Images:</h3>
+                      <ul>
+                        {formData.project.Images.map((file, index) => (
+                          <li key={index}>{file.name}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              </FormGroup>
-            </div>
-          )}
+                <div>
+                  <VideoUpload
+                    handleChange={handleChange}
+                    section="project"
+                    field="Videos"
+                    label="Upload Project Videos"
+                    limit={2}
+                  />
+                  {formData?.project?.Videos?.length > 0 && (
+                    <div>
+                      <h3>Uploaded Videos :</h3>
+                      <ul>
+                        {formData.project.Videos.map((file, index) => (
+                          <li key={index}>{file.name}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
-          {stage === 3 && (
-            <div className="mb-1">
-              <>
-                {formData.oneBHKConfig.map((config, index) => (
+            {stage === 2 && (
+              <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                <InputField
+                  label="Swimming Pool"
+                  section="Amenities"
+                  field="swimming_pool"
+                  value={formData.Amenities.swimming_pool}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.swimming_pool}
+                />
+
+                <InputField
+                  label="Temple"
+                  section="Amenities"
+                  field="temple"
+                  value={formData.Amenities.temple}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.temple}
+                />
+
+                <InputField
+                  label="Gym"
+                  section="Amenities"
+                  field="gym"
+                  value={formData.Amenities.gym}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.gym}
+                />
+
+                <InputField
+                  label="Creche"
+                  section="Amenities"
+                  field="creche"
+                  value={formData.Amenities.creche}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.creche}
+                />
+
+                <InputField
+                  label="Children Parks"
+                  section="Amenities"
+                  field="children_parks"
+                  value={formData.Amenities.children_parks}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.children_parks}
+                />
+
+                <InputField
+                  label="Park"
+                  section="Amenities"
+                  field="park"
+                  value={formData.Amenities.park}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.park}
+                />
+
+                <InputField
+                  label="Club House"
+                  section="Amenities"
+                  field="club_house"
+                  value={formData.Amenities.club_house}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.club_house}
+                />
+
+                <InputField
+                  label="Community Hall"
+                  section="Amenities"
+                  field="c_hall"
+                  value={formData.Amenities.c_hall}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.c_hall}
+                />
+
+                <InputField
+                  label="Other"
+                  section="Amenities"
+                  field="other"
+                  value={formData.Amenities.other}
+                  onChange={handleChange}
+                  error={warnings.Amenities?.other}
+                />
+              </div>
+            )}
+
+            {stage === 3 && (
+              <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                <InputField
+                  label="Schools"
+                  section="NearbyPlaces"
+                  field="schools"
+                  value={formData.NearbyPlaces.schools}
+                  onChange={handleChange}
+                  error={warnings.NearbyPlaces?.schools}
+                />
+
+                <InputField
+                  label="Hospitals"
+                  section="NearbyPlaces"
+                  field="hospitals"
+                  value={formData.NearbyPlaces.hospitals}
+                  onChange={handleChange}
+                  error={warnings.NearbyPlaces?.hospitals}
+                />
+
+                <InputField
+                  label="IT Parks"
+                  section="NearbyPlaces"
+                  field="it_parks"
+                  value={formData.NearbyPlaces.it_parks}
+                  onChange={handleChange}
+                  error={warnings.NearbyPlaces?.it_parks}
+                />
+
+                <InputField
+                  label="Hangouts"
+                  section="NearbyPlaces"
+                  field="hangouts"
+                  value={formData.NearbyPlaces.hangouts}
+                  onChange={handleChange}
+                  error={warnings.NearbyPlaces?.hangouts}
+                />
+
+                <InputField
+                  label="Cinemas"
+                  section="NearbyPlaces"
+                  field="cinemas"
+                  value={formData.NearbyPlaces.cinemas}
+                  onChange={handleChange}
+                  error={warnings.NearbyPlaces?.cinemas}
+                />
+
+                <InputField
+                  label="Metro"
+                  section="NearbyPlaces"
+                  field="metro"
+                  value={formData.NearbyPlaces.metro}
+                  onChange={handleChange}
+                  error={warnings.NearbyPlaces?.metro}
+                />
+              </div>
+            )}
+
+            {stage === 4 && (
+              <div className="max-w-3xl mx-auto bg-black rounded-2xl mt-4">
+                {/* Text Area for Writing */}
+                <div className="mb-4">
+                  <TextArea
+                    label="Write Review"
+                    section="ExpertReview"
+                    field="expertReview"
+                    value={formData.ExpertReview.expertReview}
+                    onChange={handleChange}
+                    error={warnings.ExpertReview?.expertReview}
+                  />
+                </div>
+              </div>
+            )}
+            {stage === 5 && (
+              <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                <InputField
+                  label="Project Units"
+                  section="projectDetails"
+                  field="units"
+                  value={formData.projectDetails.units}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.units}
+                />
+                <InputField
+                  label="Amenities"
+                  section="projectDetails"
+                  field="amenities"
+                  value={formData.projectDetails.amenities}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.amenities}
+                />
+
+                {/* Project Launch Date Picker */}
+                <DatePicker
+                  label={"Project Launch Date"}
+                  section="projectDetails"
+                  // placeholder="Select Project Launch Date"
+                  field="projectlaunch"
+                  value={formData.projectDetails.projectlaunch}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.projectlaunch}
+                />
+                <DatePicker
+                  label={"Project Planned-end Date"}
+                  section="projectDetails"
+                  placeholder="Select Project Planned-end Date"
+                  field="ProjectPlannedEnd"
+                  value={formData.projectDetails.ProjectPlannedEnd}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.ProjectPlannedEnd}
+                />
+                <InputField
+                  label="Price Min"
+                  section="projectDetails"
+                  field="pricemin"
+                  value={formData.projectDetails.pricemin}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.pricemin}
+                />
+                <InputField
+                  label="Price Max"
+                  section="projectDetails"
+                  field="pricemax"
+                  value={formData.projectDetails.pricemax}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.pricemax}
+                />
+
+                <DropdownField
+                  label="Covered Parking"
+                  section="projectDetails"
+                  field="coveredparking"
+                  value={formData.projectDetails.coveredparking}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.coveredparking}
+                  options={[
+                    { label: "Available", value: "Available" },
+                    { label: "Not Available", value: "Not Available" },
+                    { label: "Reserved", value: "Reserved" },
+                  ]}
+                />
+                <DropdownField
+                  label="Project Status"
+                  section="projectDetails"
+                  field="projectstatus"
+                  value={formData.projectDetails.projectstatus}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.projectstatus}
+                  options={[
+                    { label: "pre-development", value: "predevelopment" },
+                    { label: "construction", value: "construction" },
+                    { label: "closeout", value: "closeout" },
+                  ]}
+                />
+                <FormGroup className="p-1">
+                  <CheckBox
+                    label="All Inclusive"
+                    section="projectDetails"
+                    field="allInclusive"
+                    checked={formData.allInclusive}
+                    onChange={handleChange}
+                    error={warnings.projectDetails?.allInclusive}
+                  />
+
+                  <CheckBox
+                    label="Bank Approved"
+                    section="projectDetails"
+                    field="bankapproved"
+                    checked={formData.bankapproved}
+                    onChange={handleChange}
+                    error={warnings.projectDetails?.bankapproved}
+                  />
+                  {/* Banks Input - Shown Only When Bank Approved is Checked */}
+                  {formData.projectDetails.bankapproved && (
+                    <InputField
+                      label="Banks"
+                      section="projectDetails"
+                      field="banks"
+                      value={formData.projectDetails.banks}
+                      onChange={handleChange}
+                      error={warnings.projectDetails?.banks}
+                    />
+                  )}
+                </FormGroup>
+
+                <FormGroup>
+                  <div className="grid grid-cols-2 items-center ml-10">
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={proceedToOneBHK}
+                            onChange={(e) =>
+                              setProceedToOneBHK(e.target.checked)
+                            }
+                            sx={{
+                              "&.MuiSvgIcon-root": { fill: "white" },
+                              color: "white",
+                              "&.Mui-checked": {
+                                color: "white",
+                              },
+                            }}
+                          />
+                        }
+                        label="1 BHK"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={proceedToTwoBHK}
+                            onChange={(e) =>
+                              setProceedToTwoBHK(e.target.checked)
+                            }
+                            sx={{
+                              "&.MuiSvgIcon-root": { fill: "white" },
+                              color: "white",
+                              "&.Mui-checked": {
+                                color: "white",
+                              },
+                            }}
+                          />
+                        }
+                        label="2 BHK"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={proceedToThreeBHK}
+                            onChange={(e) =>
+                              setProceedToThreeBHK(e.target.checked)
+                            }
+                            sx={{
+                              "&.MuiSvgIcon-root": { fill: "white" },
+                              color: "white",
+                              "&.Mui-checked": {
+                                color: "white",
+                              },
+                            }}
+                          />
+                        }
+                        label="3 BHK"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={proceedToFourBHK}
+                            onChange={(e) =>
+                              setProceedToFourBHK(e.target.checked)
+                            }
+                            sx={{
+                              "&.MuiSvgIcon-root": { fill: "white" },
+                              color: "white",
+                              "&.Mui-checked": {
+                                color: "white",
+                              },
+                            }}
+                          />
+                        }
+                        label="4 BHK"
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={proceedToFiveBHK}
+                            onChange={(e) =>
+                              setProceedToFiveBHK(e.target.checked)
+                            }
+                            sx={{
+                              "&.MuiSvgIcon-root": { fill: "white" },
+                              color: "white",
+                              "&.Mui-checked": {
+                                color: "white",
+                              },
+                            }}
+                          />
+                        }
+                        label="5 BHK"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={proceedToPentHouse}
+                            onChange={(e) =>
+                              setProceedToPentHouse(e.target.checked)
+                            }
+                            sx={{
+                              "&.MuiSvgIcon-root": {
+                                fill: "white",
+                                backgroundColor: "white",
+                              },
+                              color: "white",
+                              "&.Mui-checked": {
+                                color: "white",
+                              },
+                            }}
+                          />
+                        }
+                        label="PentHouse"
+                      />
+                    </Grid>
+                  </div>
+                </FormGroup>
+              </div>
+            )}
+
+            {stage === 6 && (
+              <div className="mb-1">
+                <>
+                  {formData.oneBHKConfig.map((config, index) => (
+                    <div key={index} className="mb-6 border-b pb-4">
+                      <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
+                        One BHK Configuration {index + 1}
+                      </h3>
+                      <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                        <InputField
+                          label="Type Number"
+                          section={`oneBHKConfig[${index}]`}
+                          field="typeNumber"
+                          value={config.typeNumber}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.typeNumber}
+                          type="number"
+                        />
+
+                        <InputField
+                          label="Units"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1Units"
+                          value={config.type1Units}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1Units}
+                        />
+
+                        <InputField
+                          label="Total Area"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1area"
+                          value={config.type1area}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1area}
+                        />
+
+                        <InputField
+                          label="Bedroom Area"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1BedroomArea"
+                          value={config.type1BedroomArea}
+                          onChange={handleChange}
+                          error={
+                            warnings.oneBHKConfig?.[index]?.type1BedroomArea
+                          }
+                        />
+
+                        <InputField
+                          label="Hall Area"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1HallArea"
+                          value={config.type1HallArea}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1HallArea}
+                        />
+
+                        <InputField
+                          label="Kitchen Area"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1KitchenArea"
+                          value={config.type1KitchenArea}
+                          onChange={handleChange}
+                          error={
+                            warnings.oneBHKConfig?.[index]?.type1KitchenArea
+                          }
+                        />
+
+                        <InputField
+                          label="Bathrooms"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1bathrooms"
+                          value={config.type1bathrooms}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1bathrooms}
+                        />
+
+                        <InputField
+                          label="Bathroom 1 Details"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1bathroom1"
+                          value={config.type1bathroom1}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1bathroom1}
+                        />
+
+                        <InputField
+                          label="Bathroom 2 Details"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1bathroom2"
+                          value={config.type1bathroom2}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1bathroom2}
+                        />
+
+                        <InputField
+                          label="Balcony Availability"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1balcony"
+                          value={config.type1balcony}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1balcony}
+                        />
+
+                        <InputField
+                          label="Parking Availability"
+                          section={`oneBHKConfig[${index}]`}
+                          field="type1parking"
+                          value={config.type1parking}
+                          onChange={handleChange}
+                          error={warnings.oneBHKConfig?.[index]?.type1parking}
+                        />
+                        <div>
+                          <ImageUpload
+                            handleChange={handleChange}
+                            section={`oneBHKConfig[${index}]`}
+                            field="type1floorplan"
+                            label={`Upload Floorplan Images for BHK ${
+                              index + 1
+                            }`}
+                            limit={5} // Adjust limit as needed
+                          />
+
+                          {config?.type1floorplan?.length > 0 && (
+                            <div>
+                              <h3>Uploaded Images:</h3>
+                              <ul>
+                                {config.type1floorplan.map((file, imgIndex) => (
+                                  <li key={imgIndex}>{file.name}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                        <div>
+                          <ImageUpload
+                            handleChange={handleChange}
+                            section={`oneBHKConfig[${index}]`}
+                            field="type1images"
+                            label={`Upload Project Images for BHK ${index + 1}`}
+                            limit={5} // Adjust limit as needed
+                          />
+
+                          {config?.type1images?.length > 0 && (
+                            <div>
+                              <h3>Uploaded Images:</h3>
+                              <ul>
+                                {config.type1images.map((file, imgIndex) => (
+                                  <li key={imgIndex}>{file.name}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {/* Checkbox to Add Another Configuration */}
+                  <div className="mt-4 flex items-center mx-10">
+                    <input
+                      type="checkbox"
+                      id="addAnother"
+                      className="mr-2"
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            oneBHKConfig: [
+                              ...prev.oneBHKConfig,
+                              {
+                                typeNumber: prev.oneBHKConfig.length + 1,
+                                type1Units: "",
+                                type1area: "",
+                                type1floorplan: [],
+                                type1images: [],
+                                type1BedroomArea: "",
+                                type1HallArea: "",
+                                type1KitchenArea: "",
+                                type1bathrooms: "",
+                                type1bathroom1: "",
+                                type1bathroom2: "",
+                                type1balcony: "",
+                                type1parking: "",
+                              },
+                            ],
+                          }));
+                        }
+                      }}
+                    />
+                    <label htmlFor="addAnother" className="text-sm font-medium">
+                      Would you like to add another One BHK Configuration?
+                    </label>
+                  </div>
+                </>{" "}
+              </div>
+            )}
+
+            {stage === 7 && (
+              <div className="mx-auto">
+                {formData.twoBHKConfig.map((config, index) => (
                   <div key={index} className="mb-6 border-b pb-4">
                     <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
-                      One BHK Configuration {index + 1}
+                      Two BHK Configuration {index + 1}
                     </h3>
                     <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                      {/* Type 2 Units */}
                       <InputField
-                        label="Type Number"
-                        section={`oneBHKConfig[${index}]`}
-                        field="typeNumber"
-                        value={config.typeNumber}
+                        label="Type 2 Units"
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2Units"
+                        value={config.type2Units}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.typeNumber}
-                        type="number"
+                        error={warnings.twoBHKConfig?.[index]?.type2Units}
                       />
 
+                      {/* Type 2 Area */}
                       <InputField
-                        label="Units"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1Units"
-                        value={config.type1Units}
+                        label="Type 2 Area (sq ft)"
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2area"
+                        value={config.type2area}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1Units}
+                        error={warnings.twoBHKConfig?.[index]?.type2area}
                       />
 
+                      {/* Bedrooms */}
                       <InputField
-                        label="Total Area"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1area"
-                        value={config.type1area}
+                        label="Total Bedrooms"
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2Bedrooms"
+                        value={config.type2Bedrooms}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1area}
+                        error={warnings.twoBHKConfig?.[index]?.type2Bedrooms}
                       />
 
+                      {/* Bedroom 1 */}
                       <InputField
-                        label="Bedroom Area"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1BedroomArea"
-                        value={config.type1BedroomArea}
+                        label="Bedroom 1 Area"
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2Bedroom1"
+                        value={config.type2Bedroom1}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1BedroomArea}
+                        error={warnings.twoBHKConfig?.[index]?.type2Bedroom1}
                       />
 
+                      {/* Bedroom 2 */}
+                      <InputField
+                        label="Bedroom 2 Area"
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2Bedroom2"
+                        value={config.type2Bedroom2}
+                        onChange={handleChange}
+                        error={warnings.twoBHKConfig?.[index]?.type2Bedroom2}
+                      />
+
+                      {/* Hall Area */}
                       <InputField
                         label="Hall Area"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1HallArea"
-                        value={config.type1HallArea}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2HallArea"
+                        value={config.type2HallArea}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1HallArea}
+                        error={warnings.twoBHKConfig?.[index]?.type2HallArea}
                       />
 
+                      {/* Kitchen Area */}
                       <InputField
                         label="Kitchen Area"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1KitchenArea"
-                        value={config.type1KitchenArea}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2KitchenArea"
+                        value={config.type2KitchenArea}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1KitchenArea}
+                        error={warnings.twoBHKConfig?.[index]?.type2KitchenArea}
                       />
 
+                      {/* Bathrooms */}
                       <InputField
-                        label="Bathrooms"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1bathrooms"
-                        value={config.type1bathrooms}
+                        label="Total Bathrooms"
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2bathrooms"
+                        value={config.type2bathrooms}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1bathrooms}
+                        error={warnings.twoBHKConfig?.[index]?.type2bathrooms}
                       />
 
+                      {/* Bathroom 1 */}
                       <InputField
                         label="Bathroom 1 Details"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1bathroom1"
-                        value={config.type1bathroom1}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2bathroom1"
+                        value={config.type2bathroom1}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1bathroom1}
+                        error={warnings.twoBHKConfig?.[index]?.type2bathroom1}
                       />
 
+                      {/* Bathroom 2 */}
                       <InputField
                         label="Bathroom 2 Details"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1bathroom2"
-                        value={config.type1bathroom2}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2bathroom2"
+                        value={config.type2bathroom2}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1bathroom2}
+                        error={warnings.twoBHKConfig?.[index]?.type2bathroom2}
                       />
 
+                      {/* Balcony */}
                       <InputField
                         label="Balcony Availability"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1balcony"
-                        value={config.type1balcony}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2balcony"
+                        value={config.type2balcony}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1balcony}
+                        error={warnings.twoBHKConfig?.[index]?.type2balcony}
                       />
 
+                      {/* Parking */}
                       <InputField
                         label="Parking Availability"
-                        section={`oneBHKConfig[${index}]`}
-                        field="type1parking"
-                        value={config.type1parking}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2parking"
+                        value={config.type2parking}
                         onChange={handleChange}
-                        error={warnings.oneBHKConfig?.[index]?.type1parking}
+                        error={warnings.twoBHKConfig?.[index]?.type2parking}
                       />
-                      <div>
-                        <ImageUpload
-                          handleChange={handleChange}
-                          section={`oneBHKConfig[${index}]`}
-                          field="type1floorplan"
-                          label={`Upload Floorplan Images for BHK ${index + 1}`}
-                          limit={5} // Adjust limit as needed
-                        />
 
-                        {config?.type1floorplan?.length > 0 && (
-                          <div>
-                            <h3>Uploaded Images:</h3>
-                            <ul>
-                              {config.type1floorplan.map((file, imgIndex) => (
-                                <li key={imgIndex}>{file.name}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <ImageUpload
-                          handleChange={handleChange}
-                          section={`oneBHKConfig[${index}]`}
-                          field="type1images"
-                          label={`Upload Project Images for BHK ${index + 1}`}
-                          limit={5} // Adjust limit as needed
-                        />
+                      {/* Floorplan Image Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2floorplan"
+                        label="Upload Floorplan Images"
+                        limit={5} // Adjust as needed
+                      />
+                      {config.type2floorplan?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Floorplan Images:</h3>
+                          <ul>
+                            {config.type2floorplan.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-                        {config?.type1images?.length > 0 && (
-                          <div>
-                            <h3>Uploaded Images:</h3>
-                            <ul>
-                              {config.type1images.map((file, imgIndex) => (
-                                <li key={imgIndex}>{file.name}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
+                      {/* Other Images Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`twoBHKConfig[${index}]`}
+                        field="type2images"
+                        label="Upload Additional Images"
+                        limit={5}
+                      />
+                      {config.type2images?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Images:</h3>
+                          <ul>
+                            {config.type2images.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
-                {/* Checkbox to Add Another Configuration */}
+                {/* Checkbox to Add Another Two BHK Configuration */}
                 <div className="mt-4 flex items-center mx-10">
                   <input
                     type="checkbox"
-                    id="addAnother"
+                    id="addAnotherTwoBHK"
                     className="mr-2"
                     onChange={(e) => {
                       if (e.target.checked) {
                         setFormData((prev) => ({
                           ...prev,
-                          oneBHKConfig: [
-                            ...prev.oneBHKConfig,
+                          twoBHKConfig: [
+                            ...(prev.twoBHKConfig || []), // Ensure array exists
                             {
-                              typeNumber: prev.oneBHKConfig.length + 1,
-                              type1Units: "",
-                              type1area: "",
-                              type1floorplan: [],
-                              type1images: [],
-                              type1BedroomArea: "",
-                              type1HallArea: "",
-                              type1KitchenArea: "",
-                              type1bathrooms: "",
-                              type1bathroom1: "",
-                              type1bathroom2: "",
-                              type1balcony: "",
-                              type1parking: "",
+                              typeNumber: (prev.twoBHKConfig?.length || 0) + 1,
+                              type2Units: "",
+                              type2area: "",
+                              type2floorplan: [],
+                              type2images: [],
+                              type2Bedrooms: "",
+                              type2Bedroom1: "",
+                              type2Bedroom2: "",
+                              type2HallArea: "",
+                              type2KitchenArea: "",
+                              type2bathrooms: "",
+                              type2bathroom1: "",
+                              type2bathroom2: "",
+                              type2balcony: "",
+                              type2parking: "",
+                              enableconfig: false, // Keep it false initially
                             },
                           ],
                         }));
                       }
                     }}
                   />
-                  <label htmlFor="addAnother" className="text-sm font-medium">
-                    Would you like to add another One BHK Configuration?
+                  <label
+                    htmlFor="addAnotherTwoBHK"
+                    className="text-sm font-medium"
+                  >
+                    Would you like to add another Two BHK Configuration?
                   </label>
                 </div>
-              </>{" "}
-            </div>
-          )}
-
-          {stage === 4 && (
-            <div className="mx-auto">
-              {formData.twoBHKConfig.map((config, index) => (
-                <div key={index} className="mb-6 border-b pb-4">
-                  <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
-                    Two BHK Configuration {index + 1}
-                  </h3>
-                  <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
-                    {/* Type 2 Units */}
-                    <InputField
-                      label="Type 2 Units"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2Units"
-                      value={config.type2Units}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2Units}
-                    />
-
-                    {/* Type 2 Area */}
-                    <InputField
-                      label="Type 2 Area (sq ft)"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2area"
-                      value={config.type2area}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2area}
-                    />
-
-                    {/* Bedrooms */}
-                    <InputField
-                      label="Total Bedrooms"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2Bedrooms"
-                      value={config.type2Bedrooms}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2Bedrooms}
-                    />
-
-                    {/* Bedroom 1 */}
-                    <InputField
-                      label="Bedroom 1 Area"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2Bedroom1"
-                      value={config.type2Bedroom1}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2Bedroom1}
-                    />
-
-                    {/* Bedroom 2 */}
-                    <InputField
-                      label="Bedroom 2 Area"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2Bedroom2"
-                      value={config.type2Bedroom2}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2Bedroom2}
-                    />
-
-                    {/* Hall Area */}
-                    <InputField
-                      label="Hall Area"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2HallArea"
-                      value={config.type2HallArea}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2HallArea}
-                    />
-
-                    {/* Kitchen Area */}
-                    <InputField
-                      label="Kitchen Area"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2KitchenArea"
-                      value={config.type2KitchenArea}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2KitchenArea}
-                    />
-
-                    {/* Bathrooms */}
-                    <InputField
-                      label="Total Bathrooms"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2bathrooms"
-                      value={config.type2bathrooms}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2bathrooms}
-                    />
-
-                    {/* Bathroom 1 */}
-                    <InputField
-                      label="Bathroom 1 Details"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2bathroom1"
-                      value={config.type2bathroom1}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2bathroom1}
-                    />
-
-                    {/* Bathroom 2 */}
-                    <InputField
-                      label="Bathroom 2 Details"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2bathroom2"
-                      value={config.type2bathroom2}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2bathroom2}
-                    />
-
-                    {/* Balcony */}
-                    <InputField
-                      label="Balcony Availability"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2balcony"
-                      value={config.type2balcony}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2balcony}
-                    />
-
-                    {/* Parking */}
-                    <InputField
-                      label="Parking Availability"
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2parking"
-                      value={config.type2parking}
-                      onChange={handleChange}
-                      error={warnings.twoBHKConfig?.[index]?.type2parking}
-                    />
-
-                    {/* Floorplan Image Upload */}
-                    <ImageUpload
-                      handleChange={handleChange}
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2floorplan"
-                      label="Upload Floorplan Images"
-                      limit={5} // Adjust as needed
-                    />
-                    {config.type2floorplan?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Floorplan Images:</h3>
-                        <ul>
-                          {config.type2floorplan.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Other Images Upload */}
-                    <ImageUpload
-                      handleChange={handleChange}
-                      section={`twoBHKConfig[${index}]`}
-                      field="type2images"
-                      label="Upload Additional Images"
-                      limit={5}
-                    />
-                    {config.type2images?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Images:</h3>
-                        <ul>
-                          {config.type2images.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {/* Checkbox to Add Another Two BHK Configuration */}
-              <div className="mt-4 flex items-center mx-10">
-                <input
-                  type="checkbox"
-                  id="addAnotherTwoBHK"
-                  className="mr-2"
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setFormData((prev) => ({
-                        ...prev,
-                        twoBHKConfig: [
-                          ...(prev.twoBHKConfig || []), // Ensure array exists
-                          {
-                            typeNumber: (prev.twoBHKConfig?.length || 0) + 1,
-                            type2Units: "",
-                            type2area: "",
-                            type2floorplan: [],
-                            type2images: [],
-                            type2Bedrooms: "",
-                            type2Bedroom1: "",
-                            type2Bedroom2: "",
-                            type2HallArea: "",
-                            type2KitchenArea: "",
-                            type2bathrooms: "",
-                            type2bathroom1: "",
-                            type2bathroom2: "",
-                            type2balcony: "",
-                            type2parking: "",
-                            enableconfig: false, // Keep it false initially
-                          },
-                        ],
-                      }));
-                    }
-                  }}
-                />
-                <label
-                  htmlFor="addAnotherTwoBHK"
-                  className="text-sm font-medium"
-                >
-                  Would you like to add another Two BHK Configuration?
-                </label>
               </div>
-            </div>
-          )}
-
-          {stage === 5 && (
-            <div className="mx-auto">
-              {formData.threeBHKConfig.map((config, index) => (
-                <div key={index} className="mb-6 border-b pb-4">
-                  <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
-                    Three BHK Configuration {index + 1}
-                  </h3>
-                  <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
-                    {/* Type 3 Units */}
-                    <InputField
-                      label="Type 3 Units"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3Units"
-                      value={config.type3Units}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3Units}
-                    />
-
-                    <InputField
-                      field="type3area"
-                      value={config.type3area}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3area}
-                    />
-
-                    <InputField
-                      field="type3Bedrooms"
-                      value={config.type3Bedrooms}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3Bedrooms}
-                    />
-
-                    {/* Bedroom 1 */}
- <InputField
-                      label="Bedroom 1 Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3Bedroom1"
-                      value={config.type3Bedroom1}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3Bedroom1}
-                    />
-
-                    {/* Bedroom 2 */}
-                    <InputField
-                      label="Bedroom 2 Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3Bedroom2"
-                      value={config.type3Bedroom2}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3Bedroom2}
-                    />
-
-                    {/* Bedroom 3 */}
-                    <InputField
-                      label="Bedroom 3 Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3Bedroom3"
-                      value={config.type3Bedroom3}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3Bedroom3}
-                    />
-
-                    {/* Hall Area */}
-                    <InputField
-                      label="Hall Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3HallArea"
-                      value={config.type3HallArea}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3HallArea}
-                    />
-
-                    {/* Kitchen Area */}
- <InputField
-                      label="Kitchen Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3KitchenArea"
-                      value={config.type3KitchenArea}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3KitchenArea}
-                    />
-
-                    {/* Total Bathrooms */}
-                    <InputField
-                      label="Total Bathrooms"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3bathrooms"
-                      value={config.type3bathrooms}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3bathrooms}
-                    />
-
-                    {/* Bathroom 1 */}
-                    <InputField
-                      label="Bathroom 1 Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3bathroom1"
-                      value={config.type3bathroom1}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3bathroom1}
-                    />
-
-                    {/* Bathroom 2 */}
-                    <InputField
-                      label="Bathroom 2 Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3bathroom2"
-                      value={config.type3bathroom2}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3bathroom2}
-                    />
-
-                    {/* Bathroom 3 */}
-                    <InputField
-                      label="Bathroom 3 Area"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3bathroom3"
-                      value={config.type3bathroom3}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3bathroom3}
-                    />
-
-                    {/* Balcony */}
- <InputField
-                      label="Balcony Availability"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3balcony"
-                      value={config.type3balcony}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3balcony}
-                    />
-
-                    {/* Parking */}
-                    <InputField
-                      label="Parking Availability"
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3parking"
-                      value={config.type3parking}
-                      onChange={handleChange}
-                      error={warnings.threeBHKConfig?.[index]?.type3parking}
-                    />
-
-                    {/* Floorplan Image Upload */}
-                    <ImageUpload
-                      handleChange={handleChange}
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3floorplan"
-                      label="Upload Floorplan Images"
-                      limit={5}
-                    />
-                    {config.type3floorplan?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Floorplan Images:</h3>
-                        <ul>
-                          {config.type3floorplan.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Other Images Upload */}
-                    <ImageUpload
-                      handleChange={handleChange}
-                      section={`threeBHKConfig[${index}]`}
-                      field="type3images"
-                      label="Upload Additional Images"
-                      limit={5}
-                    />
-                    {config.type3images?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Images:</h3>
-                        <ul>
-                          {config.type3images.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Checkbox to Add Another Three BHK Configuration */}
-                    <div className="mt-4 flex items-center mx-10">
-                      <input
-                        type="checkbox"
-                        id="addAnotherThreeBHK"
-                        className="mr-2"
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData((prev) => ({
-                              ...prev,
-                              threeBHKConfig: [
-                                ...(prev.threeBHKConfig || []), // Ensure array exists
-                                {
-                                  typeNumber:
-                                    (prev.threeBHKConfig?.length || 0) + 1,
-                                  type3Units: "",
-                                  type3area: "",
-                                  type3floorplan: [],
-                                  type3images: [],
-                                  type3Bedrooms: "",
-                                  type3Bedroom1: "",
-                                  type3Bedroom2: "",
-                                  type3Bedroom3: "",
-                                  type3HallArea: "",
-                                  type3KitchenArea: "",
-                                  type3bathrooms: "",
-                                  type3bathroom1: "",
-                                  type3bathroom2: "",
-                                  type3bathroom3: "",
-                                  type3balcony: "",
-                                  type3parking: "",
-                                  enableconfig: false, // Keep it false initially
-                                },
-                              ],
-                            }));
-                          }
-                        }}
-                      />
-                      <label
-                        htmlFor="addAnotherThreeBHK"
-                        className="text-sm font-medium"
-                      >
-                        Would you like to add another Three BHK Configuration?
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          {stage === 6 && (
-            <div className=" mx-auto">
-              {formData.fourBHKConfig.map((config, index) => (
-                <div key={index} className="mb-6 border-b pb-4">
-                  <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
-                    Four BHK Configuration {index + 1}
-                  </h3>
-                  <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
-                    {/* Type 4 Units */}
-                    <InputField
-                      label="Type 4 Units"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4Units"
-                      value={config.type4Units}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4Units}
-                    />
-
-                    {/* Type 4 Area */}
-                    <InputField
-                      label="Type 4 Area (sq ft)"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4area"
-                      value={config.type4area}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4area}
-                    />
-
-                    {/* Total Bedrooms */}
-                    <InputField
-                      label="Total Bedrooms"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4Bedrooms"
-                      value={config.type4Bedrooms}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4Bedrooms}
-                    />
-
-                    {/* Bedroom 1 */}
-                    <InputField
-                      label="Bedroom 1 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4Bedroom1"
-                      value={config.type4Bedroom1}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4Bedroom1}
-                    />
-
-                    {/* Bedroom 2 */}
-                    <InputField
-                      label="Bedroom 2 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4Bedroom2"
-                      value={config.type4Bedroom2}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4Bedroom2}
-                    />
-
-                    {/* Bedroom 3 */}
-                    <InputField
-                      label="Bedroom 3 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4Bedroom3"
-                      value={config.type4Bedroom3}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4Bedroom3}
-                    />
-
-                    {/* Bedroom 4 */}
-                    <InputField
-                      label="Bedroom 4 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4Bedroom4"
-                      value={config.type4Bedroom4}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4Bedroom4}
-                    />
-
-                    {/* Hall Area */}
-                    <InputField
-                      label="Hall Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4HallArea"
-                      value={config.type4HallArea}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4HallArea}
-                    />
-
-                    {/* Kitchen Area */}
-                    <InputField
-                      label="Kitchen Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4KitchenArea"
-                      value={config.type4KitchenArea}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4KitchenArea}
-                    />
-
-                    {/* Total Bathrooms */}
-                    <InputField
-                      label="Total Bathrooms"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4bathrooms"
-                      value={config.type4bathrooms}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4bathrooms}
-                    />
-
-                    {/* Bathroom 1 */}
-                    <InputField
-                      label="Bathroom 1 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4bathroom1"
-                      value={config.type4bathroom1}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4bathroom1}
-                    />
-
-                    {/* Bathroom 2 */}
-                    <InputField
-                      label="Bathroom 2 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4bathroom2"
-                      value={config.type4bathroom2}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4bathroom2}
-                    />
-
-                    {/* Bathroom 3 */}
-                    <InputField
-                      label="Bathroom 3 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4bathroom3"
-                      value={config.type4bathroom3}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4bathroom3}
-                    />
-
-                    {/* Bathroom 4 */}
-                    <InputField
-                      label="Bathroom 4 Area"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4bathroom4"
-                      value={config.type4bathroom4}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4bathroom4}
-                    />
-
-
-                      {/* Other Images Upload */}
-                      <ImageUpload
-                      handleChange={handleChange}
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4floorplan"
-                      label="Upload Additional Images"
-                      limit={5}
-                    />
-                    {config.type4floorplan?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Images:</h3>
-                        <ul>
-                          {config.type4floorplan.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                      {/* Other Images Upload */}
-                      <ImageUpload
-                      handleChange={handleChange}
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4images"
-                      label="Upload Additional Images"
-                      limit={5}
-                    />
-                    {config.type4images?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Images:</h3>
-                        <ul>
-                          {config.type4images.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-
-
-
-                    {/* Balcony */}
-                    <InputField
-                      label="Balcony Availability"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4balcony"
-                      value={config.type4balcony}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4balcony}
-                    />
-
-
-                    {/* Parking */}
-                    <InputField
-                      label="Parking Availability"
-                      section={`fourBHKConfig[${index}]`}
-                      field="type4parking"
-                      value={config.type4parking}
-                      onChange={handleChange}
-                      error={warnings.fourBHKConfig?.[index]?.type4parking}
-                    />
-                    {/* Checkbox to Add Another Four BHK Configuration */}
-                    <div className="mt-4 flex items-center mx-10">
-                      <input
-                        type="checkbox"
-                        id="addAnotherFourBHK"
-                        className="mr-2"
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData((prev) => ({
-                              ...prev,
-                              fourBHKConfig: [
-                                ...(prev.fourBHKConfig || []),
-                                {
-                                  type4Units: "",
-                                  type4area: "",
-                                  type4floorplan: [],
-                                  type4images: [],
-                                  type4Bedrooms: "",
-                                  type4Bedroom1: "",
-                                  type4Bedroom2: "",
-                                  type4Bedroom3: "",
-                                  type4Bedroom4: "",
-                                  type4HallArea: "",
-                                  type4KitchenArea: "",
-                                  type4bathrooms: "",
-                                  type4bathroom1: "",
-                                  type4bathroom2: "",
-                                  type4bathroom3: "",
-                                  type4bathroom4: "",
-                                  type4balcony: "",
-                                  type4parking: "",
-                                  enableconfig: false,
-                                },
-                              ],
-                            }));
-
-                            // Uncheck the checkbox after adding
-                            e.target.checked = false;
-                          }
-                        }}
-                      />
-                      <label
-                        htmlFor="addAnotherFourBHK"
-                        className="text-sm font-medium"
-                      >
-                        Would you like to add another Four BHK Configuration?
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {stage === 7 && (
-            <div className="mx-auto">
-              {formData.fiveBHKConfig.map((config, index) => (
-                <div key={index} className="mb-6 border-b pb-4">
-                  <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
-                    Five BHK Configuration {index + 1}
-                  </h3>
-                  <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
-                    {/* Type 5 Units */}
-                    <InputField
-                      label="Type 5 Units"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5Units"
-                      value={config.type5Units}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5Units}
-                    />
-
-                    {/* Type 5 Area */}
-                    <InputField
-                      label="Type 5 Area (sq ft)"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5area"
-                      value={config.type5area}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5area}
-                    />
-
-                    {/* Total Bedrooms */}
-                    <InputField
-                      label="Total Bedrooms"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5Bedrooms"
-                      value={config.type5Bedrooms}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5Bedrooms}
-                    />
-
-                    {/* Bedroom 1 */}
-                    <InputField
-                      label="Bedroom 1 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5Bedroom1"
-                      value={config.type5Bedroom1}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5Bedroom1}
-                    />
-
-                    {/* Bedroom 2 */}
-                    <InputField
-                      label="Bedroom 2 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5Bedroom2"
-                      value={config.type5Bedroom2}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5Bedroom2}
-                    />
-
-                    {/* Bedroom 3 */}
-                    <InputField
-                      label="Bedroom 3 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5Bedroom3"
-                      value={config.type5Bedroom3}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5Bedroom3}
-                    />
-
-                    {/* Bedroom 4 */}
-                    <InputField
-                      label="Bedroom 4 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5Bedroom4"
-                      value={config.type5Bedroom4}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5Bedroom4}
-                    />
-
-                    {/* Bedroom 5 */}
-                    <InputField
-                      label="Bedroom 5 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5Bedroom5"
-                      value={config.type5Bedroom5}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5Bedroom5}
-                    />
-
-                    {/* Hall Area */}
-                    <InputField
-                      label="Hall Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5HallArea"
-                      value={config.type5HallArea}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5HallArea}
-                    />
-
-                    {/* Kitchen Area */}
-                    <InputField
-                      label="Kitchen Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5KitchenArea"
-                      value={config.type5KitchenArea}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5KitchenArea}
-                    />
-
-                    {/* Total Bathrooms */}
-                    <InputField
-                      label="Total Bathrooms"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5bathrooms"
-                      value={config.type5bathrooms}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5bathrooms}
-                    />
-
-                    {/* Bathroom 1 */}
-                    <InputField
-                      label="Bathroom 1 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5bathroom1"
-                      value={config.type5bathroom1}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5bathroom1}
-                    />
-
-                    {/* Bathroom 2 */}
-                    <InputField
-                      label="Bathroom 2 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5bathroom2"
-                      value={config.type5bathroom2}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5bathroom2}
-                    />
-
-                    {/* Bathroom 3 */}
-                    <InputField
-                      label="Bathroom 3 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5bathroom3"
-                      value={config.type5bathroom3}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5bathroom3}
-                    />
-
-                    {/* Bathroom 4 */}
-                    <InputField
-                      label="Bathroom 4 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5bathroom4"
-                      value={config.type5bathroom4}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5bathroom4}
-                    />
-
-                    {/* Bathroom 5 */}
-                    <InputField
-                      label="Bathroom 5 Area"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5bathroom5"
-                      value={config.type5bathroom5}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5bathroom5}
-                    />
-                         {/* Other Images Upload */}
-                         <ImageUpload
-                      handleChange={handleChange}
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type4floorplan"
-                      label="Upload Additional Images"
-                      limit={5}
-                    />
-                    {config.type5floorplan?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Images:</h3>
-                        <ul>
-                          {config.type5floorplan.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                      {/* Other Images Upload */}
-                      <ImageUpload
-                      handleChange={handleChange}
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5images"
-                      label="Upload Additional Images"
-                      limit={5}
-                    />
-                    {config.type5images?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Images:</h3>
-                        <ul>
-                          {config.type5images.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}          {/* Balcony */}
-                    <InputField
-                      label="Balcony Availability"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5balcony"
-                      value={config.type5balcony}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5balcony}
-                    />
-
-
-                    {/* Parking */}
-                    <InputField
-                      label="Parking Availability"
-                      section={`fiveBHKConfig[${index}]`}
-                      field="type5parking"
-                      value={config.type5parking}
-                      onChange={handleChange}
-                      error={warnings.fiveBHKConfig?.[index]?.type5parking}
-                    />
-
-
-                    <div className="mt-4 flex items-center mx-10 ">
-                      <input
-                        type="checkbox"
-                        id="addAnotherFiveBHK"
-                        className="mr-2"
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData((prev) => ({
-                              ...prev,
-                              fiveBHKConfig: [
-                                ...(prev.fiveBHKConfig || []),
-                                {
-                                  typeNumber:
-                                    (prev.fiveBHKConfig?.length || 0) + 1,
-                                  type5Units: "",
-                                  type5area: "",
-                                  type5floorplan: [],
-                                  type5images: [],
-                                  type5Bedrooms: "",
-                                  type5Bedroom1: "",
-                                  type5Bedroom2: "",
-                                  type5Bedroom3: "",
-                                  type5Bedroom5: "",
-                                  type5Bedroom4: "",
-                                  type5HallArea: "",
-                                  type5KitchenArea: "",
-                                  type5bathrooms: "",
-                                  type5bathroom1: "",
-                                  type5bathroom2: "",
-                                  type5bathroom3: "",
-                                  type5bathroom4: "",
-                                  type5bathroom5: "",
-                                  type5balcony: "",
-                                  type5parking: "",
-                                  enableconfig: false,
-                                },
-                              ],
-                            }));
-                            e.target.checked = false; // Uncheck after adding
-                          }
-                        }}
-                      />
-                      <label
-                        htmlFor="addAnotherFiveBHK"
-                        className="text-sm font-medium"
-                      >
-                        Would you like to add another Five BHK Configuration?
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {stage === 8 && (
-            <div className="mx-auto">
-              {formData.penthouseConfig.map((config, index) => (
-                <div key={index} className="mb-6 border-b pb-4">
-                  <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
-                    Penthouse Configuration {index + 1}
-                  </h3>
-                  <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
-                    {/* Penthouse Units */}
-                    <InputField
-                      label="Penthouse Units"
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseUnits"
-                      value={config.penthouseUnits}
-                      onChange={handleChange}
-                      error={warnings.penthouseConfig?.[index]?.penthouseUnits}
-                    />
-
-                    {/* Penthouse Area */}
-                    <InputField
-                      label="Penthouse Area (sq ft)"
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseArea"
-                      value={config.penthouseArea}
-                      onChange={handleChange}
-                      error={warnings.penthouseConfig?.[index]?.penthouseArea}
-                    />
-
-                    {/* Total Bathrooms */}
-                    <InputField
-                      label="Total Bathrooms"
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseBathrooms"
-                      value={config.penthouseBathrooms}
-                      onChange={handleChange}
-                      error={
-                        warnings.penthouseConfig?.[index]?.penthouseBathrooms
-                      }
-                    />
-
-
-                    {/* Total Bedrooms */}
-                    <InputField
-                      label="Total Bedrooms"
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseBedrooms"
-                      value={config.penthouseBedrooms}
-                      onChange={handleChange}
-                      error={
-                        warnings.penthouseConfig?.[index]?.penthouseBedrooms
-                      }
-                    />
-
-                    {/* Balcony Availability */}
-                    <InputField
-                      label="Balcony Availability"
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseBalcony"
-                      value={config.penthouseBalcony}
-                      onChange={handleChange}
-                      error={
-                        warnings.penthouseConfig?.[index]?.penthouseBalcony
-                      }
-                    />
-
-                    {/* Parking Availability */}
-                    <InputField
-                      label="Parking Availability"
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseParking"
-                      value={config.penthouseParking}
-                      onChange={handleChange}
-                      error={
-                        warnings.penthouseConfig?.[index]?.penthouseParking
-                      }
-                    />
-
-                    {/* Hall Area */}
-                    <InputField
-                      label="Hall Area"
-                      section={`penthouseConfig[${index}]`}
-                      field="hallArea"
-                      value={config.hallArea}
-                      onChange={handleChange}
-                      error={warnings.penthouseConfig?.[index]?.hallArea}
-                    />
-
-                    {/* Kitchen Area */}
-                    <InputField
-                      label="Kitchen Area"
-                      section={`penthouseConfig[${index}]`}
-                      field="kitchenArea"
-                      value={config.kitchenArea}
-                      onChange={handleChange}
-                      error={warnings.penthouseConfig?.[index]?.kitchenArea}
-                    />
-
-                    {/* Bedrooms */}
-                    {[...Array(6).keys()].map((num) => (
+            )}
+
+            {stage === 8 && (
+              <div className="mx-auto">
+                {formData.threeBHKConfig.map((config, index) => (
+                  <div key={index} className="mb-6 border-b pb-4">
+                    <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
+                      Three BHK Configuration {index + 1}
+                    </h3>
+                    <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                      {/* Type 3 Units */}
                       <InputField
-                        key={`bedroom${num + 1}`}
-                        label={`Bedroom ${num + 1} Area`}
-                        section={`penthouseConfig[${index}]`}
-                        field={`bedroom${num + 1}Area`}
-                        value={config[`bedroom${num + 1}Area`]}
+                        label="Type 3 Units"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3Units"
+                        value={config.type3Units}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3Units}
+                      />
+
+                      <InputField
+                        label="Area"
+                        field="type3area"
+                        section={`threeBHKConfig[${index}]`}
+                        value={config.type3area}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3area}
+                      />
+
+                      <InputField
+                        label="Bedrooms"
+                        field="type3Bedrooms"
+                        section={`threeBHKConfig[${index}]`}
+                        value={config.type3Bedrooms}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3Bedrooms}
+                      />
+
+                      {/* Bedroom 1 */}
+                      <InputField
+                        label="Bedroom 1 Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3Bedroom1"
+                        value={config.type3Bedroom1}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3Bedroom1}
+                      />
+
+                      {/* Bedroom 2 */}
+                      <InputField
+                        label="Bedroom 2 Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3Bedroom2"
+                        value={config.type3Bedroom2}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3Bedroom2}
+                      />
+
+                      {/* Bedroom 3 */}
+                      <InputField
+                        label="Bedroom 3 Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3Bedroom3"
+                        value={config.type3Bedroom3}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3Bedroom3}
+                      />
+
+                      {/* Hall Area */}
+                      <InputField
+                        label="Hall Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3HallArea"
+                        value={config.type3HallArea}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3HallArea}
+                      />
+
+                      {/* Kitchen Area */}
+                      <InputField
+                        label="Kitchen Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3KitchenArea"
+                        value={config.type3KitchenArea}
                         onChange={handleChange}
                         error={
-                          warnings.penthouseConfig?.[index]?.[
-                            `bedroom${num + 1}Area`
-                          ]
+                          warnings.threeBHKConfig?.[index]?.type3KitchenArea
                         }
                       />
-                    ))}
 
-                    {/* Bathrooms */}
-                    {[...Array(6).keys()].map((num) => (
+                      {/* Total Bathrooms */}
                       <InputField
-                        key={`bathroom${num + 1}`}
-                        label={`Bathroom ${num + 1} Area`}
-                        section={`penthouseConfig[${index}]`}
-                        field={`bathroom${num + 1}Area`}
-                        value={config[`bathroom${num + 1}Area`]}
+                        label="Total Bathrooms"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3bathrooms"
+                        value={config.type3bathrooms}
                         onChange={handleChange}
-                        error={
-                          warnings.penthouseConfig?.[index]?.[
-                            `bathroom${num + 1}Area`
-                          ]
-                        }
+                        error={warnings.threeBHKConfig?.[index]?.type3bathrooms}
                       />
-                    ))}
 
-                    {/* Floor Plan Image Upload */}
-                    <ImageUpload
-                      handleChange={handleChange}
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseFloorPlan"
-                      label="Upload Penthouse Floor Plan"
-                      limit={5}
-                    />
-                    {config.penthouseFloorPlan?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Floor Plans:</h3>
-                        <ul>
-                          {config.penthouseFloorPlan.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Other Images Upload */}
-                    <ImageUpload
-                      handleChange={handleChange}
-                      section={`penthouseConfig[${index}]`}
-                      field="penthouseImages"
-                      label="Upload Additional Images"
-                      limit={5}
-                    />
-                    {config.penthouseImages?.length > 0 && (
-                      <div>
-                        <h3>Uploaded Images:</h3>
-                        <ul>
-                          {config.penthouseImages.map((file, imgIndex) => (
-                            <li key={imgIndex}>{file.name}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Checkbox to Add Another Penthouse Configuration */}
-                    <div className="mt-4 flex items-center mx-10">
-                      <input
-                        type="checkbox"
-                        id="addAnotherPenthouse"
-                        className="mr-2"
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setFormData((prev) => ({
-                              ...prev,
-                              penthouseConfig: [
-                                ...(prev.penthouseConfig || []),
-                                {
-                                  typeNumber:
-                                    (prev.penthouseConfig?.length || 0) + 1,
-                                  penthouseUnits: "",
-                                  penthouseArea: "",
-                                  penthouseBedrooms: "",
-                                  penthouseFloorPlan: [],
-                                  penthouseBathrooms: "",
-                                  penthouseBalcony: "",
-                                  penthouseParking: "",
-                                  penthouseImages: [],
-                                  hallArea: "",
-                                  kitchenArea: "",
-                                  ...Object.fromEntries(
-                                    [...Array(6).keys()].map((num) => [
-                                      `bedroom${num + 1}Area`,
-                                      "",
-                                    ])
-                                  ),
-                                  ...Object.fromEntries(
-                                    [...Array(6).keys()].map((num) => [
-                                      `bathroom${num + 1}Area`,
-                                      "",
-                                    ])
-                                  ),
-                                  enableconfig: false,
-                                },
-                              ],
-                            }));
-                            // Automatically uncheck after adding
-                            e.target.checked = false;
-                          }
-                        }}
+                      {/* Bathroom 1 */}
+                      <InputField
+                        label="Bathroom 1 Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3bathroom1"
+                        value={config.type3bathroom1}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3bathroom1}
                       />
-                      <label
-                        htmlFor="addAnotherPenthouse"
-                        className="text-sm font-medium"
-                      >
-                        Would you like to add another Penthouse Configuration?
-                      </label>
+
+                      {/* Bathroom 2 */}
+                      <InputField
+                        label="Bathroom 2 Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3bathroom2"
+                        value={config.type3bathroom2}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3bathroom2}
+                      />
+
+                      {/* Bathroom 3 */}
+                      <InputField
+                        label="Bathroom 3 Area"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3bathroom3"
+                        value={config.type3bathroom3}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3bathroom3}
+                      />
+
+                      {/* Balcony */}
+                      <InputField
+                        label="Balcony Availability"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3balcony"
+                        value={config.type3balcony}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3balcony}
+                      />
+
+                      {/* Parking */}
+                      <InputField
+                        label="Parking Availability"
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3parking"
+                        value={config.type3parking}
+                        onChange={handleChange}
+                        error={warnings.threeBHKConfig?.[index]?.type3parking}
+                      />
+
+                      {/* Floorplan Image Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3floorplan"
+                        label="Upload Floorplan Images"
+                        limit={5}
+                      />
+                      {config.type3floorplan?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Floorplan Images:</h3>
+                          <ul>
+                            {config.type3floorplan.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Other Images Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`threeBHKConfig[${index}]`}
+                        field="type3images"
+                        label="Upload Additional Images"
+                        limit={5}
+                      />
+                      {config.type3images?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Images:</h3>
+                          <ul>
+                            {config.type3images.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Checkbox to Add Another Three BHK Configuration */}
+                      <div className="mt-4 flex items-center mx-10">
+                        <input
+                          type="checkbox"
+                          id="addAnotherThreeBHK"
+                          className="mr-2"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData((prev) => ({
+                                ...prev,
+                                threeBHKConfig: [
+                                  ...(prev.threeBHKConfig || []), // Ensure array exists
+                                  {
+                                    typeNumber:
+                                      (prev.threeBHKConfig?.length || 0) + 1,
+                                    type3Units: "",
+                                    type3area: "",
+                                    type3floorplan: [],
+                                    type3images: [],
+                                    type3Bedrooms: "",
+                                    type3Bedroom1: "",
+                                    type3Bedroom2: "",
+                                    type3Bedroom3: "",
+                                    type3HallArea: "",
+                                    type3KitchenArea: "",
+                                    type3bathrooms: "",
+                                    type3bathroom1: "",
+                                    type3bathroom2: "",
+                                    type3bathroom3: "",
+                                    type3balcony: "",
+                                    type3parking: "",
+                                    enableconfig: false, // Keep it false initially
+                                  },
+                                ],
+                              }));
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor="addAnotherThreeBHK"
+                          className="text-sm font-medium"
+                        >
+                          Would you like to add another Three BHK Configuration?
+                        </label>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
+            {stage === 9 && (
+              <div className=" mx-auto">
+                {formData.fourBHKConfig.map((config, index) => (
+                  <div key={index} className="mb-6 border-b pb-4">
+                    <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
+                      Four BHK Configuration {index + 1}
+                    </h3>
+                    <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                      {/* Type 4 Units */}
+                      <InputField
+                        label="Type 4 Units"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4Units"
+                        value={config.type4Units}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4Units}
+                      />
 
-          {/* Display Cached Data on the Last Stage */}
-          {stage === 9 && (
-            <div className="mx-auto">
-               <Typography variant="h6"className="text-center underline" >Review Your Data:</Typography>
-              {/* <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-10">
-             
-                <Typography variant="subtitle1" className="text-white">
-                  Organization:
+                      {/* Type 4 Area */}
+                      <InputField
+                        label="Type 4 Area (sq ft)"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4area"
+                        value={config.type4area}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4area}
+                      />
+
+                      {/* Total Bedrooms */}
+                      <InputField
+                        label="Total Bedrooms"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4Bedrooms"
+                        value={config.type4Bedrooms}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4Bedrooms}
+                      />
+
+                      {/* Bedroom 1 */}
+                      <InputField
+                        label="Bedroom 1 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4Bedroom1"
+                        value={config.type4Bedroom1}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4Bedroom1}
+                      />
+
+                      {/* Bedroom 2 */}
+                      <InputField
+                        label="Bedroom 2 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4Bedroom2"
+                        value={config.type4Bedroom2}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4Bedroom2}
+                      />
+
+                      {/* Bedroom 3 */}
+                      <InputField
+                        label="Bedroom 3 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4Bedroom3"
+                        value={config.type4Bedroom3}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4Bedroom3}
+                      />
+
+                      {/* Bedroom 4 */}
+                      <InputField
+                        label="Bedroom 4 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4Bedroom4"
+                        value={config.type4Bedroom4}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4Bedroom4}
+                      />
+
+                      {/* Hall Area */}
+                      <InputField
+                        label="Hall Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4HallArea"
+                        value={config.type4HallArea}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4HallArea}
+                      />
+
+                      {/* Kitchen Area */}
+                      <InputField
+                        label="Kitchen Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4KitchenArea"
+                        value={config.type4KitchenArea}
+                        onChange={handleChange}
+                        error={
+                          warnings.fourBHKConfig?.[index]?.type4KitchenArea
+                        }
+                      />
+
+                      {/* Total Bathrooms */}
+                      <InputField
+                        label="Total Bathrooms"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4bathrooms"
+                        value={config.type4bathrooms}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4bathrooms}
+                      />
+
+                      {/* Bathroom 1 */}
+                      <InputField
+                        label="Bathroom 1 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4bathroom1"
+                        value={config.type4bathroom1}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4bathroom1}
+                      />
+
+                      {/* Bathroom 2 */}
+                      <InputField
+                        label="Bathroom 2 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4bathroom2"
+                        value={config.type4bathroom2}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4bathroom2}
+                      />
+
+                      {/* Bathroom 3 */}
+                      <InputField
+                        label="Bathroom 3 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4bathroom3"
+                        value={config.type4bathroom3}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4bathroom3}
+                      />
+
+                      {/* Bathroom 4 */}
+                      <InputField
+                        label="Bathroom 4 Area"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4bathroom4"
+                        value={config.type4bathroom4}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4bathroom4}
+                      />
+
+                      {/* Other Images Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4floorplan"
+                        label="Upload Additional Images"
+                        limit={5}
+                      />
+                      {config.type4floorplan?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Images:</h3>
+                          <ul>
+                            {config.type4floorplan.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {/* Other Images Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4images"
+                        label="Upload Additional Images"
+                        limit={5}
+                      />
+                      {config.type4images?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Images:</h3>
+                          <ul>
+                            {config.type4images.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Balcony */}
+                      <InputField
+                        label="Balcony Availability"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4balcony"
+                        value={config.type4balcony}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4balcony}
+                      />
+
+                      {/* Parking */}
+                      <InputField
+                        label="Parking Availability"
+                        section={`fourBHKConfig[${index}]`}
+                        field="type4parking"
+                        value={config.type4parking}
+                        onChange={handleChange}
+                        error={warnings.fourBHKConfig?.[index]?.type4parking}
+                      />
+                      {/* Checkbox to Add Another Four BHK Configuration */}
+                      <div className="mt-4 flex items-center mx-10">
+                        <input
+                          type="checkbox"
+                          id="addAnotherFourBHK"
+                          className="mr-2"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData((prev) => ({
+                                ...prev,
+                                fourBHKConfig: [
+                                  ...(prev.fourBHKConfig || []),
+                                  {
+                                    type4Units: "",
+                                    type4area: "",
+                                    type4floorplan: [],
+                                    type4images: [],
+                                    type4Bedrooms: "",
+                                    type4Bedroom1: "",
+                                    type4Bedroom2: "",
+                                    type4Bedroom3: "",
+                                    type4Bedroom4: "",
+                                    type4HallArea: "",
+                                    type4KitchenArea: "",
+                                    type4bathrooms: "",
+                                    type4bathroom1: "",
+                                    type4bathroom2: "",
+                                    type4bathroom3: "",
+                                    type4bathroom4: "",
+                                    type4balcony: "",
+                                    type4parking: "",
+                                    enableconfig: false,
+                                  },
+                                ],
+                              }));
+
+                              // Uncheck the checkbox after adding
+                              e.target.checked = false;
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor="addAnotherFourBHK"
+                          className="text-sm font-medium"
+                        >
+                          Would you like to add another Four BHK Configuration?
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {stage === 10 && (
+              <div className="mx-auto">
+                {formData.fiveBHKConfig.map((config, index) => (
+                  <div key={index} className="mb-6 border-b pb-4">
+                    <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
+                      Five BHK Configuration {index + 1}
+                    </h3>
+                    <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                      {/* Type 5 Units */}
+                      <InputField
+                        label="Type 5 Units"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5Units"
+                        value={config.type5Units}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5Units}
+                      />
+
+                      {/* Type 5 Area */}
+                      <InputField
+                        label="Type 5 Area (sq ft)"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5area"
+                        value={config.type5area}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5area}
+                      />
+
+                      {/* Total Bedrooms */}
+                      <InputField
+                        label="Total Bedrooms"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5Bedrooms"
+                        value={config.type5Bedrooms}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5Bedrooms}
+                      />
+
+                      {/* Bedroom 1 */}
+                      <InputField
+                        label="Bedroom 1 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5Bedroom1"
+                        value={config.type5Bedroom1}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5Bedroom1}
+                      />
+
+                      {/* Bedroom 2 */}
+                      <InputField
+                        label="Bedroom 2 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5Bedroom2"
+                        value={config.type5Bedroom2}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5Bedroom2}
+                      />
+
+                      {/* Bedroom 3 */}
+                      <InputField
+                        label="Bedroom 3 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5Bedroom3"
+                        value={config.type5Bedroom3}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5Bedroom3}
+                      />
+
+                      {/* Bedroom 4 */}
+                      <InputField
+                        label="Bedroom 4 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5Bedroom4"
+                        value={config.type5Bedroom4}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5Bedroom4}
+                      />
+
+                      {/* Bedroom 5 */}
+                      <InputField
+                        label="Bedroom 5 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5Bedroom5"
+                        value={config.type5Bedroom5}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5Bedroom5}
+                      />
+
+                      {/* Hall Area */}
+                      <InputField
+                        label="Hall Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5HallArea"
+                        value={config.type5HallArea}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5HallArea}
+                      />
+
+                      {/* Kitchen Area */}
+                      <InputField
+                        label="Kitchen Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5KitchenArea"
+                        value={config.type5KitchenArea}
+                        onChange={handleChange}
+                        error={
+                          warnings.fiveBHKConfig?.[index]?.type5KitchenArea
+                        }
+                      />
+
+                      {/* Total Bathrooms */}
+                      <InputField
+                        label="Total Bathrooms"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5bathrooms"
+                        value={config.type5bathrooms}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5bathrooms}
+                      />
+
+                      {/* Bathroom 1 */}
+                      <InputField
+                        label="Bathroom 1 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5bathroom1"
+                        value={config.type5bathroom1}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5bathroom1}
+                      />
+
+                      {/* Bathroom 2 */}
+                      <InputField
+                        label="Bathroom 2 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5bathroom2"
+                        value={config.type5bathroom2}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5bathroom2}
+                      />
+
+                      {/* Bathroom 3 */}
+                      <InputField
+                        label="Bathroom 3 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5bathroom3"
+                        value={config.type5bathroom3}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5bathroom3}
+                      />
+
+                      {/* Bathroom 4 */}
+                      <InputField
+                        label="Bathroom 4 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5bathroom4"
+                        value={config.type5bathroom4}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5bathroom4}
+                      />
+
+                      {/* Bathroom 5 */}
+                      <InputField
+                        label="Bathroom 5 Area"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5bathroom5"
+                        value={config.type5bathroom5}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5bathroom5}
+                      />
+                      {/* Other Images Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type4floorplan"
+                        label="Upload Additional Images"
+                        limit={5}
+                      />
+                      {config.type5floorplan?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Images:</h3>
+                          <ul>
+                            {config.type5floorplan.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {/* Other Images Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5images"
+                        label="Upload Additional Images"
+                        limit={5}
+                      />
+                      {config.type5images?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Images:</h3>
+                          <ul>
+                            {config.type5images.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Balcony */}
+                      <InputField
+                        label="Balcony Availability"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5balcony"
+                        value={config.type5balcony}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5balcony}
+                      />
+
+                      {/* Parking */}
+                      <InputField
+                        label="Parking Availability"
+                        section={`fiveBHKConfig[${index}]`}
+                        field="type5parking"
+                        value={config.type5parking}
+                        onChange={handleChange}
+                        error={warnings.fiveBHKConfig?.[index]?.type5parking}
+                      />
+
+                      <div className="mt-4 flex items-center mx-10 ">
+                        <input
+                          type="checkbox"
+                          id="addAnotherFiveBHK"
+                          className="mr-2"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData((prev) => ({
+                                ...prev,
+                                fiveBHKConfig: [
+                                  ...(prev.fiveBHKConfig || []),
+                                  {
+                                    typeNumber:
+                                      (prev.fiveBHKConfig?.length || 0) + 1,
+                                    type5Units: "",
+                                    type5area: "",
+                                    type5floorplan: [],
+                                    type5images: [],
+                                    type5Bedrooms: "",
+                                    type5Bedroom1: "",
+                                    type5Bedroom2: "",
+                                    type5Bedroom3: "",
+                                    type5Bedroom5: "",
+                                    type5Bedroom4: "",
+                                    type5HallArea: "",
+                                    type5KitchenArea: "",
+                                    type5bathrooms: "",
+                                    type5bathroom1: "",
+                                    type5bathroom2: "",
+                                    type5bathroom3: "",
+                                    type5bathroom4: "",
+                                    type5bathroom5: "",
+                                    type5balcony: "",
+                                    type5parking: "",
+                                    enableconfig: false,
+                                  },
+                                ],
+                              }));
+                              e.target.checked = false; // Uncheck after adding
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor="addAnotherFiveBHK"
+                          className="text-sm font-medium"
+                        >
+                          Would you like to add another Five BHK Configuration?
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {stage === 11 && (
+              <div className="mx-auto">
+                {formData.penthouseConfig.map((config, index) => (
+                  <div key={index} className="mb-6 border-b pb-4">
+                    <h3 className="text-lg font-semibold mb-4 mx-10 mobile-s:text-sm mobile-m:text-md mobile-l:text-lg">
+                      Penthouse Configuration {index + 1}
+                    </h3>
+                    <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-auto">
+                      {/* Penthouse Units */}
+                      <InputField
+                        label="Penthouse Units"
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseUnits"
+                        value={config.penthouseUnits}
+                        onChange={handleChange}
+                        error={
+                          warnings.penthouseConfig?.[index]?.penthouseUnits
+                        }
+                      />
+
+                      {/* Penthouse Area */}
+                      <InputField
+                        label="Penthouse Area (sq ft)"
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseArea"
+                        value={config.penthouseArea}
+                        onChange={handleChange}
+                        error={warnings.penthouseConfig?.[index]?.penthouseArea}
+                      />
+
+                      {/* Total Bathrooms */}
+                      <InputField
+                        label="Total Bathrooms"
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseBathrooms"
+                        value={config.penthouseBathrooms}
+                        onChange={handleChange}
+                        error={
+                          warnings.penthouseConfig?.[index]?.penthouseBathrooms
+                        }
+                      />
+
+                      {/* Total Bedrooms */}
+                      <InputField
+                        label="Total Bedrooms"
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseBedrooms"
+                        value={config.penthouseBedrooms}
+                        onChange={handleChange}
+                        error={
+                          warnings.penthouseConfig?.[index]?.penthouseBedrooms
+                        }
+                      />
+
+                      {/* Balcony Availability */}
+                      <InputField
+                        label="Balcony Availability"
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseBalcony"
+                        value={config.penthouseBalcony}
+                        onChange={handleChange}
+                        error={
+                          warnings.penthouseConfig?.[index]?.penthouseBalcony
+                        }
+                      />
+
+                      {/* Parking Availability */}
+                      <InputField
+                        label="Parking Availability"
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseParking"
+                        value={config.penthouseParking}
+                        onChange={handleChange}
+                        error={
+                          warnings.penthouseConfig?.[index]?.penthouseParking
+                        }
+                      />
+
+                      {/* Hall Area */}
+                      <InputField
+                        label="Hall Area"
+                        section={`penthouseConfig[${index}]`}
+                        field="hallArea"
+                        value={config.hallArea}
+                        onChange={handleChange}
+                        error={warnings.penthouseConfig?.[index]?.hallArea}
+                      />
+
+                      {/* Kitchen Area */}
+                      <InputField
+                        label="Kitchen Area"
+                        section={`penthouseConfig[${index}]`}
+                        field="kitchenArea"
+                        value={config.kitchenArea}
+                        onChange={handleChange}
+                        error={warnings.penthouseConfig?.[index]?.kitchenArea}
+                      />
+
+                      {/* Bedrooms */}
+                      {[...Array(6).keys()].map((num) => (
+                        <InputField
+                          key={`bedroom${num + 1}`}
+                          label={`Bedroom ${num + 1} Area`}
+                          section={`penthouseConfig[${index}]`}
+                          field={`bedroom${num + 1}Area`}
+                          value={config[`bedroom${num + 1}Area`]}
+                          onChange={handleChange}
+                          error={
+                            warnings.penthouseConfig?.[index]?.[
+                              `bedroom${num + 1}Area`
+                            ]
+                          }
+                        />
+                      ))}
+
+                      {/* Bathrooms */}
+                      {[...Array(6).keys()].map((num) => (
+                        <InputField
+                          key={`bathroom${num + 1}`}
+                          label={`Bathroom ${num + 1} Area`}
+                          section={`penthouseConfig[${index}]`}
+                          field={`bathroom${num + 1}Area`}
+                          value={config[`bathroom${num + 1}Area`]}
+                          onChange={handleChange}
+                          error={
+                            warnings.penthouseConfig?.[index]?.[
+                              `bathroom${num + 1}Area`
+                            ]
+                          }
+                        />
+                      ))}
+
+                      {/* Floor Plan Image Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseFloorPlan"
+                        label="Upload Penthouse Floor Plan"
+                        limit={5}
+                      />
+                      {config.penthouseFloorPlan?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Floor Plans:</h3>
+                          <ul>
+                            {config.penthouseFloorPlan.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Other Images Upload */}
+                      <ImageUpload
+                        handleChange={handleChange}
+                        section={`penthouseConfig[${index}]`}
+                        field="penthouseImages"
+                        label="Upload Additional Images"
+                        limit={5}
+                      />
+                      {config.penthouseImages?.length > 0 && (
+                        <div>
+                          <h3>Uploaded Images:</h3>
+                          <ul>
+                            {config.penthouseImages.map((file, imgIndex) => (
+                              <li key={imgIndex}>{file.name}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Checkbox to Add Another Penthouse Configuration */}
+                      <div className="mt-4 flex items-center mx-10">
+                        <input
+                          type="checkbox"
+                          id="addAnotherPenthouse"
+                          className="mr-2"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData((prev) => ({
+                                ...prev,
+                                penthouseConfig: [
+                                  ...(prev.penthouseConfig || []),
+                                  {
+                                    typeNumber:
+                                      (prev.penthouseConfig?.length || 0) + 1,
+                                    penthouseUnits: "",
+                                    penthouseArea: "",
+                                    penthouseBedrooms: "",
+                                    penthouseFloorPlan: [],
+                                    penthouseBathrooms: "",
+                                    penthouseBalcony: "",
+                                    penthouseParking: "",
+                                    penthouseImages: [],
+                                    hallArea: "",
+                                    kitchenArea: "",
+                                    ...Object.fromEntries(
+                                      [...Array(6).keys()].map((num) => [
+                                        `bedroom${num + 1}Area`,
+                                        "",
+                                      ])
+                                    ),
+                                    ...Object.fromEntries(
+                                      [...Array(6).keys()].map((num) => [
+                                        `bathroom${num + 1}Area`,
+                                        "",
+                                      ])
+                                    ),
+                                    enableconfig: false,
+                                  },
+                                ],
+                              }));
+                              // Automatically uncheck after adding
+                              e.target.checked = false;
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor="addAnotherPenthouse"
+                          className="text-sm font-medium"
+                        >
+                          Would you like to add another Penthouse Configuration?
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Display Cached Data on the Last Stage */}
+            {stage === 12 && (
+              <div className="mx-auto">
+                <Typography variant="h6" className="text-center underline">
+                  Review Your Data:
                 </Typography>
-                <Typography className="text-white">
-                  Organization Name:{" "}
-                  {cachedData.organization.orgName || "Not Provided"}
-                </Typography>
-                <Typography className="text-white">
-                  Organization CIN:{" "}
-                  {cachedData.organization.orgCIN || "Not Provided"}
-                </Typography>
-                <Typography className="text-white">
-                  Organization Owners:{" "}
-                  {cachedData.organization.orgOwners || "Not Provided"}
-                </Typography>
-                <Typography variant="subtitle1" className="text-white">
-                  Project:
-                </Typography>
-                <Typography className="text-white">
-                  Project Name:{" "}
-                  {cachedData.project.projectname || "Not Provided"}
-                </Typography>
-                <Typography className="text-white">
-                  City: {cachedData.project.city || "Not Provided"}
-                </Typography>
-                <Typography variant="subtitle1" className="text-white">
-                  Project Details:
-                </Typography>
-                <Typography className="text-white">
-                  Units: {cachedData.projectDetails.units || "Not Provided"}
-                </Typography>
-                <Typography className="text-white">
-                  Project Status:{" "}
-                  {cachedData.projectDetails.projectstatus || "Not Provided"}
-                </Typography>
-                <Typography className="text-white">
-                  Project Launch date:{" "}
-                  {cachedData.projectDetails.projectlaunch || "Not Provided"}
-                </Typography>
-                <Typography variant="subtitle1" className="text-white">
-                  One BHK Config:
-                </Typography>
-                <Typography className="text-white">
-                  Type 1 Units:{" "}
-                  {cachedData.oneBHKConfig.type1Units || "Not Provided"}
-                </Typography>
-                <Typography variant="subtitle1" className="text-white">
-                  Two twoBHKConfig
-                </Typography>
-                <Typography className="text-white">
-                  two bhk Config:{" "}
-                  {cachedData.twoBHKConfig.type2Units || "Not Provided"}
-                </Typography>
-              </div> */}
-              <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-2 justify-between mx-10">
-      {Object.entries(cachedData).map(([section, data]) => (
-        <div key={section} className="mb-4">
-          <Typography variant="subtitle1" className="text-white">
-            {section.charAt(0).toUpperCase() + section.slice(1)}:
-          </Typography>
-          {data && typeof data === 'object' ? (
-            Object.entries(data).map(([key, value]) => (
-              <Typography className="text-white" key={key}>
-                {`${key.charAt(0).toUpperCase() + key.slice(1)}: ${value !== undefined && value !== null ? value : "Not Provided"}`}
+                <div className="w-full max-w-4xl grid sm:grid-cols-1 md:grid-cols-3 justify-between mx-10">
+  {Object.entries(cachedData).map(([section, data]) => (
+    <div key={section} className="mb-4">
+      <Typography variant="subtitle1" className="text-white">
+        {section.charAt(0).toUpperCase() + section.slice(1)}:
+      </Typography>
+
+      {Array.isArray(data) ? (
+        data.length > 0 ? (
+          data.map((item, index) => (
+            <div key={index} className="ml-4">
+              <Typography className="text-white font-bold">
+                {`${section} ${index + 1}:`}
               </Typography>
-            ))
-          ) : (
-            <Typography className="text-white">No data available</Typography>
-          )}
-        </div>
-      ))}
+              {Object.entries(item).map(([key, value]) => (
+                <Typography className="text-white" key={key}>
+                  {`${key.charAt(0).toUpperCase() + key.slice(1)}: ${
+                    value !== undefined && value !== null ? value : "Not Provided"
+                  }`}
+                </Typography>
+              ))}
+            </div>
+          ))
+        ) : (
+          <Typography className="text-white">No data available</Typography>
+        )
+      ) : typeof data === "object" ? (
+        Object.entries(data).map(([key, value]) => (
+          <Typography className="text-white" key={key}>
+            {`${key.charAt(0).toUpperCase() + key.slice(1)}: ${
+              value !== undefined && value !== null ? value : "Not Provided"
+            }`}
+          </Typography>
+        ))
+      ) : (
+        <Typography className="text-white">{data || "No data available"}</Typography>
+      )}
     </div>
-            </div>
-          )}
-        </div>
+  ))}
+</div>
 
-        <div className="mt-6 flex justify-center gap-4">
-          <Button
-            onClick={prevStage}
-            disabled={stage === 0}
-            sx={{
-              color: "#FFEB3B", // Set text color to yellow
-              backgroundColor: "transparent", // Remove background color
-              "&:hover": {
-                textDecoration: "underline", // Add underline on hover
-                backgroundColor: "transparent", // Ensure background remains transparent on hover
-              },
-            }}
-          >
-            Back
-          </Button>
-          {stage < initialSteps.length - 1 ? (
-            <div>
-              <Button
-                onClick={nextStage}
-                sx={{
-                  color: "#FFEB3B", // Set text color to yellow
-                  backgroundColor: "transparent", // Remove background color
-                  "&:hover": {
-                    textDecoration: "underline", // Add underline on hover
-                    backgroundColor: "transparent", // Ensure background remains transparent on hover
-                  },
-                }}
-              >
-                Next
-              </Button>
-            </div>
-          ) : (
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 flex justify-center gap-4">
             <Button
-              onClick={handleSubmit}
+              onClick={prevStage}
+              disabled={stage === 0}
               sx={{
-                color: "yellow", // Set text color to yellow
+                color: "#eab308", // Set text color to yellow
                 backgroundColor: "transparent", // Remove background color
                 "&:hover": {
                   textDecoration: "underline", // Add underline on hover
@@ -3552,17 +3657,44 @@ const MultiStageForm = () => {
                 },
               }}
             >
-              Submit
+              Back
             </Button>
-          )}
-        </div>
-      </div>{" "}
-    </div>
+            {stage < initialSteps.length - 1 ? (
+              <div>
+                <Button
+                  onClick={nextStage}
+                  sx={{
+                    color: "#eab308", // Set text color to yellow
+                    backgroundColor: "transparent", // Remove background color
+                    "&:hover": {
+                      textDecoration: "underline", // Add underline on hover
+                      backgroundColor: "transparent", // Ensure background remains transparent on hover
+                    },
+                  }}
+                >
+                  Next
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={handleSubmit}
+                sx={{
+                  color: "#eab308", // Set text color to yellow
+                  backgroundColor: "transparent", // Remove background color
+                  "&:hover": {
+                    textDecoration: "underline", // Add underline on hover
+                    backgroundColor: "transparent", // Ensure background remains transparent on hover
+                  },
+                }}
+              >
+                Submit
+              </Button>
+            )}
+          </div>
+        </div>{" "}
+      </div>
     </div>
   );
 };
 
-
 export default MultiStageForm;
-
-

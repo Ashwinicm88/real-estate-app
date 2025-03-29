@@ -4,12 +4,12 @@
 // import "swiper/css/navigation";
 // import "swiper/css/pagination";
 // import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Custom arrows
-
+ 
 // const CustomSwiper = ({ images }) => {
 //   if (!images || images.length === 0) {
 //     return <p className="text-gray-400 text-center">No images available.</p>;
 //   }
-
+ 
 //   return (
 //     <div className="relative">
 //       {/* ✅ Swiper Component */}
@@ -30,7 +30,7 @@
 //             className="w-full h-full object-cover rounded-lg"
 //           />
 //         </SwiperSlide>
-        
+       
 //         ))}
 //         {/* ✅ Tailwind-styled pagination bullets */}
 //       <div className="swiper-pagination peer hidden"></div>
@@ -46,19 +46,19 @@
 //         `}
 //       </style>
 //       </Swiper>
-
+ 
 //       {/* ✅ Custom Arrows */}
 //       <button className="custom-prev absolute top-1/2 left-2 transform -translate-y-1/2 z-10 bg-transparent text-gray-700 p-2 rounded-full shadow-md">
 //         <FaChevronLeft size={20} />
 //       </button>
-
+ 
 //       <button className="custom-next absolute top-1/2 right-2 transform -translate-y-1/2 z-10 bg-transparent text-gray-700 p-2 rounded-full shadow-md">
 //         <FaChevronRight size={20} />
 //       </button>
 //     </div>
 //   );
 // };
-
+ 
 // export default CustomSwiper;
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -103,7 +103,6 @@ const CustomSwiper = ({ images = [], height = "h-30 md:h-50" }) => {
                 src={img}
                 alt="Property"
                 className="w-full h-full object-cover rounded-lg"
-             
               />
 </div>
 </SwiperSlide>
@@ -128,5 +127,3 @@ const CustomSwiper = ({ images = [], height = "h-30 md:h-50" }) => {
 };
  
 export default CustomSwiper;
-
-

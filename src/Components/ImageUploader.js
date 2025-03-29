@@ -17,7 +17,7 @@ const ImageUpload = ({ handleChange, section, field, label, limit = 1 ,error}) =
   };
 
   return (
-    <div className="flex flex-col mb-1 ml-10 mr-10">
+    <div className="flex flex-col mb-1 ml-10 ">
       {/* Dynamic Label */}
       {label && (
         <label

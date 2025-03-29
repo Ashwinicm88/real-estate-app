@@ -25,8 +25,6 @@ import FormDataInput from "./Pages/FormData";
 import RealestateHome from "./Pages/Realestate-Home";
 import PostFormData from "./Components/PostwithForm";
 import AllStageData from "./Components/AllStageData"
-import SearchResult from "./Pages/SearchResult"
-import PropertyDetails from "./Pages/PropertyDetails";
 import './App.css';
 
 //import MultiStageForm from "./Components/MultiStageForm";
@@ -35,8 +33,13 @@ import LatestEntity from "./Components/LatestEntity";
 import DisplayProperty from "./Pages/DisplayProperty";
 
 // import AllStageData from "./Components/AllStageData";
+<<<<<<< HEAD
 // import SearchResult from "./Pages/SearchResult";
 
+=======
+import SearchResult from "./Pages/SearchResult";
+import PropertyDetails from "./Pages/PropertyDetails";
+>>>>>>> 5c91243 (29/3/25 Done ProjectDetails and Search Result)
 
 const App = () => {
   return (
@@ -65,10 +68,6 @@ const App = () => {
         <Route path="/post-formdata" element={<PostFormData />}></Route>
         <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
         <Route path="/all-stagedata" element={<AllStageData />}></Route>
-        <Route path="/search-result" element={<SearchResult />}></Route>
-        <Route path="/version-display" element={<VersionDisplay />}></Route>
-        <Route path="/property-details" element={<PropertyDetails />}></Route>
-
         
         <Route path="/version-display" element={<VersionDisplay />}></Route>
         <Route path="/show-needle" element={<ShowNeedle />}></Route>
@@ -83,6 +82,7 @@ const App = () => {
       {/* <Route path="/post-with-form" element={<PostwithForm/>}></Route> */}
       <Route path="all-stage-data" element={<AllStageData />}></Route>
       <Route path="/search-result" element={<SearchResult />}></Route>
+      <Route path="/property-details/:projectId" element={<PropertyDetails />}></Route>
       </Routes>
        {/* <Route path="/" element={<Home />}></Route>
        <Route path="/displayimages" element={<DisplayImages />}></Route>
