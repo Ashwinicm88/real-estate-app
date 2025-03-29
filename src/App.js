@@ -33,7 +33,7 @@ import './App.css';
 import ProjectList from "./Pages/PropertyAllData";
 import LatestEntity from "./Components/LatestEntity";
 import DisplayProperty from "./Pages/DisplayProperty";
-import PostwithForm from "./Pages/PostwithForm";
+
 // import AllStageData from "./Components/AllStageData";
 // import SearchResult from "./Pages/SearchResult";
 
