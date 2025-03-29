@@ -46,13 +46,8 @@ import Realestatediscover from "../Components/Realestatediscover";
 import Services from "../Components/DiscoverServices";
 import SectionEnd from "../Components/SectionEnd";
 import WelcomePopup from "../Components/WelcomePopup";
-<<<<<<< HEAD
  
  
-=======
-
-
->>>>>>> 804eb2b (Home Page Design Completed)
 export default function RealestateHome() {
   return (
     <div className="bg-black min-h-screen px-4 sm:px-14">
@@ -69,7 +64,6 @@ export default function RealestateHome() {
             luxury real estate.
           </p>
         </div>
-<<<<<<< HEAD
  
         <div className="container mx-auto">
           <Realestatediscover />
@@ -87,25 +81,6 @@ export default function RealestateHome() {
         <Services />
       </div>
  
-=======
-
-        <div className="container mx-auto">
-          <Realestatediscover />
-        </div>
-
-        <div className="container mx-auto py-10">
-          <Section2 />
-        </div>
-
-        <div className="container mx-auto py-10">
-          <SectionEnd />
-        </div>
-
-        {/* Sticky Bottom Section */}
-        <Services />
-      </div>
-
->>>>>>> 804eb2b (Home Page Design Completed)
     </div>
   );
 }
