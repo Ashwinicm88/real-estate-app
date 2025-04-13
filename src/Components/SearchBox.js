@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa"; // Import Search Icon
+//import { FaSearch } from "react-icons/fa"; // Import Search Icon
  
 const SearchBox = () => {
   const placeholderText = "Enter your real estate query";
@@ -26,8 +26,8 @@ const SearchBox = () => {
       />
       <button>
        {/* Search Icon Instead of Button */}
-      <FaSearch className="text-white text-xl cursor-pointer hover:text-yellow-400 transition" />
- 
+      {/* <FaSearch className="text-white text-xl cursor-pointer hover:text-yellow-400 transition" />
+  */}
       </button>
     </div>
   );

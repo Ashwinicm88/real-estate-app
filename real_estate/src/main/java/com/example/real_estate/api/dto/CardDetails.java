@@ -1,5 +1,7 @@
 package com.example.real_estate.api.dto;
 import java.util.List;
+
+import com.example.real_estate.api.model.FourBHKConfig;
 import com.example.real_estate.api.model.OneBHKConfig;
 // import com.example.real_estate.api.model.Amenities;
 // import com.example.real_estate.api.model.Nearby;
@@ -19,24 +21,19 @@ public class CardDetails {
     private String address;
     private List<String> projectImages;
     private String reralink;
-
-
+    private String city;
 
     //PpojectDetails  details
     private Integer priceMin;
     private Integer priceMax;
 
-// Amenities inside "details"
-@JsonProperty("Amenities")
-private AmenitiesDto amenities;
+    // Amenities inside "details"
+    @JsonProperty("Amenities")
+    private AmenitiesDto amenities;
 
 
-
-
-
-
-@JsonProperty("Nearby")
-private NearbyDTO nearby;
+    @JsonProperty("Nearby")
+    private NearbyDTO nearby;
 
     @JsonProperty("oneBHKConfig")
     private List<OneBHKConfig> oneBHKConfig;
@@ -50,6 +47,8 @@ private NearbyDTO nearby;
     @JsonProperty("threeBHKConfig")
     private List<ThreeBHKConfig> threeBHKConfig;
 
+    @JsonProperty("fourBHKConfig")
+    private List<FourBHKConfig> fourBHKConfig;
 
     @JsonProperty("expertReview")
     private ExpertReviewDto expertReview;

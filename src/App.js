@@ -33,19 +33,22 @@ import LatestEntity from "./Components/LatestEntity";
 import DisplayProperty from "./Pages/DisplayProperty";
 
 // import AllStageData from "./Components/AllStageData";
-<<<<<<< HEAD
-// import SearchResult from "./Pages/SearchResult";
-
-=======
 import SearchResult from "./Pages/SearchResult";
 import PropertyDetails from "./Pages/PropertyDetails";
->>>>>>> 5c91243 (29/3/25 Done ProjectDetails and Search Result)
-
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminPanel from "./Pages/AdminPanel";
+import AdminLogin from "./Pages/AdminLogin";
+import AdminAllStageData from "./Pages/AdminAllStageData";
+import HomeAffordabilityCalculator from "./Components/HomeAffordibility";
+import CostOfOwnership from "./Pages/Truecoo";
+import AdminConsultationList from "./Pages/AdminConsultationList";
+import UpdateConsultation from "./Pages/AdminUpdateConsultation";
 const App = () => {
   return (
    // <Router>
     <Router>
       <Routes>
+        {/*Public Routes*/}
         <Route path="/" element={<Home />} />
         <Route path="/Display" element={<Display />} />
         {/* <Route path="/DisplayImages" element={<DisplayImages />} /> */}
@@ -67,7 +70,7 @@ const App = () => {
         <Route path="/show-needle" element={<ShowNeedle />}></Route>
         <Route path="/post-formdata" element={<PostFormData />}></Route>
         <Route path="/multiple-upload" element={<MultipleImageUpload />}></Route>
-        <Route path="/all-stagedata" element={<AllStageData />}></Route>
+        {/* <Route path="/all-stagedata" element={<AllStageData />}></Route> */}
         
         <Route path="/version-display" element={<VersionDisplay />}></Route>
         <Route path="/show-needle" element={<ShowNeedle />}></Route>
@@ -80,16 +83,24 @@ const App = () => {
       <Route path="/latest-entity" element={<LatestEntity />}></Route>
       <Route path="/display-property" element={<DisplayProperty />}></Route>
       {/* <Route path="/post-with-form" element={<PostwithForm/>}></Route> */}
-      <Route path="all-stage-data" element={<AllStageData />}></Route>
+      {/* <Route path="/all-stage-data" element={<AllStageData />}></Route> */}
       <Route path="/search-result" element={<SearchResult />}></Route>
       <Route path="/property-details/:projectId" element={<PropertyDetails />}></Route>
+      <Route path="/home-affordability-calculator" element={<HomeAffordabilityCalculator />} />
+      <Route path="/cost-of-ownership" element={<CostOfOwnership />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
+
+{/* Protected Route for Admin */}
+
+<Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+  <Route path="/admin-panel" element={<AdminPanel />} />
+  <Route path="/all-stagedata" element ={<AllStageData />}></Route>
+  <Route path="/all-update" element={<AdminAllStageData />} />
+  <Route path="/all-update/:projectId" element={<AdminAllStageData />} />
+  <Route path="/admin-consultation-list" element={<AdminConsultationList />} />
+  <Route path="/update-appointment/:id" element={<UpdateConsultation />} />
+</Route>
       </Routes>
-       {/* <Route path="/" element={<Home />}></Route>
-       <Route path="/displayimages" element={<DisplayImages />}></Route>
-     
-       <Route path="/single-upload" element={<SingleImageUpload />}></Route>
-       <Route path="/single-display" element={<SingleImageDisplay />}></Route>
-       </Routes> */}
     </Router>
    
   );

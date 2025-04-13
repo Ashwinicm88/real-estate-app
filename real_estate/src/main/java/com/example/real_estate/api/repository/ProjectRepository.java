@@ -1,4 +1,5 @@
 package com.example.real_estate.api.repository;
+// import com.example.real_estate.api.dto.AdminSearchDTO;
 // import com.example.real_estate.api.dto.ProjectSearchProjection;
 import com.example.real_estate.api.model.Organisation;
 import com.example.real_estate.api.model.Project;
@@ -30,10 +31,37 @@ public interface ProjectRepository extends JpaRepository<Project, Integer>, JpaS
        "    (one IS NOT NULL AND :bhkType = '1BHK') " +
        "    OR (two IS NOT NULL AND :bhkType = '2BHK') " +
        "    OR (three IS NOT NULL AND :bhkType = '3BHK') " +
-       "))")
+       "))"+
+       "AND (:typeProperty IS NULL OR p.propertyType=:typeProperty)")
 List<Project> searchProjects(
     @Param("city") String city,
     @Param("budgetMin") Integer budgetMin,
     @Param("budgetMax") Integer budgetMax,
-    @Param("bhkType") String bhkType);
+    @Param("bhkType") String bhkType,
+    @Param("typeProperty") String typeProperty);
+
+
+// @Query("SELECT new com.yourpackage.dto.ProjectSearchDTO(p.organizationName, p.projectName, p.city, p.launchDate) " +
+//        "FROM Project p " +
+//        "WHERE (:city IS NULL OR p.city = :city) " +
+//        "AND (:projectName IS NULL OR LOWER(p.projectName) LIKE LOWER(CONCAT('%', :projectName, '%')))")
+// List<AdminSearchDTO> findByProjectNameAndCity(
+//     @Param("projectName") String projectName,
+//     @Param("city") String city);
+@Query("SELECT p FROM Project p " +
+       "JOIN FETCH p.organisation o " +
+       "LEFT JOIN FETCH p.projectDetails pd " +
+       "WHERE (:city IS NULL OR p.city = :city) " +
+       "AND (:projectName IS NULL OR p.projectName=:projectName)")
+
+List<Project> findProjectsByNameAndCity(
+    @Param("projectName") String projectName,
+    @Param("city") String city);
+
+
+    @Query("SELECT DISTINCT p FROM Project p " +
+    "JOIN p.projectDetails pd " +
+    "WHERE LOWER(p.city) = LOWER(:city) AND pd.priceMax <= :maxPrice " +
+    "AND p.deleted = false")
+    List<Project> findByCityAndMaxPrice(@Param("city") String city, @Param("maxPrice") Integer maxPrice);
 }

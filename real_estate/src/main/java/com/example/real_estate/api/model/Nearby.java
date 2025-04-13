@@ -61,15 +61,27 @@ public class Nearby {
     private String metro;
 
 
-    public Nearby(Project project,String schools,String hospitals,String it_parks,
+    public Nearby(Project project,String schools,String hospitals,String itParks,
     String hangouts,String cinemas, String metro){
         this.project=project;
         this.schools=schools;
         this.hospitals=hospitals;
-        this.it_parks=it_parks;
+        this.it_parks=itParks;
         this.hangouts=hangouts;
         this.cinemas=cinemas;
         this.metro=metro;
+    }
+
+
+    public Nearby orElse(Nearby nearby) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'orElse'");
+    }
+
+
+    public Nearby orElseGet(Object object) {
+       
+        throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
     }
    
 }

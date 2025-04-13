@@ -20,7 +20,8 @@ import jakarta.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // import jakarta.persistence.criteria.Predicate;
 
@@ -31,8 +32,9 @@ import java.util.stream.Collectors;
 @Service
 @Transactional // ✅ Apply at the class level to ensure consistency
 public class EntityService {
-    @Autowired
-    private final WebMvcConfigurer corsConfigurer;
+    // @Autowired
+    // private final WebMvcConfigurer corsConfigurer;
+    private static final Logger logger = LoggerFactory.getLogger(EntityService.class);
 
 
     private final FileStorageService fileStorageService;
@@ -94,10 +96,10 @@ public class EntityService {
 
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-   public EntityService(CorsConfig corsConfig, FileStorageService fileStorageService, WebMvcConfigurer corsConfigurer) {
+   public EntityService(CorsConfig corsConfig, FileStorageService fileStorageService) {
         this.corsConfig = corsConfig;
         this.fileStorageService = fileStorageService;
-        this.corsConfigurer = corsConfigurer;
+        // this.corsConfigurer = corsConfigurer;
     } // JSON converter
 // public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls,Map<Integer, List<String>> twoBHKType2ImageUrls,
 // Map<Integer, List<String>> twoBHKType2FloorPlanUrls,Map<Integer,List<String>>threeBHKTy ) throws JsonProcessingException{
@@ -127,8 +129,6 @@ public class EntityService {
    
 
 
-
-
         // ✅ Save Project
         Project project = new Project(
                 organisation,
@@ -154,7 +154,9 @@ public class EntityService {
                 // hangouts,
                 // metro,
                 request.getPreferred() != null ? request.getPreferred() : "N", // Default preferred to 'N' if not provided
-                false // Default 'deleted' to false
+                false,
+                request.getPropertyType()// Default 'deleted' to false
+             
 
 
         );
@@ -190,58 +192,82 @@ public class EntityService {
         System.out.println("✅ Project Details Saved with ID: " + projectDetails.getDetailId());
 
 
-        String Swimming_pool= convertListToJson(request.getSwimming_pool());
-        String Gym= convertListToJson(request.getGym());
-        String Temple= convertListToJson(request.getTemple());
-        String Creche= convertListToJson(request.getCreche());
-        String Park= convertListToJson(request.getPark());
-        String Children_parks= convertListToJson(request.getChildren_parks());
-        String Club_house= convertListToJson(request.getClub_house());
-        String C_hall= convertListToJson(request.getC_hall());
-        String other= convertListToJson(request.getOther());
-        Amenities amenities = new Amenities(
-            project,
-            Swimming_pool,
-            Gym,
-            Temple,
-            Creche,
-            Park,
-            Children_parks,
-            Club_house,
-            C_hall,
-            other
-            );
-        amenities = amenitiesRepository.save(amenities);
-        System.out.println("✅ Amenities Saved with ID: " + amenities.getAmenityId());
+        // String Swimming_pool= convertListToJson(request.getSwimming_pool());
+        // String Gym= convertListToJson(request.getGym());
+        // String Temple= convertListToJson(request.getTemple());
+        // String Creche= convertListToJson(request.getCreche());
+        // String Park= convertListToJson(request.getPark());
+        // String Children_parks= convertListToJson(request.getChildren_parks());
+        // String Club_house= convertListToJson(request.getClub_house());
+        // String C_hall= convertListToJson(request.getC_hall());
+        // String other= convertListToJson(request.getOther());
+        // Amenities amenities = new Amenities(
+        //     project,
+        //     Swimming_pool,
+        //     Gym,
+        //     Temple,
+        //     Creche,
+        //     Park,
+        //     Children_parks,
+        //     Club_house,
+        //     C_hall,
+        //     other
+        //     );
+        // amenities = amenitiesRepository.save(amenities);
+        // System.out.println("✅ Amenities Saved with ID: " + amenities.getAmenityId());
 
+  // ✅ Extract Amenities from Map
+  Map<String, List<String>> amenitiesMap = request.getAmenities();
+  Amenities amenities = new Amenities();
+  amenities.setProject(project);
+  amenities.setSwimming_pool(convertListToJson(amenitiesMap.get("swimming_pool")));
+  amenities.setGym(convertListToJson(amenitiesMap.get("gym")));
+  amenities.setClub_house(convertListToJson(amenitiesMap.get("club_house")));
+  amenities.setCreche(convertListToJson(amenitiesMap.get("creche")));
+  amenities.setChildren_parks(convertListToJson(amenitiesMap.get("children_parks")));
+  amenities.setPark(convertListToJson(amenitiesMap.get("park")));
+  amenities.setC_hall(convertListToJson(amenitiesMap.get("c_hall")));
+  amenities.setTemple(convertListToJson(amenitiesMap.get("temple")));
+  amenities.setOther(convertListToJson(amenitiesMap.get("other")));
 
-        String schools= convertListToJson(request.getSchools());
-        String hospitals= convertListToJson(request.getHospitals());
-        String it_parks= convertListToJson(request.getIt_parks());
-        String hangouts= convertListToJson(request.getHangouts());
-        String cinemas= convertListToJson(request.getCinemas());
-        String metro= convertListToJson(request.getMetro());
+  amenities = amenitiesRepository.save(amenities);
+  System.out.println("✅ Amenities Saved with ID: " + amenities.getAmenityId());
 
+  // ✅ Extract Nearby from Map
+  Map<String, List<String>> nearbyMap = request.getNearby();
+  Nearby nearby = new Nearby();
+  nearby.setProject(project);
+  nearby.setSchools(convertListToJson(nearbyMap.get("schools")));
+  nearby.setHospitals(convertListToJson(nearbyMap.get("hospitals")));
+//   nearby.setIt_Parks(convertListToJson(nearbyMap.get(" it_Parks")));
+  nearby.setIt_parks(convertListToJson(nearbyMap.get("it_parks")));
+  logger.info("It Parks: {}", nearbyMap.get("it_parks"));
 
-        Nearby nearby = new Nearby(
-            project,
-            schools,
-            hospitals,
-            it_parks,
-            hangouts,
-            cinemas,
-            metro
-            );
-        nearby = nearbyRepository.save(nearby);
-        System.out.println("✅ Nearby Saved with ID: " + nearby.getNearId());
+  nearby.setHangouts(convertListToJson(nearbyMap.get("hangouts")));
+  nearby.setCinemas(convertListToJson(nearbyMap.get("cinemas")));
+  nearby.setMetro(convertListToJson(nearbyMap.get("metro")));
+
+  nearby = nearbyRepository.save(nearby);
+  System.out.println("✅ Nearby Saved with ID: " + nearby.getNearId());
        
-        ExpertReview expert = new ExpertReview(
-            project,
-            request.getReviewText() // ❌ Removed extra comma
-        );
-        expert = expertReviewRepository.save(expert);
-        System.out.println("✅ Expert Review Saved with ID: " + expert.getReviewId());
-       
+
+        // ExpertReview expert = new ExpertReview(
+        //     project,
+        //     request.getReviewText() // ❌ Removed extra comma
+        // );
+        // expert = expertReviewRepository.save(expert);
+        // System.out.println("✅ Expert Review Saved with ID: " + expert.getReviewId());
+       // ✅ Save Expert Review if provided
+        if (request.getExpertReview() != null && request.getExpertReview().getReviewText() != null) {
+            ExpertReview expertReview = new ExpertReview();
+            expertReview.setProject(project);
+            expertReview.setReviewText(request.getExpertReview().getReviewText());
+
+            expertReview = expertReviewRepository.save(expertReview);
+            System.out.println("✅ Expert Review Saved with ID: " + expertReview.getReviewId());
+        } else {
+            System.out.println("⚠️ No expert review provided.");
+        }
        
         // ExpertReview expert= new ExpertReview(
         //     project,
@@ -550,9 +576,8 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
 
             for (Project project : projects) {
                 // ✅ FIX: Ensure projectDetails is fetched correctly
-                List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProject(project);
-                ProjectDetails projectDetails = projectDetailsList.stream().findFirst().orElse(null);
-
+                ProjectDetails projectDetailsList = projectDetailsRepository.findByProject(project);
+                
 
                 GetEntityResponse response = new GetEntityResponse();
                 response.setOrganisationName(organisation.getOrgName());
@@ -579,24 +604,24 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
                 // response.setMovieTheaters(Arrays.asList(project.getMovieTheaters().split(",")));
 
 
-                if (projectDetails != null) {
-                    response.setUnits(projectDetails.getUnits());
-                    response.setProjectStatus(projectDetails.getProjectStatus());
-                    response.setProjectLaunch(projectDetails.getProjectLaunch() != null
-                            ? dateFormat.format(projectDetails.getProjectLaunch())
+                if (projectDetailsList != null) {
+                    response.setUnits(projectDetailsList.getUnits());
+                    response.setProjectStatus(projectDetailsList.getProjectStatus());
+                    response.setProjectLaunch(projectDetailsList.getProjectLaunch() != null
+                            ? dateFormat.format(projectDetailsList.getProjectLaunch())
                             : null);
 
 
-                    response.setProjectPlannedEnd(projectDetails.getProjectPlannedEnd() != null
-                            ? dateFormat.format(projectDetails.getProjectPlannedEnd())
+                    response.setProjectPlannedEnd(projectDetailsList.getProjectPlannedEnd() != null
+                            ? dateFormat.format(projectDetailsList.getProjectPlannedEnd())
                             : null);
-                    response.setPriceMin(projectDetails.getPriceMin());
-                    response.setPriceMax(projectDetails.getPriceMax());
-                    response.setAllInclusive(projectDetails.getAllInclusive());
+                    response.setPriceMin(projectDetailsList.getPriceMin());
+                    response.setPriceMax(projectDetailsList.getPriceMax());
+                    response.setAllInclusive(projectDetailsList.getAllInclusive());
                     // response.setAmenities(projectDetails.getAmenities());
-                    response.setCoveredParking(projectDetails.getCoveredParking());
-                    response.setBankApproved(projectDetails.getBankApproved());
-                    response.setBanks(projectDetails.getBanks());
+                    response.setCoveredParking(projectDetailsList.getCoveredParking());
+                    response.setBankApproved(projectDetailsList.getBankApproved());
+                    response.setBanks(projectDetailsList.getBanks());
                 }
 
 
@@ -636,58 +661,7 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
 
         return responseList;
     }
-    public GetEntityResponse getLatestEntity() {
-        Project latestProject = projectRepository.findTopByOrderByProjectIdDesc();
-        if (latestProject == null) {
-            return null; // Handle case where no data exists
-        }
-   
-        Organisation organisation = latestProject.getOrganisation();
-        ProjectDetails projectDetails = projectDetailsRepository.findByProject(latestProject).stream().findFirst().orElse(null);
-   
-        GetEntityResponse response = new GetEntityResponse();
-        response.setOrganisationName(organisation.getOrgName());
-        response.setOrganisationCin(organisation.getOrgCin());
-        response.setOrganisationOwners(organisation.getOrgOwners());
-        response.setProjectsCompleted(organisation.getProjectsCompleted());
-   
-        response.setProjectName(latestProject.getProjectName());
-        response.setCity(latestProject.getCity());
-        response.setLocality(latestProject.getLocality());
-        response.setAddress(latestProject.getAddress());
-        response.setLatitude(latestProject.getLatitude());
-        response.setLongitude(latestProject.getLongitude());
-        response.setPropertyAreaSqmt(latestProject.getPropertyAreaSqmt());
-        response.setReraNumber(latestProject.getReraNumber());
-        response.setReraLink(latestProject.getReraLink());
-        response.setProjectVideoLink(latestProject.getProjectVideoLink());
-        response.setProjectImages(latestProject.getProjectImages());
-        // response.setProjectImages(Arrays.asList(latestProject.getProjectImages().split(",")));
-        // response.setSchools(Arrays.asList(latestProject.getSchools().split(",")));
-        // response.setHospitals(Arrays.asList(latestProject.getHospitals().split(",")));
-        // response.setMalls(Arrays.asList(latestProject.getMalls().split(",")));
-        // response.setMovieTheaters(Arrays.asList(latestProject.getMovieTheaters().split(",")));
-   
-        if (projectDetails != null) {
-            response.setUnits(projectDetails.getUnits());
-            response.setProjectStatus(projectDetails.getProjectStatus());
-            response.setProjectLaunch(projectDetails.getProjectLaunch() != null
-                    ? new SimpleDateFormat("yyyy-MM-dd").format(projectDetails.getProjectLaunch())
-                    : null);
-            response.setProjectPlannedEnd(projectDetails.getProjectPlannedEnd() != null
-                    ? new SimpleDateFormat("yyyy-MM-dd").format(projectDetails.getProjectPlannedEnd())
-                    : null);
-            response.setPriceMin(projectDetails.getPriceMin());
-            response.setPriceMax(projectDetails.getPriceMax());
-            response.setAllInclusive(projectDetails.getAllInclusive());
-            // response.setAmenities(projectDetails.getAmenities());
-            response.setCoveredParking(projectDetails.getCoveredParking());
-            response.setBankApproved(projectDetails.getBankApproved());
-            response.setBanks(projectDetails.getBanks());
-        }
-   
-        return response;
-    }
+    
    
     // ✅ Convert List<String> to JSON
     private String convertListToJson(List<String> list) {
@@ -697,8 +671,8 @@ if (request.getProjectTimeline() != null && !request.getProjectTimeline().isEmpt
             throw new RuntimeException("Error converting list to JSON", e);
         }
     }
-public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType) {
-    List<Project> projects = projectRepository.searchProjects(city, budgetMin, budgetMax, bhkType);
+public List<ProjectSearchProjection> searchProjects(Integer budgetMin, Integer budgetMax, String city, String bhkType, String typeProperty) {
+    List<Project> projects = projectRepository.searchProjects(city, budgetMin, budgetMax, bhkType, typeProperty);
     return projects.stream().map(this::convertToDTO).collect(Collectors.toList());
 }
 
@@ -732,12 +706,13 @@ private ProjectSearchProjection convertToDTO(Project project) {
      List<OneBHKConfig> oneBHKConfigs = oneBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
      List<TwoBHKConfig> twoBHKConfigs = twoBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
      List<ThreeBHKConfig> threeBHKConfigs = threeBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
-
+     List<FourBHKConfig> fourBHKConfigs = fourBHKConfigRepository.findByProject_ProjectId(project.getProjectId());
 
      // Check if valid data exists
 if (!oneBHKConfigs.isEmpty() && hasValidData(oneBHKConfigs.get(0))) availableBHKs.add("1BHK");
 if (!twoBHKConfigs.isEmpty() && hasValidData(twoBHKConfigs.get(0))) availableBHKs.add("2BHK");
 if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availableBHKs.add("3BHK");
+if (!fourBHKConfigs.isEmpty() && hasValidData(fourBHKConfigs.get(0))) availableBHKs.add("4BHK");
 
 
     //  if (project.getOneBhkConfig() != null && hasValidData(project.getOneBhkConfig())) availableBHKs.add("1BHK");
@@ -750,9 +725,7 @@ if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availabl
     return dto;
 }
 
-private boolean hasValidData(BHKConfig config) {
-    return config !=null && config.getProject()!=null && config.getProject().getProjectId() != null;
-}
+
 
 public CardDetails getProjectById(Integer id) {
     // Project project = projectRepository.findById(id)
@@ -766,12 +739,13 @@ if (project == null) {
 
 
     // Fetch related entities
-    List<ProjectDetails> projectDetailsList = projectDetailsRepository.findByProjectId(id);
+    ProjectDetails projectDetailsList = projectDetailsRepository.findByProjectId(id);
     Amenities amenities = amenitiesRepository.findByProject_ProjectId(id);
     Nearby nearby = nearbyRepository.findByProject_ProjectId(id);
     List<OneBHKConfig> oneBHKConfig = oneBHKConfigRepository.findByProject_ProjectId(id);
     List<TwoBHKConfig> twoBHKConfig = twoBHKConfigRepository.findByProject_ProjectId(id);
     List<ThreeBHKConfig> threeBHKConfig = threeBHKConfigRepository.findByProject_ProjectId(id);
+    List<FourBHKConfig> fourBHKConfig = fourBHKConfigRepository.findByProject_ProjectId(id);
 
     ExpertReview expertReview = expertReviewRepository.findByProject_ProjectId(id);
 
@@ -781,18 +755,16 @@ if (project == null) {
     cardDetails.setProjectName(project.getProjectName());
     cardDetails.setAddress(project.getAddress());
     cardDetails.setProjectImages(project.getProjectImages());
-
     cardDetails.setReralink(project.getReraLink());
+    cardDetails.setCity(project.getCity());
 
 
     // Set price range
-    if (projectDetailsList != null && !projectDetailsList.isEmpty() ) {
-
-        int minPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMin).min().orElse(0);
-        int maxPrice = projectDetailsList.stream().mapToInt(ProjectDetails::getPriceMax).max().orElse(0);
-        cardDetails.setPriceMin(minPrice);
-        cardDetails.setPriceMax(maxPrice);
+    if (projectDetailsList != null) {
+        cardDetails.setPriceMin(projectDetailsList.getPriceMin());
+        cardDetails.setPriceMax(projectDetailsList.getPriceMax());
     }
+    
 
     // List<String> availableBHKs = new ArrayList<>();
     //   // Check if valid data exists
@@ -828,13 +800,11 @@ if (project == null) {
         NearbyDTO nearbyDTO = new NearbyDTO();
         nearbyDTO.setSchools(nearby.getSchools());
         nearbyDTO.setHospitals(nearby.getHospitals());
-        nearbyDTO.setItParks(nearby.getIt_parks());
+        nearbyDTO.setIt_parks(nearby.getIt_parks());
         nearbyDTO.setHangouts(nearby.getHangouts());
         nearbyDTO.setCinemas(nearby.getCinemas());
         nearbyDTO.setMetro(nearby.getMetro());
-
-
-
+        // System.out.println("IT Parks in Request: " + nearbyDTO.getItParks());
 
         cardDetails.setNearby(nearbyDTO);
     }
@@ -850,10 +820,84 @@ if (project == null) {
     cardDetails.setOneBHKConfig(oneBHKConfig);
     cardDetails.setTwoBHKConfig(twoBHKConfig);
     cardDetails.setThreeBHKConfig(threeBHKConfig);
-
+    cardDetails.setFourBHKConfig(fourBHKConfig);
 
     return cardDetails;
 }
+public List<RecommendedProperty> getRecommendedProperties() {
+    List<Project> projects = projectRepository.findByPreferred("Y"); // Fetch only preferred projects
+    return projects.stream()
+    .map(project -> {
+        ProjectDetails details = projectDetailsRepository.findByProjectId(project.getProjectId());
+        if (details != null) {
+            return convertToRecommendedPropertyDTO(project, details);
+        }
+        return null; // or filter out null later
+    })
+    .filter(Objects::nonNull)
+    .collect(Collectors.toList());
+}
 
+// private RecommendedProperty convertToRecommendedPropertyDTO(Project project, ProjectDetails details) {
+//     // Fetch available BHKs for the current project
+//     List<String> availableBHKs = getAvailableBHKsForProject(project.getProjectId());
+
+//     // Create and return the RecommendedProperty DTO
+//     return new RecommendedProperty(project, details, availableBHKs);
+// }
+
+// // Example method to get available BHKs for a project
+// private List<String> getAvailableBHKsForProject(Integer projectId) {
+//     List<String> availableBHKs = new ArrayList<>();
+
+//     // Assuming you have a way to check for available BHKs
+//     List<OneBHKConfig> oneBHKConfigs = oneBHKConfigRepository.findByProject_ProjectId(projectId);
+//     List<TwoBHKConfig> twoBHKConfigs = twoBHKConfigRepository.findByProject_ProjectId(projectId);
+//     List<ThreeBHKConfig> threeBHKConfigs = threeBHKConfigRepository.findByProject_ProjectId(projectId);
+
+//     // Check if valid data exists
+//     if (!oneBHKConfigs.isEmpty() && hasValidData(oneBHKConfigs.get(0))) availableBHKs.add("1 BHK");
+//     if (!twoBHKConfigs.isEmpty() && hasValidData(twoBHKConfigs.get(0))) availableBHKs.add("2 BHK");
+//     if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availableBHKs.add("3 BHK");
+
+//     return availableBHKs;
+// }
+private RecommendedProperty convertToRecommendedPropertyDTO(Project project, ProjectDetails details) {
+    if (project == null || details == null) {
+        return null; // Handle null case
+    }
+
+    // Fetch available BHKs for the current project
+    List<String> availableBHKs = getAvailableBHKsForProject(project.getProjectId());
+
+    // Create and return the RecommendedProperty DTO
+    return new RecommendedProperty(project, details, availableBHKs);
+}
+
+public List<String> getAvailableBHKsForProject(Integer projectId) {
+    List<String> availableBHKs = new ArrayList<>();
+
+    List<OneBHKConfig> oneBHKConfigs = oneBHKConfigRepository.findByProject_ProjectId(projectId);
+    List<TwoBHKConfig> twoBHKConfigs = twoBHKConfigRepository.findByProject_ProjectId(projectId);
+    List<ThreeBHKConfig> threeBHKConfigs = threeBHKConfigRepository.findByProject_ProjectId(projectId);
+    List<FourBHKConfig> fourBHKConfigs = fourBHKConfigRepository.findByProject_ProjectId(projectId);
+
+    // Check if valid data exists
+    if (!oneBHKConfigs.isEmpty() && hasValidData(oneBHKConfigs.get(0))) availableBHKs.add("1BHK");
+    if (!twoBHKConfigs.isEmpty() && hasValidData(twoBHKConfigs.get(0))) availableBHKs.add("2BHK");
+    if (!threeBHKConfigs.isEmpty() && hasValidData(threeBHKConfigs.get(0))) availableBHKs.add("3BHK");
+    if (!fourBHKConfigs.isEmpty() && hasValidData(fourBHKConfigs.get(0))) availableBHKs.add("4BHK");
+
+    return availableBHKs;
+}
+private boolean hasValidData(BHKConfig config) {
+    return config !=null && config.getProject()!=null && config.getProject().getProjectId() != null;
+}
+
+
+public boolean projectExistsByCityAndPrice(String city, Integer maxPrice) {
+    List<Project> matched = projectRepository.findByCityAndMaxPrice(city, maxPrice);
+    return !matched.isEmpty();
+}
 }
 

@@ -123,38 +123,6 @@ const validationSchema = yup.object().shape({
       reralink: yup.string(),
       projectvideolink: yup.string(),
       projectimages: yup.string(),
-      schools: yup
-        .string()
-        .matches(
-          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
-          "Owner Name must contain only letters"
-        ),
-      hospitals: yup
-        .string()
-        .matches(
-          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
-          "Owner Name must contain only letters"
-        ),
-      malls: yup
-        .string()
-        .matches(
-          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
-          "Owner Name must contain only letters"
-        ),
-      movietheater: yup
-        .string()
-        .typeError("Please enter in letters")
-        .matches(
-          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
-          "Owner Name must contain only letters"
-        ),
-      ITpark: yup
-        .string()
-        .typeError("Please enter in letters")
-        .matches(
-          /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
-          "Owner Name must contain only letters"
-        ),
       Images: yup
         .array()
 
@@ -250,7 +218,6 @@ const validationSchema = yup.object().shape({
       .min(0, "Price Max cannot be negative")
       .required("Price Max is required"),
     allInclusive: yup.boolean().required("All Inclusive is required"),
-    amenities: yup.string().required("Amenities is required"),
     coveredparking: yup
       .string()
       .matches(
@@ -470,13 +437,8 @@ const MultiStageForm = () => {
       reralink: "",
       projectvideolink: "",
       projectimages: "",
-      schools: "",
-      hospitals: "",
-      malls: "",
-      movietheater: "",
       Images: [],
       Videos: [],
-      ITpark: "",
     },
     Amenities: {
       swimming_pool: "",
@@ -508,7 +470,6 @@ const MultiStageForm = () => {
       ProjectPlannedEnd: null,
       pricemin: "",
       pricemax: "",
-      amenities: "",
       coveredparking: "",
       bankapproved: false,
       banks: "",
@@ -822,7 +783,6 @@ const MultiStageForm = () => {
           "projectDetails.pricemin",
           "projectDetails.pricemax",
           "projectDetails.allInclusive",
-          "projectDetails.amenities",
           "projectDetails.coveredparking",
           "projectDetails.bankapproved",
           "projectDetails.banks",
@@ -886,22 +846,6 @@ const MultiStageForm = () => {
         }, obj);
       };
       
-
-      // Validate all fields
-      // const validations = currentFields.flatMap((field) => {
-      //   if (field.includes("[]")) {
-      //     const [arrayName, property] = field.replace("[]", "").split(".");
-      //     const arrayData = safeAccess(formData, arrayName) || [];
-
-      //     return arrayData.map((item) =>
-      //       validateField(arrayName, property, item?.[property], formData)
-      //     );
-      //   } else {
-      //     const [section, key] = field.split(".");
-      //     const value = safeAccess(formData, field);
-      //     return [validateField(section, key, value, formData)];
-      //   }
-      // });
       const validations = currentFields.flatMap((field) => {
         if (field.includes("[]")) {
           const [arrayName, property] = field.replace("[]", "").split(".");
@@ -1150,8 +1094,7 @@ const MultiStageForm = () => {
         organisationName: stateData.organization?.orgName || "",
         organisationCin: stateData.organization?.orgCIN || "",
         organisationOwners: stateData.organization?.orgOwners || "",
-        projectsCompleted:
-          Number(stateData.organization?.projectsCompleted) || 0,
+        projectsCompleted:Number(stateData.organization?.projectsCompleted) || 0,
 
         projectName: stateData.project?.projectname || "",
         city: stateData.project?.city || "",
@@ -1169,23 +1112,7 @@ const MultiStageForm = () => {
 
         reraNumber: stateData.project?.reranumber || "",
         reraLink: stateData.project?.reralink || "",
-
-        schools: stateData.project?.schools
-          ? stateData.project.schools.split(",")
-          : [],
-        hospitals: stateData.project?.hospitals
-          ? stateData.project.hospitals.split(",")
-          : [],
-        malls: stateData.project?.malls
-          ? stateData.project.malls.split(",")
-          : [],
-        movieTheaters: stateData.project?.movietheater
-          ? stateData.project.movietheater.split(",")
-          : [],
-        itParks: stateData.project?.ITpark
-          ? stateData.project.ITpark.split(",")
-          : [],
-
+        propertyType:stateData.project?.TypeofProperty || "",
         units: Number(stateData.projectDetails?.units) || 0,
         projectStatus: stateData.projectDetails?.projectstatus || "",
         projectLaunch: stateData.projectDetails?.projectlaunch || "",
@@ -1196,14 +1123,42 @@ const MultiStageForm = () => {
         priceMax: isNaN(parseFloat(stateData.projectDetails?.pricemax))
           ? null
           : parseFloat(formData.projectDetails?.pricemax),
-
         allInclusive: Boolean(stateData.projectDetails?.allInclusive),
-        amenities: stateData.projectDetails?.amenities || "",
         coveredParking: stateData.projectDetails?.coveredparking || "",
         bankApproved: Boolean(stateData.projectDetails?.bankapproved || ""),
         banks: stateData.projectDetails?.banks || "",
+// Correctly structuring amenities
+// amenities: stateData.Amenities || {},
+
+// amenities: stateData.project?.amenities 
+// ? Object.fromEntries(
+//     Object.entries(stateData.project.amenities).map(([key, value]) => 
+//         [key, Array.isArray(value) ? value : String(value).split(",").map(item => item.trim())]
+//     )
+// )
+// : {},
+amenities: stateData.Amenities
+    ? Object.fromEntries(
+        Object.entries(stateData.Amenities).map(([key, value]) => [
+          key,
+          Array.isArray(value) ? value : [value], // Ensure it's always an array
+        ])
+      )
+    : {},
+// Correctly structuring nearby locations
+nearby: stateData.NearbyPlaces
+  ? Object.fromEntries(
+      Object.entries(stateData.NearbyPlaces).map(([key, value]) => [
+        key,
+        Array.isArray(value) ? value : [value], // Ensure it's always an array
+      ])
+    )
+  : {},
+        
+  expertReview: stateData.ExpertReview
+  ? { reviewText: stateData.ExpertReview.expertReview } // Create an object with the expected structure
+  : null, // or {} if you prefer to send an empty object
       };
-      // **Conditionally add BHK configurations based on checkbox state**
       if (proceedToOneBHK && formData.oneBHKConfig?.length) {
         payload.oneBHKConfig = formData.oneBHKConfig.map((config) => ({
           typeNumber: config.typeNumber,
@@ -1694,46 +1649,6 @@ const MultiStageForm = () => {
                   onChange={handleChange}
                   error={warnings.project?.reralink}
                 />
-                <InputField
-                  label="Schools"
-                  section="project"
-                  field="schools"
-                  value={formData.project.schools}
-                  onChange={handleChange}
-                  error={warnings.project?.schools}
-                />
-                <InputField
-                  label="Hospitals"
-                  section="project"
-                  field="hospitals"
-                  value={formData.project.hospitals}
-                  onChange={handleChange}
-                  error={warnings.project?.hospitals}
-                />
-                <InputField
-                  label="Malls"
-                  section="project"
-                  field="malls"
-                  value={formData.project.malls}
-                  onChange={handleChange}
-                  error={warnings.project?.malls}
-                />
-                <InputField
-                  label="Movie Theaters"
-                  section="project"
-                  field="movietheater"
-                  value={formData.project.movietheater}
-                  onChange={handleChange}
-                  error={warnings.project?.movietheater}
-                />
-                <InputField
-                  label="IT Parks"
-                  section="project"
-                  field="ITpark"
-                  value={formData.project.ITpark}
-                  onChange={handleChange}
-                  error={warnings.project?.ITpark}
-                />
                 <div>
                   <ImageUpload
                     handleChange={handleChange}
@@ -1887,7 +1802,7 @@ const MultiStageForm = () => {
                   field="it_parks"
                   value={formData.NearbyPlaces.it_parks}
                   onChange={handleChange}
-                  error={warnings.NearbyPlaces?.it_parks}
+                  error={warnings.NearbyPlaces?.it_parks} 
                 />
 
                 <InputField
@@ -1944,35 +1859,7 @@ const MultiStageForm = () => {
                   onChange={handleChange}
                   error={warnings.projectDetails?.units}
                 />
-                <InputField
-                  label="Amenities"
-                  section="projectDetails"
-                  field="amenities"
-                  value={formData.projectDetails.amenities}
-                  onChange={handleChange}
-                  error={warnings.projectDetails?.amenities}
-                />
-
-                {/* Project Launch Date Picker */}
-                <DatePicker
-                  label={"Project Launch Date"}
-                  section="projectDetails"
-                  // placeholder="Select Project Launch Date"
-                  field="projectlaunch"
-                  value={formData.projectDetails.projectlaunch}
-                  onChange={handleChange}
-                  error={warnings.projectDetails?.projectlaunch}
-                />
-                <DatePicker
-                  label={"Project Planned-end Date"}
-                  section="projectDetails"
-                  placeholder="Select Project Planned-end Date"
-                  field="ProjectPlannedEnd"
-                  value={formData.projectDetails.ProjectPlannedEnd}
-                  onChange={handleChange}
-                  error={warnings.projectDetails?.ProjectPlannedEnd}
-                />
-                <InputField
+                    <InputField
                   label="Price Min"
                   section="projectDetails"
                   field="pricemin"
@@ -1988,8 +1875,7 @@ const MultiStageForm = () => {
                   onChange={handleChange}
                   error={warnings.projectDetails?.pricemax}
                 />
-
-                <DropdownField
+                 <DropdownField
                   label="Covered Parking"
                   section="projectDetails"
                   field="coveredparking"
@@ -2015,6 +1901,9 @@ const MultiStageForm = () => {
                     { label: "closeout", value: "closeout" },
                   ]}
                 />
+                 
+              
+          
                 <FormGroup className="p-1">
                   <CheckBox
                     label="All Inclusive"
@@ -2174,6 +2063,26 @@ const MultiStageForm = () => {
                     </Grid>
                   </div>
                 </FormGroup>
+                <FormGroup>
+                  {/* Project Launch Date Picker */}
+                  <DatePicker
+                  label={"Project Launch Date"}
+                  section="projectDetails"
+                  // placeholder="Select Project Launch Date"
+                  field="projectlaunch"
+                  value={formData.projectDetails.projectlaunch}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.projectlaunch}
+                />
+                <DatePicker
+                  label={"Project Planned-end Date"}
+                  section="projectDetails"
+                  placeholder="Select Project Planned-end Date"
+                  field="ProjectPlannedEnd"
+                  value={formData.projectDetails.ProjectPlannedEnd}
+                  onChange={handleChange}
+                  error={warnings.projectDetails?.ProjectPlannedEnd}
+                /></FormGroup>
               </div>
             )}
 

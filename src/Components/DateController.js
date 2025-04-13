@@ -75,8 +75,8 @@ const DatePicker = ({ label, section, placeholder, field, value, onChange, error
   };
 
   return (
-    <div className="w-full mb-1 mobile-s:mx-3 mobile-m:mx-4 
-    text-base mobile-s:text-sm mobile-m:text-md mobile-l:text-lg md:ml-10 md:w-3/4">
+    <div className="w-full mb-1 mobile-s:mx-3  mobile-m:mx-4 
+    text-base mobile-s:text-sm mobile-m:text-md mobile-l:text-lg md:ml-10 md:w-3/4 mobile-s:w-3/4">
       {/* Label */}
       {label && <label className="text-[#9CA3AF] block mb-1 mt-4">{label}</label>}
 

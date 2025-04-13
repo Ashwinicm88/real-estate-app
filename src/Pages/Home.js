@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 804eb2b (Home Page Design Completed)
  
 import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";

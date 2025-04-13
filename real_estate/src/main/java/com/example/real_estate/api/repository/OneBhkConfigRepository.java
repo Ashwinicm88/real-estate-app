@@ -17,6 +17,10 @@ import java.util.*;
  public interface OneBhkConfigRepository extends JpaRepository<OneBHKConfig, Integer> {
       List<OneBHKConfig> findByProject(Project project);
       List<OneBHKConfig> findByProject_ProjectId(Integer projectId);
+      Optional<OneBHKConfig> findByProjectAndTypeNumber(Project project, Integer typeNumber);
+      void deleteByProject_ProjectId(Integer projectId);
+      Optional<OneBHKConfig> findByProject_ProjectIdAndTypeNumber(Integer projectId, Integer typeNumber);
+
     //  List<OneBHKConfig> findByProjectId(Integer id);
  }
  

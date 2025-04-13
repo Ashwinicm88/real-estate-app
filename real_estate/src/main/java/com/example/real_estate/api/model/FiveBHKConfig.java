@@ -7,6 +7,9 @@ import lombok.*;
 // import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.*;
 /**
 /**
@@ -35,6 +38,7 @@ public class FiveBHKConfig {
      */
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Optimized FetchType
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
     @Min(value = 1, message = "Type number must be greater than 0")

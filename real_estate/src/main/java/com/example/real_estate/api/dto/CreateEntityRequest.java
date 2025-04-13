@@ -22,17 +22,12 @@ import java.util.*;
 @ToString
 public class CreateEntityRequest {
 
-
- 
-
-
     //Organisation
     private Integer projectId;
     private String organisationName;
     private String organisationCin;
     private String organisationOwners;
     private Integer projectsCompleted;
-
 
     //Project
     private String projectName;
@@ -46,6 +41,7 @@ public class CreateEntityRequest {
     private String reraLink;
     private String projectVideoLink;
     private String preferred;
+    private String propertyType;
 
 
     @JsonProperty("projectimages")
@@ -65,78 +61,18 @@ public class CreateEntityRequest {
      private Boolean bankApproved;
      private String banks;
 
+      // **Updated Amenities Structure**
+    @JsonProperty("amenities")
+    private Map<String, List<String>> amenities;
+
+    // **Updated Nearby Structure**
+    @JsonProperty("nearby")
+    private Map<String, List<String>> nearby;
 
 
-
-    //Amenities Details
-    @JsonProperty("swimming_pool")
-    private List<String> swimming_pool;
-
-
-    @JsonProperty("temple")
-    private List<String> temple;
-
-
-    @JsonProperty("gym")
-    private List<String> gym;
-
-
-    @JsonProperty("creche")
-    private List<String> creche;
-
-
-    @JsonProperty("children_parks")
-    private List<String> children_parks;
-
-
-    @JsonProperty("park")
-    private List<String> park;
-
-
-    @JsonProperty("club_house")
-    private List<String> club_house;
-
-
-    @JsonProperty("c_hall")
-    private List<String> c_hall;
-
-
-    @JsonProperty("other")
-    private List<String> other;
-
-
-    //Nearby Details
-
-
-    @JsonProperty("schools")
-    private List<String> schools;
-
-
-    @JsonProperty("hospitals")
-    private List<String> hospitals;
-
-
-    @JsonProperty("malls")
-    private List<String> malls;
-
-
-    @JsonProperty("itParks")
-    private List<String> it_parks;
-
-
-    @JsonProperty("hangouts")
-    private List<String> hangouts;
-
-
-    @JsonProperty("cinemas")
-    private List<String> cinemas;
-
-
-    @JsonProperty("metro")
-    private List<String> metro;
-
-
-    private String reviewText;
+    @JsonProperty("expertReview")
+    private ExpertReview expertReview;
+    // private String reviewText;
 
 
     // BHK Configurations

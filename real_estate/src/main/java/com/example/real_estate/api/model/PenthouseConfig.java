@@ -4,6 +4,9 @@ package com.example.real_estate.api.model;
 import org.hibernate.annotations.JdbcTypeCode;
 // import org.hibernate.annotations.processing.SQL;
 import org.hibernate.type.SqlTypes;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.*;
 
 import jakarta.persistence.*;
@@ -31,12 +34,16 @@ public class PenthouseConfig {
     @Column(name = "penthouse_config_id")
     private Integer penthouseConfigId; // Changed from Integer to Long
 
+     /**
+     * The project to which this configuration belongs.
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Added Lazy Fetch
+    @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
+    private Project project;
     /**
      * The project to which this Penthouse configuration belongs.
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Optimized FetchType
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
 
 
     @Min(value = 1, message = "Type number must be greater than 0")

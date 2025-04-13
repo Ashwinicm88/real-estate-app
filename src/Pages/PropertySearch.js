@@ -1,13 +1,8 @@
 import React, { useState } from "react";
 import { MenuItem, FormControl, Select, InputLabel, Button } from "@mui/material";
 import { Search } from "@mui/icons-material";
-<<<<<<< HEAD
 // import DemoFooter from "../Components/Footer";
 // import DemoNavbar from "../components/Navbar";
-=======
-//import DemoNavbar from "../components/Navbar";
-import DemoFooter from "../Components/Footer";
->>>>>>> 804eb2b (Home Page Design Completed)
 
 const PropertySearch = () => {
   const [budget, setBudget] = useState("");

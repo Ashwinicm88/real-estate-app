@@ -55,7 +55,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation' // Spring Boot validation framework
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final' // Hibernate Validator for Java Bean validation
 
-
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation 'org.springframework.security:spring-security-config'
+    implementation 'org.springframework.security:spring-security-core'
+    implementation 'org.springframework.security:spring-security-web'
 
     // -------------------------
     // Database Dependencies

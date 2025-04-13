@@ -121,17 +121,18 @@ public class GlobalExceptionHandler {
      * @param ex ConstraintViolationException thrown by Hibernate Validator.
      * @return ResponseEntity containing validation errors mapped by field name.
      */
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
-        Map<String, String> errors = new HashMap<>();
-        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            String fieldName = violation.getPropertyPath().toString();
-            String errorMessage = violation.getMessage();
-            errors.put(fieldName, errorMessage);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
-    }
-
+    
+     @ExceptionHandler(ConstraintViolationException.class)
+     public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
+         Map<String, String> errors = new HashMap<>();
+         for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+             String fieldPath = violation.getPropertyPath().toString(); // might show something like "adminUpdateDTO.twoBhkConfig.carpetArea"
+             String message = violation.getMessage();
+             errors.put(fieldPath, message);
+         }
+         return ResponseEntity.badRequest().body(errors);
+     }
+     
     /**
      * Handles database constraint violations, such as unique key constraints or foreign key violations.
      * 

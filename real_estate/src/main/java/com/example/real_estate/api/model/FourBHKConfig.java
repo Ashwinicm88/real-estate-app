@@ -7,7 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import java.util.*;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 /**
  * Represents the configuration details for 4BHK units in a real estate project.
  * This entity is linked to the {@link Project} entity.
@@ -19,7 +19,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class FourBHKConfig {
+public class FourBHKConfig implements BHKConfig{
 
     /**
      * Unique identifier for the 4BHK configuration.
@@ -34,6 +34,7 @@ public class FourBHKConfig {
      */
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Optimized FetchType
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
     // @NotNull(message = "Type number cannot be null")
@@ -147,4 +148,15 @@ public class FourBHKConfig {
 
     @Column(name = "bathroom_4_area")
     private String bathroom4Area;
+
+    @Override
+    public Integer getId(){
+        return fourBhkConfigId;
+    }
+ 
+    @Override
+    public Project getProject(){
+        return project;
+    }
+ 
 }

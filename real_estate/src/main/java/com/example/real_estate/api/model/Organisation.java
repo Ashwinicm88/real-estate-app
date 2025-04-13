@@ -52,5 +52,10 @@ public class Organisation {
         this.orgOwners = organisationOwners;
         this.projectsCompleted = projectCompleted;
     }
+
+    public void setProject(Project existingProject) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'setProject'");
+    }
     
 }

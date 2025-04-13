@@ -1,8 +1,10 @@
 package com.example.real_estate.api.model;
 
+import java.io.IOException;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +40,7 @@ public class Amenities {
 
 
     @Column(name = "swimming_pool", columnDefinition = "TEXT")
-    private String  swimming_pool;
+    private String swimming_pool;
 
 
     @Column(name="temple",columnDefinition = "TEXT")
@@ -85,6 +87,22 @@ public class Amenities {
         this. club_house=club_house;
         this.c_hall=c_hall;
         this.other=other;
+    }
+    // Helper method to convert List<String> to JSON string
+    public String convertListToJson(List<String> list) {
+        if (list == null || list.isEmpty()) return "[]";
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.writeValueAsString(list);  // Convert List to JSON string
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "[]";
+        }
+    }
+
+    public Amenities orElse(Amenities amenities) {
+       
+        throw new UnsupportedOperationException("Unimplemented method 'orElse'");
     }
    
 }

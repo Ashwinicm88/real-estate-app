@@ -70,7 +70,7 @@ public class TwoBHKConfig implements BHKConfig{
     // Changed from columnDefinition = "TEXT"
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "type_2_floor_plan",columnDefinition = "JSONB")
-    private List<String> type2FloorPlan;
+    private List<String> type2FloorPlan = new ArrayList<>();
  
     /**
      * Image URLs for the 2BHK unit.
@@ -78,7 +78,7 @@ public class TwoBHKConfig implements BHKConfig{
      // Changed from columnDefinition = "TEXT"
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "type_2_images",columnDefinition = "JSONB")
-    private List<String> type2Images;
+    private List<String> type2Images=new ArrayList<>();
  
     /**
      * Number of bathrooms in the 2BHK unit.

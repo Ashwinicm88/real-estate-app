@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropertyDetails from "../Components/PropertyDetails";
 import PropertyDropdowns from "../Components/Propertydropdowns";
-<<<<<<< HEAD
 import MapComponent from "../Components/GoogleMap1";
-=======
-import MapComponent from "../Components/GoogleMap";
-import DemoNavbar from "../Components/Navbar";
-//import DemoFooter from "../components/Footer";
->>>>>>> 804eb2b (Home Page Design Completed)
 
 const Display_D = () => {
   // States for filters and properties

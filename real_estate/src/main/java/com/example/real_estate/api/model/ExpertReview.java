@@ -1,15 +1,8 @@
 package com.example.real_estate.api.model;
-
-
-import org.springframework.boot.context.properties.bind.Name;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-
-
-
 @Entity
 @Table(name = "expertreview")
 @Getter
@@ -27,6 +20,7 @@ public class ExpertReview {
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
+    @JsonBackReference
     private Project project;
 
 

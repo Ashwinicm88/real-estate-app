@@ -39,6 +39,18 @@ const PropertyFilters = ({ filters, updateFilter }) => {
         <option value="3">3 BHK</option>
       </select>
 
+    {/* Type of Property Dropdown */}
+    <select
+        value={filters.typeProperty}
+        onChange={(e) => updateFilter("typeProperty", e.target.value)}
+        className="p-3 w-52 bg-white text-gray-700 rounded-lg shadow-md focus:outline-none"
+      >
+        <option value="">Type of Property</option>
+        <option value="Apartment">Apartment</option>
+        <option value="Villa">Villa</option>
+        <option value="Plot">Plot</option>
+        <option value="Commercial">Commercial</option>
+      </select>
       {/* Find Button */}
       <button
         onClick={() => alert("Search Initiated")}

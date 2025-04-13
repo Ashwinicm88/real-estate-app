@@ -12,6 +12,9 @@ import java.util.*;
 @Repository
 public interface PenthouseConfigRepository extends JpaRepository<PenthouseConfig,Integer > {
      List<PenthouseConfig> findByProject(Project project);
+     Optional<PenthouseConfig> findByProject_ProjectIdAndTypeNumber(Integer projectId, Integer typeNumber);
+     void deleteByProject_ProjectId(Integer projectId);
+
 
 }
 

@@ -17,59 +17,30 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecommendedProperty{  // 🛠️ Fixed class name
-
-
+    private Integer projectId;
     private String projectName;
     private String projectAddress;
-    private String projectVideo;
    
     private List<String> projectPictures;
     private Integer units;
     private String projectStatus;
     private Integer priceMin;
-    private Integer priceMax;
-    // private List<String> availableBHKs;
-    private Boolean allInclusive;
-    // private String Amenities;
-    private String coveredParking;
-    private Boolean bankApproved;
-    private List<String> banks;
+    private Integer priceMax;   
+    private List<String> availableBHKs; // New field for available BHKs
+
  
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     // Constructor with null safety
-    public RecommendedProperty(Project project, ProjectDetails projectDetails) {
+    public RecommendedProperty(Project project, ProjectDetails projectDetails, List<String> availableBHKs) {
+        this.projectId = project.getProjectId();
         this.projectName = project.getProjectName();
         this.projectAddress = project.getAddress();
-        this.projectVideo = project.getProjectVideoLink();
         this.projectPictures = project.getProjectImages();  // 🛠️ Fix JSON to List conversion
         this.units = projectDetails.getUnits() != null ? projectDetails.getUnits() : 0;  // Default 0
         this.projectStatus = projectDetails.getProjectStatus() != null ? projectDetails.getProjectStatus() : "Unknown";
-        // this.projectLaunch = projectDetails.getProjectLaunch();
-        // this.projectPlannedEnd = projectDetails.getProjectPlannedEnd();
         this.priceMin = projectDetails.getPriceMin();
         this.priceMax = projectDetails.getPriceMax();
-
-
-     
-       
-        // this.priceMin = projectDetails.getPriceMin() != null ? projectDetails.getPriceMin() : 0.0;
-        // this.priceMax = projectDetails.getPriceMax() != null ? projectDetails.getPriceMax() : 0.0;
-        this.allInclusive = projectDetails.getAllInclusive();
-        // this.Amenities = projectDetails.getAmenities();
-        // this.coveredParking = projectDetails.getCoveredParking() != null ? projectDetails.getCoveredParking() : 0;
-        this.coveredParking = projectDetails.getCoveredParking();
-        this.bankApproved = projectDetails.getBankApproved();
-        this.banks = convertJsonToList(projectDetails.getBanks());
-        // this.priceStartingFrom = this.priceMin;
-   
-        // this.projectLaunch = projectDetails.getProjectLaunch() != null
-        //     ? sdf.format(projectDetails.getProjectLaunch())
-        //     : null; // Convert Date to String
-
-
-        // this.projectPlannedEnd = projectDetails.getProjectPlannedEnd() != null
-        //     ? sdf.format(projectDetails.getProjectPlannedEnd())
-        //     : null; // Convert Date to String
+        this.availableBHKs = availableBHKs;
     }
 
 
@@ -91,6 +62,10 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
     // Getters and Setters
+
+    public Integer getProjectId() { return projectId; }
+    public void setProjectId(Integer projectId) { this.projectId = projectId; }
+
     public String getProjectName() { return projectName; }
     public void setProjectName(String projectName) { this.projectName = projectName; }
 
@@ -98,9 +73,6 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public String getProjectAddress() { return projectAddress; }
     public void setProjectAddress(String projectAddress) { this.projectAddress = projectAddress; }
 
-
-    public String getProjectVideo() { return projectVideo; }
-    public void setProjectVideo(String projectVideo) { this.projectVideo = projectVideo; }
 
 
     public List<String> getProjectPictures() { return projectPictures; }
@@ -115,14 +87,6 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public void setProjectStatus(String projectStatus) { this.projectStatus = projectStatus; }
 
 
-    // public String getProjectLaunch() { return projectLaunch; }
-    // public void setProjectLaunch(String projectLaunch) { this.projectLaunch = projectLaunch; }
-
-
-    // public String getProjectPlannedEnd() { return projectPlannedEnd; }
-    // public void setProjectPlannedEnd(String projectPlannedEnd) { this.projectPlannedEnd = projectPlannedEnd; }
-
-
     public Integer getPriceMin() { return priceMin; }
     public void setPriceMin(Integer priceMin) { this.priceMin = priceMin; }
 
@@ -131,34 +95,6 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public void setPriceMax(Integer priceMax) { this.priceMax = priceMax; }
 
 
-    // public Boolean getAllInclusive() { return allInclusive; }
-    // public void setAllInclusive(String allInclusive) { this.allInclusive = allInclusive; }
-
-
-    public Boolean getAllInclusive() { return allInclusive; }
-    public void setAllInclusive(Boolean allInclusive) { this.allInclusive = allInclusive; }
-
-
-    // public String getAmenities() { return Amenities; }
-    // public void setAmenities(String Amenities) { this.Amenities = Amenities; }
-
-
-    // public List<String> getAllInclusiveAmenities() { return allInclusive; }
-    // public void setAllInclusiveAmenities(List<String> allInclusiveAmenities) { this.allInclusiveAmenities = allInclusiveAmenities; }
-
-
-    public String getCoveredParking() { return coveredParking; }
-    public void setCoveredParking(String coveredParking) { this.coveredParking = coveredParking; }
-
-
-    public Boolean getBankApproved() { return bankApproved; }
-    public void setBankApproved(Boolean bankApproved) { this.bankApproved = bankApproved; }
-
-
-    public List<String> getBanks() { return banks; }
-    public void setBanks(List<String> banks) { this.banks = banks; }
-   
-    // public void setAvailableBHKs(List<String> availableBHKs) {
-    //     throw new UnsupportedOperationException("Unimplemented method 'setAvailableBHKs'");
-    // }
+    public List<String> getAvailableBHKs() { return availableBHKs; } // Getter for availableBHKs
+    public void setAvailableBHKs(List<String> availableBHKs) { this.availableBHKs = availableBHKs; } // Setter for availableBHKs
 }
