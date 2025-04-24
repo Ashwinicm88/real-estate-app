@@ -57,8 +57,8 @@ const validationSchema = yup.object().shape({
     orgOwners: yup
       .string()
       .matches(
-        /^[A-Za-z\\s]+(,[A-Za-z\\s]+)*$/,
-        "Owner Name must contain only letters"
+        /^[a-zA-Z\s]+$/,
+        "Organization name contains unsupported characters"
       ),
     projectCompleted: yup
       .number()
@@ -1565,7 +1565,7 @@ const parseNearbyStringArray = (nearbyObj) => {
   
 
   return (
-    <div>
+    <div className="min-h-screen overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200 h-[400px]">
       <header className="bg-black text-white p-4 sm:mx-8 md:mx-10 xl:mx-24">
         <Header />
       </header>
@@ -3661,53 +3661,55 @@ const parseNearbyStringArray = (nearbyObj) => {
             )}
           </div>
 
-          <div className="mt-6 flex justify-center gap-4">
-            <Button
-              onClick={prevStage}
-              disabled={stage === 0}
-              sx={{
-                color: "#eab308", // Set text color to yellow
-                backgroundColor: "transparent", // Remove background color
-                "&:hover": {
-                  textDecoration: "underline", // Add underline on hover
-                  backgroundColor: "transparent", // Ensure background remains transparent on hover
-                },
-              }}
-            >
-              Back
-            </Button>
-            {stage < initialSteps.length - 1 ? (
-              <div>
-                <Button
-                  onClick={nextStage}
-                  sx={{
-                    color: "#eab308", // Set text color to yellow
-                    backgroundColor: "transparent", // Remove background color
-                    "&:hover": {
-                      textDecoration: "underline", // Add underline on hover
-                      backgroundColor: "transparent", // Ensure background remains transparent on hover
-                    },
-                  }}
-                >
-                  Next
-                </Button>
-              </div>
-            ) : (
-              <Button
-                onClick={handleSubmit}
-                sx={{
-                  color: "#eab308", // Set text color to yellow
-                  backgroundColor: "transparent", // Remove background color
-                  "&:hover": {
-                    textDecoration: "underline", // Add underline on hover
-                    backgroundColor: "transparent", // Ensure background remains transparent on hover
-                  },
-                }}
-              >
-                Update
-              </Button>
-            )}
-          </div>
+         <div className={`mt-6 flex ${stage === 0 ? "justify-end pr-10" : "justify-center"} gap-4`}>
+           {stage !== 0 && (
+             <Button
+               onClick={prevStage}
+               disabled={stage === 0}
+               sx={{
+                 color: "#eab308",
+                 backgroundColor: "transparent",
+                 "&:hover": {
+                   textDecoration: "underline",
+                   backgroundColor: "transparent",
+                 },
+               }}
+             >
+               Back
+             </Button>
+           )}
+         
+           {stage < initialSteps.length - 1 ? (
+             <Button
+               onClick={nextStage}
+               sx={{
+                 color: "#eab308",
+                 backgroundColor: "transparent",
+                 "&:hover": {
+                   textDecoration: "underline",
+                   backgroundColor: "transparent",
+                 },
+               }}
+             >
+               Next
+             </Button>
+           ) : (
+             <Button
+               onClick={handleSubmit}
+               sx={{
+                 color: "#eab308",
+                 backgroundColor: "transparent",
+                 "&:hover": {
+                   textDecoration: "underline",
+                   backgroundColor: "transparent",
+                 },
+               }}
+             >
+               Submit
+             </Button>
+           )}
+         </div>
+         
         </div>{" "}
       </div>
     </div>

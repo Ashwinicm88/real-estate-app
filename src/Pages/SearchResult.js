@@ -460,14 +460,15 @@ useEffect(() => {
             </button>
           </div>
 
-          <div className={`w-full md:w-1/2 overflow-y-auto max-h-full px-4 transition-all duration-300 ${showMap ? "hidden" : "block"}`}>
+          <div className={`w-full md:w-1/2 overflow-y-auto  h-[calc(100vh-130px)] px-4 transition-all duration-300 ${showMap ? "hidden" : "block"}`}>
             <div className="relative">
-              <button
-                className="absolute bottom-4 right-4 bg-transparent border border-white text-white px-4 py-2 rounded-md md:hidden"
-                onClick={() => setShowMap(true)}
-              >
-                View Map
-              </button>
+            <button
+  className="z-50 fixed bottom-4 right-4 bg-tranparent border border-white text-white px-4 py-2 rounded-md shadow md:hidden"
+  onClick={() => setShowMap(true)}
+>
+  View Map
+</button>
+
             </div>
             <PropertyDetails properties={visibleProperties.length > 0 ? visibleProperties : filteredProperties} />
           </div>

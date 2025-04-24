@@ -39,7 +39,9 @@ public class BookConsultationService {
                     existing.setConsultationDate(updatedConsultation.getConsultationDate());
                     existing.setTimeSlot(updatedConsultation.getTimeSlot());
                     existing.setConsultationName(updatedConsultation.getConsultationName());
-                    return consultationRepository.save(existing);
+                    existing.setConfirmed(true);  // Set confirmed to true
+                    return consultationRepository.save(existing); // Save the updated consultation
                 });
     }
+    
 }

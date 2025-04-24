@@ -14,12 +14,12 @@ import lombok.Setter;
 @Setter
 public class CardDetails {  
 
-
     //Project Details
     private Integer projectId;
     private String projectName;
     private String address;
     private List<String> projectImages;
+    private List<String> projectVideoLink;
     private String reralink;
     private String city;
 

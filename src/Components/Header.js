@@ -200,20 +200,29 @@ const Header = () => {
 
   return (
     <>
-     {/* Modal */}
-     {showCalculator && (
-      <HomeAffordabilityCalculator onClose={() => setShowCalculator(false)} />
-    )}
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white shadow-md w-full">
-      <div className="max-w-[86rem] mx-auto w-[92%] sm:w-[88%] lg:w-[94%] py-4 border-b border-zinc-50">
-        <div className="flex items-center justify-between relative w-full">
-          {/* Left: Hamburger Menu + App Name */}
-          <div className="flex items-center gap-4 relative w-full sm:w-auto" ref={menuButtonRef}>
-            <button className="text-white" onClick={() => setMenuOpen(!menuOpen)}>
-              {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-            </button>
-            <span className="text-lg sm:text-xl text-center font-semibold text-yellow-500">Casa</span>
-          </div>
+      {/* Modal */}
+      {showCalculator && (
+        <HomeAffordabilityCalculator onClose={() => setShowCalculator(false)} />
+      )}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white shadow-md w-full">
+        <div className="max-w-[86rem] mx-auto w-[92%] sm:w-[88%] lg:w-[94%] py-4 border-b border-zinc-50">
+          <div className="flex items-center justify-between relative w-full">
+            {/* Left: Hamburger Menu + App Name */}
+            <div
+              className="flex items-center gap-4 relative w-full sm:w-auto"
+              ref={menuButtonRef}
+            >
+              <button
+                className="text-white"
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+              </button>
+              <Link to="/Realestate-home" className="text-lg sm:text-xl text-center font-semibold text-yellow-500">
+  Casa
+</Link>
+
+            </div>
 
           {/* Center: Logo/Icon (Hidden on Small Screens) */}
           <div className="hidden lg:block text-xl font-bold absolute left-1/2 transform -translate-x-1/2">ICON</div>
@@ -285,25 +294,52 @@ const Header = () => {
           <a href="#about-us" className="text-white hover:text-yellow-400 pb-2" onClick={() => setMenuOpen(false)}>About us</a>
                     
 
-           {/* Admin-Specific Links */}
-          {isAdmin ? (
-            <>
-              <Link to="/all-stagedata" className="text-white hover:text-yellow-400 pb-2" onClick={() => setMenuOpen(false)}>Add Property</Link>
-              <Link to="/admin-panel" className="text-white hover:text-yellow-400 pb-2" onClick={() => setMenuOpen(false)}>Admin Panel</Link>
-              <Link to ="/admin-consultation-list" className="text-white hover:text-yellow-400 pb-2" onClick={() => setMenuOpen(false)}>Consultation List</Link>
-              <Link to ="/update-appointment/:id" className="text-white hover:text-yellow-400 pb-2" onClick={() => setMenuOpen(false)}>Admin Appointment</Link>
-              <button className="text-red-500 hover:text-red-700 pb-2" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <Link to="/admin-login" className="text-white hover:text-yellow-400 pb-2" onClick={() => setMenuOpen(false)}>Admin</Link>
-          )}
-        </div>
-      )}
-    </header>
-    {/* Show Modal if showModal is true */}
-    {showModal && <BookConsultation onClose={() => setShowModal(false)} />}
+            {/* Admin-Specific Links */}
+            {isAdmin ? (
+              <>
+                <Link
+                  to="/all-stagedata"
+                  className="text-white hover:text-yellow-400 pb-2"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Add Property
+                </Link>
+                <Link
+                  to="/admin-panel"
+                  className="text-white hover:text-yellow-400 pb-2"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Admin Panel
+                </Link>
+                <Link
+                  to="/admin-consultation-list"
+                  className="text-white hover:text-yellow-400 pb-2"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Appointments
+                </Link>
+                
+                <button
+                  className="text-red-500 hover:text-red-700 pb-2"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/admin-login"
+                className="text-white hover:text-yellow-400 pb-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                Admin
+              </Link>
+            )}
+          </div>
+        )}
+      </header>
+      {/* Show Modal if showModal is true */}
+      {showModal && <BookConsultation onClose={() => setShowModal(false)} />}
     </>
   );
 };

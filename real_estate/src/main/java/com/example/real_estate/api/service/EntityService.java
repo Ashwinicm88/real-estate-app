@@ -103,7 +103,7 @@ public class EntityService {
     } // JSON converter
 // public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls,Map<Integer, List<String>> twoBHKType2ImageUrls,
 // Map<Integer, List<String>> twoBHKType2FloorPlanUrls,Map<Integer,List<String>>threeBHKTy ) throws JsonProcessingException{
-    public void createEntity(String jsonData,List <String>imageUrls,String videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls, Map<Integer, List<String>> twoBHKType2ImageUrls,
+    public void createEntity(String jsonData,List <String>imageUrls,List <String> videoUrl,Map<Integer,List<String>> oneBHKType1ImageUrls,Map<Integer,List<String>>oneBHKType1FloorPlanUrls, Map<Integer, List<String>> twoBHKType2ImageUrls,
     Map<Integer, List<String>> twoBHKType2FloorPlanUrls,
     Map<Integer, List<String>> threeBHKType3ImageUrls,
     Map<Integer, List<String>> threeBHKType3FloorPlanUrls,
@@ -755,6 +755,7 @@ if (project == null) {
     cardDetails.setProjectName(project.getProjectName());
     cardDetails.setAddress(project.getAddress());
     cardDetails.setProjectImages(project.getProjectImages());
+    cardDetails.setProjectVideoLink(project.getProjectVideoLink());
     cardDetails.setReralink(project.getReraLink());
     cardDetails.setCity(project.getCity());
 

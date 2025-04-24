@@ -125,11 +125,8 @@ const Footer = () => {
   <p className="text-gray-400">Company Motto</p>
 </div>
 
- 
-        {/* Footer Links Section - Evenly Spaced Columns */}
-        {/* Footer Links Section - Always Centered */}
    {/* Footer Links Section - Centered Columns */}
-<div className="grid grid-cols-2 gap-4 sm:flex justify-center sm:gap-5 ml-0 ">
+   <div className="grid grid-cols-2 gap-4 sm:flex justify-center sm:gap-5 ml-0 ">
   {/* About ABC */}
   <div className="w-full sm:w-1/4 flex flex-col items-center sm:items-start sm:text-left ">
     <h3 className="text-lg font-bold text-white">About ABC</h3>
@@ -139,9 +136,9 @@ const Footer = () => {
       <li><a href="/" className="hover:text-gray-400">Privacy Policy</a></li>
     </ul>
   </div>
-
+ 
   {/* Partners */}
-  <div className="w-full sm:w-1/4 flex flex-col items-center sm:items-start  sm:text-left">
+  <div className="w-full sm:w-1/4 flex flex-col items-center sm:items-start sm:text-left">
     <h3 className="text-lg font-bold text-white">Partners</h3>
     <ul className="mt-2 space-y-1 list-disc list-inside">
       <li><a href="/" className="hover:text-gray-400">Home Loan</a></li>
@@ -149,25 +146,25 @@ const Footer = () => {
       <li><a href="/" className="hover:text-gray-400">Builders</a></li>
     </ul>
   </div>
-
+ 
   {/* Resources */}
   <div className="w-full sm:w-1/2 md:w-1/4 flex flex-col items-center md:items-start text-center md:text-left mt-4 md:mt-0">
   <h3 className="text-lg font-bold text-white">Resources</h3>
-  <ul className="mt-2 space-y-1 list-disc list-inside">
+  <ul className="mt-2 space-y-1 list-disc list-inside ">
     <li>
-      <a href="/" className="hover:text-gray-400">Home Buying Guides</a>
+      <a href="/" className="hover:text-gray-400">Home Bying </a>
     </li>
     <li>
-      <a href="/" className="hover:text-gray-400">Blogs</a>
+      <a href="/" className="hover:text-gray-400">Check Blogs</a>
     </li>
     <li>
-      <a href="/" className="hover:text-gray-400">RERA</a>
+      <a href="/" className="hover:text-gray-400">RERA Details</a>
     </li>
   </ul>
 </div>
-
  
 </div>
+
 </div>
 {/* <div className="flex justify-end items-center py-7 border-b border-gray-700 w-[90%] xl:ml-20 sm:ml-5 mx-auto">
         <div className="flex justify-end mb-1">

@@ -26,13 +26,13 @@ const Services = () => {
       {/* <h2 className="text-lg text-yellow-500 font-semibold mb-1 sm:text-sm  md:pl-20 md:text-lg">Discover Our Services</h2> */}
       {/* <div className="pl-6 md:pl-20"> */}
       <div className="pl-2">
-         <h2 className="text-lg text-yellow-500 font-semibold mb-1 sm:text-sm md:text-lg">
-         Discover Our Services
-       </h2>
-      </div>
+  <h2 className="text-2xl text-yellow-500 font-semibold sm:text-lg md:text-xl">
+    Discover Our Services
+  </h2>
+</div>
 
       {/* Services Sections */}
-      <div className="max-w-8xl  flex justify-between items-center px-4 gap-x-2 md:gap-x-6 "> {/* Adjusted gap */}
+      <div className="max-w-8xl  flex justify-between items-center px-4 gap-x-2 md:gap-x-6 md:text-lg"> {/* Adjusted gap */}
         {/* Service Item 1 */}
         <div className="w-1/4 text-center p-4 rounded-lg relative " onClick={() => setShowCalculator(true)}>
           <div className="flex flex-col items-center">

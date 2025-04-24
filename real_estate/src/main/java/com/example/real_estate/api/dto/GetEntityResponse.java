@@ -34,7 +34,7 @@ public class GetEntityResponse {
     private int propertyAreaSqmt;
     private String reraNumber;
     private String reraLink;
-    private String projectVideoLink;
+    private List<String> projectVideoLink;
     private List<String> projectImages;
     private Boolean preferred;
 

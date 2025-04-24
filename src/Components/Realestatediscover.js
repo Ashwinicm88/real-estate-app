@@ -141,7 +141,7 @@ const CustomDropdownPage = () => {
           </button>
        
       </div>
-      <div className="bg-black text-white p-6 rounded-lg shadow-lg max-w-5xl w-full border border-[#333] h-57">
+      <div className="bg-black text-white p-6 rounded-lg shadow-lg max-w-5xl w-full border border-yellow-500 h-57">
         {/* Toggle Button Section */}
         {/* Conditional Rendering based on Active Toggle */}
         {activeToggle === 'search' ? (

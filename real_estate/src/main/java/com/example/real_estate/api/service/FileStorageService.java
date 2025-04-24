@@ -232,9 +232,17 @@ public class FileStorageService {
         }
         return imageUrls;
     }
-    public String uploadVideo(MultipartFile video) {
-        return saveFile(video, "videos");
+    public List<String> uploadVideo(List<MultipartFile> videos) {
+        List<String> videoUrls = new ArrayList<>();
+        if (videos != null) {
+            for (MultipartFile video : videos) {
+                String videoUrl = saveFile(video, "videos");
+                if (videoUrl != null) videoUrls.add(videoUrl);
+            }
+        }
+        return videoUrls;
     }
+    
 //     public List<String> uploadOneBHKImages(List<MultipartFile> images) {
 //     List<String> imageUrls = new ArrayList<>();
 //     for (MultipartFile image : images) {

@@ -15,10 +15,9 @@ const CheckBox = ({ label, section, field, checked, onChange,error }) => {
         error={Boolean(error)}
         helperText={error || ''}
         onChange={handleCheckboxChange}
-        className="appearance-none w-4 h-4 border-2 border-white bg-transparent checked:bg-white checked:after:content-['✔'] checked:after:text-black checked:after:block checked:after:text-xs checked:after:leading-none checked:after:text-center checked:after:translate-y-[-1px]"
+        className="appearance-none w-4 h-4 border-2 border-white bg-transparent checked:bg-yellow-500 checked:after:content-['✔'] checked:after:text-black checked:after:block checked:after:text-xs checked:after:leading-none checked:after:text-center checked:after:translate-y-[-1px]"
       />
-       
-     
+            
       {label && (
         <label
           htmlFor={`${section}-${field}`}

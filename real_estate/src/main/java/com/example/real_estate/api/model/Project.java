@@ -131,7 +131,7 @@ public class Project {
 
 
     @Column(name = "projectvideolink", length = 255)
-    private String projectVideoLink;
+    private List<String> projectVideoLink;
 
 
     // @JdbcTypeCode(SqlTypes.JSON)
@@ -158,7 +158,7 @@ public class Project {
     // ✅ Corrected Constructor
     public Project(Organisation organisation, String projectName, String city, String locality, String address,
             Double latitude, Double longitude, Integer propertyAreaSqmt,
-            String reraNumber, String reraLink, String projectVideoLink,
+            String reraNumber, String reraLink, List<String> projectVideoLink,
             List<String> projectImages, String preferred, Boolean deleted, String propertyType) {
 
 

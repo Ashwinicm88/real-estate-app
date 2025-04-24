@@ -1,4 +1,3 @@
-
 // import { useState, useEffect, useRef } from "react";
 // import Header from "../Components/Header";
 // import Section2 from "../Components/HomeSection2";
@@ -7,7 +6,7 @@
 // import SectionEnd from "../Components/SectionEnd";
 // import WelcomePopup from "../Components/WelcomePopup";
 
-// export default function RealestateHome() 
+// export default function RealestateHome()
 // {
 //   const [showServices, setShowServices] = useState(true);
 //   const [showSection2, setShowSection2] = useState(false);
@@ -74,7 +73,7 @@
 //           <div className="h-screen flex flex-col items-center relative">
 //             {/* Realestatediscover */}
 //             <div
-//               className={`w-full flex justify-center absolute 
+//               className={`w-full flex justify-center absolute
 //                 ${isExact1050 ? "top-[-15%]" : "top-10 md:top-20"}`}
 //             >
 //               <div className="w-full max-w-2xl md:max-w-4xl px-6">
@@ -85,7 +84,7 @@
 //             {/* Services Section - Displayed Initially */}
 //             {showServices && (
 //               <div
-//                 className={`w-full flex justify-center relative 
+//                 className={`w-full flex justify-center relative
 //                   ${isExact1050 ? "top-[50%]" : "top-[45%] md:top-[50%]"}`}
 //               >
 //                 <div className="bottom-0 md:bottom-5 w-full">
@@ -114,7 +113,7 @@
 //             {showSectionEnd && (
 //               <div className="mb-10">
 //                 <Services />
-//               </div> 
+//               </div>
 //             )}
 //           </div>
 //         </>
@@ -137,35 +136,55 @@
 //   );
 // }
 
-
 import Header from "../Components/Header";
 import Section2 from "../Components/HomeSection2";
 import Realestatediscover from "../Components/Realestatediscover";
 import Services from "../Components/DiscoverServices";
 import SectionEnd from "../Components/SectionEnd";
 import WelcomePopup from "../Components/WelcomePopup";
+import buildimage from "../Assets/build.png";
+import { useEffect, useState } from "react";
 
 export default function RealestateHome() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const isFirstVisit = sessionStorage.getItem("hasVisited");
+
+    if (!isFirstVisit) {
+      setShowPopup(true);
+      sessionStorage.setItem("hasVisited", "true");
+    }
+  }, []);
   return (
-    <div className="bg-black min-h-screen">
-      <WelcomePopup />
+    <div className="bg-black min-h-screen overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200 h-[400px]">
+      {showPopup && <WelcomePopup />}
       <Header />
 
       {/* Main Page Wrapper with Consistent Padding */}
       <div className="px-6 sm:px-10 md:px-20 pt-12">
         {/* Hero Section */}
-        <section className="mb-10 md:mb-32">
+        <section className="mb-10 md:mb-0">
           <h2 className="text-2xl md:text-3xl font-semibold text-white mt-10">
             Welcome to Casa – A World Reserved for the Exceptional
           </h2>
           <p className="mt-4 text-[#A9A9A9] text-sm md:text-base max-w-2xl">
-            Handpicked, Verified, and Exclusive from the most trusted names in luxury real estate.
+            Handpicked, Verified, and Exclusive from the most trusted names in
+            luxury real estate.
           </p>
         </section>
 
-        {/* Discover Section */}
-        <section className="mb-20" >
+         {/* Discover Section */}
+        <section className="mt-8">
           <Realestatediscover />
+        </section>
+        {/* Image Section */}
+        <section className="w-[1380px] h-[300px] bg-black hidden sm:block">
+          <img
+            src={buildimage}
+            alt="Cityscape Chalk Drawing"
+            className="w-full h-full object-fill"
+          />
         </section>
 
         {/* Services Section */}

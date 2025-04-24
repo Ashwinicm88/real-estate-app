@@ -361,7 +361,7 @@ const RealEstateDetails = ({ defaultLocation }) => {
     return Math.round(number / target) * target;
   };
   return (
-    <div className="bg-black text-white p-6 min-h-screen">
+    <div className="bg-black text-white p-6 min-h-screen ">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {/* Left Section: Price Trend */}
         <div className="border border-white p-4">
@@ -409,9 +409,9 @@ const RealEstateDetails = ({ defaultLocation }) => {
 
         {/* Right Section: Inputs & Calculation */}
         <div className="border border-white p-4">
-          <h3 className="text-lg font-bold">True Cost of Ownership:</h3>
+          <h3 className="text-lg font-bold mb-2">True Cost of Ownership:</h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 p-2">
             <InputField
               label="Enter Purchase Price"
               field="purchasePrice"
@@ -432,7 +432,7 @@ const RealEstateDetails = ({ defaultLocation }) => {
             />
           </div>
 
-          <div className="mt-2 flex gap-4">
+          <div className="mt-2 flex gap-2 p-2">
             <div className="w-1/2">
               <InputField
                 label="Stamp Duty (6%)"
@@ -457,7 +457,7 @@ const RealEstateDetails = ({ defaultLocation }) => {
             </div>
           </div>
 
-          <div className="w-1/2">
+          <div className="w-1/2 p-2 mt-4">
             <InputField
               label="Registration Fees"
               field="registration"
@@ -469,7 +469,7 @@ const RealEstateDetails = ({ defaultLocation }) => {
           </div>
 
           {totalCost !== null && (
-            <p className="mt-4 text-white text-lg font-semibold px-4">
+            <p className="mt-8 text-white text-lg font-semibold px-4">
               The true ownership cost is Rs.{" "}
               <span className="font-bold text-yellow-500">
                 {totalCost.toLocaleString()}
@@ -488,10 +488,10 @@ const RealEstateDetails = ({ defaultLocation }) => {
             console.log("Navigating to Properties...",city,budget);
             navigate(`/search-result?${params.toString()}`);
           }}
-          className="inline-block mt-4 text-white font-bold px-4 py-2 rounded "
+          className="inline-block mt-4 text-white text-lg font-semibold px-4 rounded "
         >
            {totalCost !== null && (
-       <p>View Properties at <span>{selectedLocation}</span> matching the above cost of ownership <span className="text-yellow-500">➜</span></p>
+       <p><span className="text-yellow-500"> Click here </span> to view the properties in <span>{selectedLocation}</span> matching the above cost of owership  </p>
       )}
         </button>
         </div>

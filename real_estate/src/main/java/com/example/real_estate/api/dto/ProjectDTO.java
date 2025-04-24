@@ -15,7 +15,7 @@ public class ProjectDTO {
     private Integer propertyAreaSqmt;
     private String reraNumber;
     private String address;
-    private String projectVideoLink;
+    private List<String> projectVideoLink;
     private List<String> projectImages;
     private String propertyType;
     private String reralink;

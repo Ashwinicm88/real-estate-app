@@ -519,11 +519,11 @@ const HomeAffordabilityCalculator = ({ onClose }) => {
         <div className="sticky top-0 z-10 bg-[#111111] p-4 border-b border-gray-500">
   <button
     onClick={onClose}
-    className="absolute top-2 right-3 text-gray-400 hover:text-gray-200 text-xl"
+    className="absolute top-2 right-3 text-gray-400 hover:text-gray-200 text-xl mt-4"
   >
     ×
   </button>
-  <h2 className="text-xl sm:text-2xl font-semibold text-left mb-0 text-white">
+  <h2 className="text-xl sm:text-2xl font-semibold text-left mb-0 text-white mt-4">
     🏠 Home Affordability Calculator
   </h2>
 </div>
@@ -676,7 +676,7 @@ const HomeAffordabilityCalculator = ({ onClose }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <DropdownField
-                    label="Select Your Credit Score"
+                    label="Select Your CIBIL Score"
                     section="form"
                     field="creditScore"
                     value={formData.creditScore}
@@ -691,7 +691,7 @@ const HomeAffordabilityCalculator = ({ onClose }) => {
                   />
 
                   <DropdownField
-                    label="Select Spouse Credit Score"
+                    label="Select Spouse CIBIL Score"
                     section="form"
                     field="wifeCreditScore"
                     value={formData.wifeCreditScore}

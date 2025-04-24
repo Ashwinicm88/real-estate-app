@@ -49,7 +49,7 @@ public class EntityController {
             // @Valid @RequestBody CreateEntityRequest request, BindingResult result
             @RequestPart("data") String jsonData,
             @RequestPart(value="images",required = false) List<MultipartFile>images,
-            @RequestPart(value = "video",required = false) MultipartFile video,
+            @RequestPart(value = "video",required = false) List<MultipartFile>video,
             @RequestParam Map<String, MultipartFile> allFiles // Capture all dynamic files
     
     
@@ -57,7 +57,7 @@ public class EntityController {
     
         // Send files to FileUploadController and get URLs
         List<String> imageUrls = (images !=null && !images.isEmpty())? fileStorageService.uploadSingleImages(images):new ArrayList<>();
-        String videoUrl = (video != null && !video.isEmpty()) ? fileStorageService.uploadVideo(video) : null;
+        List<String> videoUrl = (video != null && !video.isEmpty()) ? fileStorageService.uploadVideo(video) : new ArrayList<>();
     
         // ✅ Prepare OneBHKConfig Image Maps
         Map<Integer, List<String>> oneBHKType1ImageUrls = new HashMap<>();

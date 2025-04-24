@@ -30,7 +30,18 @@ public class BookConsultation {
     @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name= "consultation_name")
+    @Column(name = "consultation_name")
     private String consultationName;
-   
+
+    // ✅ New: phone_no (10 digits only)
+    @Column(name = "phone_no", length = 10, nullable = false)
+    private String phoneNo;
+
+    // ✅ New: confirmed flag (defaults to false)
+    @Column(name = "confirmed", nullable = false)
+    private Boolean confirmed = false;
+
+    // ✅ New: phone ISD code (default "091", 3 digits)
+    @Column(name = "phone_isd", length = 3, nullable = false)
+    private String phoneIsd = "091";
 }

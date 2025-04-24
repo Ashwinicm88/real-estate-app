@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
 // import DisplayImages from "./components/DisplayImages";
 import MultipleImageUpload from "./Components/MultipleImageUpload";
 import SingleImageDisplay from "./Components/SingleImageDisplay";
@@ -43,13 +42,15 @@ import HomeAffordabilityCalculator from "./Components/HomeAffordibility";
 import CostOfOwnership from "./Pages/Truecoo";
 import AdminConsultationList from "./Pages/AdminConsultationList";
 import UpdateConsultation from "./Pages/AdminUpdateConsultation";
+import ViewallProperties from "./Pages/Allproperties";
+import ComparePage from "./Pages/ComparePage";
 const App = () => {
   return (
    // <Router>
     <Router>
       <Routes>
         {/*Public Routes*/}
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<RealestateHome />} />
         <Route path="/Display" element={<Display />} />
         {/* <Route path="/DisplayImages" element={<DisplayImages />} /> */}
         <Route path="/multiple-upload" element={<MultipleImageUpload />} />
@@ -89,6 +90,9 @@ const App = () => {
       <Route path="/home-affordability-calculator" element={<HomeAffordabilityCalculator />} />
       <Route path="/cost-of-ownership" element={<CostOfOwnership />} />
       <Route path="/admin-login" element={<AdminLogin />} />
+      <Route path="/view-allproperties" element={<ViewallProperties />} />
+      <Route path="/compare" element={<ComparePage />} />
+
 
 {/* Protected Route for Admin */}
 

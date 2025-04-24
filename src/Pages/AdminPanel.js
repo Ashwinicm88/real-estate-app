@@ -281,13 +281,13 @@ const ProjectDetails = () => {
         <div className="hidden md:block overflow-x-auto md:p-8">
           <table className="w-full text-left border-separate border-spacing-2">
             <thead>
-              <tr className="text-white font-bold text-lg">
+              <tr className="text-white font-bold text-lg ">
                 <th>Organisation</th>
                 <th>Project</th>
                 <th>Location</th>
                 <th>Date of Creation</th>
                 <th>Age of Listing</th>
-                <th>Action</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -307,6 +307,17 @@ const ProjectDetails = () => {
                         }
                       >
                         Edit
+                      </button>
+                    </td>
+                    <td>
+                    <button
+                        className="text-blue-400 underline"
+                        onClick={() => {
+                            console.log("Navigating to project:", p.projectId);
+                            navigate(`/property-details/${p.projectId}`);
+                          }}
+                      >
+                        view
                       </button>
                     </td>
                   </tr>
